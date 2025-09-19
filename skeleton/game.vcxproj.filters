@@ -22,6 +22,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="Vector3.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -56,7 +56,10 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	new SphereObject(10);
+	new SphereObject(1);
+	new SphereObject(1, My_Vector3(5, 0, 0), Color(1, 0, 0, 1));
+	new SphereObject(1, My_Vector3(0, 5, 0), Color(0, 1, 0, 1));
+	new SphereObject(1, My_Vector3(0, 0, 5), Color(0, 0, 1, 1));
 }
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "PxPhysicsAPI.h"
+#include "Vector3.hpp"
 
 using Transform = const physx::PxTransform;
 using Color = const Vector4;
@@ -16,14 +17,12 @@ public:
 		DeregisterRenderItem(render_item);
 		delete render_item;
 	}
-
-	//SetPosition()
 };
 
 
 struct  SphereObject : GameObject{
-	SphereObject(float rad) 
-		: GameObject(new RenderItem(CreateShape(PxSphereGeometry(rad)), new Transform(0,0,0), Color(1,1,1,1))) { }
+	SphereObject(float rad, My_Vector3 v= My_Vector3::zero(),Color c=Color(1,1,1,1))
+		: GameObject(new RenderItem(CreateShape(PxSphereGeometry(rad)), new Transform(v.x,v.y,v.z), Color(c.x,c.y,c.z,c.w))) { }
 };
 //TO DO:
 //• PxBoxGeometry
