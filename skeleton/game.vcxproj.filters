@@ -21,6 +21,7 @@
     </ClInclude>
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
+    <ClInclude Include="GameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
