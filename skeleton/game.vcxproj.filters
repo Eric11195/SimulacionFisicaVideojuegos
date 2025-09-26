@@ -10,6 +10,7 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -22,7 +23,8 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="GameObject.hpp" />
-    <ClInclude Include="Vector3.hpp" />
+    <ClInclude Include="My_Vector3.hpp" />
+    <ClInclude Include="Particle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

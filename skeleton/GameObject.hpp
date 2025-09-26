@@ -1,28 +1,35 @@
 #pragma once
 #include "PxPhysicsAPI.h"
-#include "Vector3.hpp"
+#include "My_Vector3.hpp"
+#include "core.hpp"
+#include "RenderUtils.hpp"
 
-using Transform = const physx::PxTransform;
-using Color = const Vector4;
+using Transform = physx::PxTransform;
+using Color = Vector4;
 using namespace physx;
 
 class GameObject {
 protected:
+	Transform tr;
+	Color cl;
 	RenderItem* render_item;
+	//Shape
+	PxShape* sh;
 public:
-	GameObject(RenderItem* r) : render_item(r) {
+	GameObject(PxShape* _sh, My_Vector3 v, Color _cl) : sh(_sh), tr(v.turn()), cl(_cl) {
+		render_item = new RenderItem(sh,&tr,cl);
 		RegisterRenderItem(render_item);
 	}
 	~GameObject() {
 		DeregisterRenderItem(render_item);
-		delete render_item;
+		//delete render_item;
 	}
 };
 
 
-struct  SphereObject : GameObject{
-	SphereObject(float rad, My_Vector3 v= My_Vector3::zero(),Color c=Color(1,1,1,1))
-		: GameObject(new RenderItem(CreateShape(PxSphereGeometry(rad)), new Transform(v.x,v.y,v.z), Color(c.x,c.y,c.z,c.w))) { }
+struct SphereObject : GameObject{
+	SphereObject(const float rad, My_Vector3 _pos = My_Vector3::zero(), Color c = Color(1, 1, 1, 1))
+		: GameObject(CreateShape(PxSphereGeometry(rad)), _pos, c) { }
 };
 //TO DO:
 //• PxBoxGeometry
