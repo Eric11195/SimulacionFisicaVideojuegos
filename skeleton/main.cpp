@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "CoordinateAxis.hpp"
+#include "Particle.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -57,6 +58,8 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	co = new CoordinateAxis();
+
+	new Particle({0,0,0}, { 2,0,1 });
 }
 
 

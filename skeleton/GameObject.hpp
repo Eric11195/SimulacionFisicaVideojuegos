@@ -20,10 +20,14 @@ public:
 		render_item = new RenderItem(sh,&tr,cl);
 		RegisterRenderItem(render_item);
 	}
-	~GameObject() {
+	void cleanup() {
 		DeregisterRenderItem(render_item);
-		//delete render_item;
+		delete render_item;
 	}
+	/*
+	~GameObject() {
+	}
+	*/
 };
 
 
