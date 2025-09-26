@@ -10,9 +10,10 @@
 #include "GameObject.hpp"
 
 #include <iostream>
+#include "CoordinateAxis.hpp"
 
 std::string display_text = "This is a test";
-
+CoordinateAxis* co=nullptr;
 
 using namespace physx;
 
@@ -30,7 +31,6 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
-
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -56,10 +56,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	new SphereObject(1);
-	new SphereObject(1, My_Vector3(5, 0, 0), Color(1, 0, 0, 1));
-	new SphereObject(1, My_Vector3(0, 5, 0), Color(0, 1, 0, 1));
-	new SphereObject(1, My_Vector3(0, 0, 5), Color(0, 0, 1, 1));
+	co = new CoordinateAxis();
 }
 
 

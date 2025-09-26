@@ -25,6 +25,7 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="My_Vector3.hpp" />
     <ClInclude Include="Particle.hpp" />
+    <ClInclude Include="CoordinateAxis.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
