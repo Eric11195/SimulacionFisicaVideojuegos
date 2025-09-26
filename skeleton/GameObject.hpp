@@ -3,10 +3,13 @@
 #include "My_Vector3.hpp"
 #include "core.hpp"
 #include "RenderUtils.hpp"
+#include <list>
 
 using Transform = physx::PxTransform;
 using Color = Vector4;
 using namespace physx;
+
+class GameObject;
 
 class GameObject {
 protected:
@@ -16,24 +19,26 @@ protected:
 	//Shape
 	PxShape* sh;
 public:
-	GameObject(PxShape* _sh, My_Vector3 v, Color _cl) : sh(_sh), tr(v.turn()), cl(_cl) {
-		render_item = new RenderItem(sh,&tr,cl);
-		RegisterRenderItem(render_item);
-	}
-	void cleanup() {
-		DeregisterRenderItem(render_item);
-		delete render_item;
-	}
-	/*
-	~GameObject() {
-	}
-	*/
+	GameObject(PxShape* _sh, My_Vector3 v, Color _cl);
+	~GameObject();
+
+	virtual void step(double dt) {}
+	virtual void init() {}
+	virtual void cleanup();
+
+	//-------------------------------------------------------
+	static void step_all(double dt);
+	static void release_all();
+	//-------------------------------------------------------
+private:
+	inline static std::list<GameObject*> gameobject_list{};
+	std::list<GameObject*>::iterator my_it;
+
 };
 
 
 struct SphereObject : GameObject{
-	SphereObject(const float rad, My_Vector3 _pos = My_Vector3::zero(), Color c = Color(1, 1, 1, 1))
-		: GameObject(CreateShape(PxSphereGeometry(rad)), _pos, c) { }
+	SphereObject(const float rad, My_Vector3 _pos = My_Vector3::zero(), Color c = Color(1, 1, 1, 1));
 };
 //TO DO:
 //• PxBoxGeometry

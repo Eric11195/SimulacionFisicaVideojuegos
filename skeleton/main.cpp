@@ -59,7 +59,7 @@ void initPhysics(bool interactive)
 
 	co = new CoordinateAxis();
 
-	new Particle({0,0,0}, { 2,0,1 });
+	(new Particle({ 0,0,0 }, { 2,0,0 }));// ->change_accel({ -1,-1,-1 });
 }
 
 
@@ -72,6 +72,7 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+	GameObject::step_all(t);
 }
 
 // Function to clean data
@@ -80,6 +81,8 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
+
+	GameObject::release_all();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -90,7 +93,7 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	}
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)

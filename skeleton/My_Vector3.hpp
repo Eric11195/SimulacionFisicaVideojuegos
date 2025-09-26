@@ -23,13 +23,20 @@ struct My_Vector3 {
 	float dot(const My_Vector3& v1,const My_Vector3& v2) const {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}
-	My_Vector3& operator *=(const float d) {
+	template<class T>
+	My_Vector3& operator *=(const T d) {
 		x *= d;
 		y *= d;
 		z *= d;
 		return *this;
 	}
-	friend My_Vector3 operator*(My_Vector3 v, const float d) {
+	template<class T>
+	friend My_Vector3 operator*(My_Vector3 v, const T d) {
+		v *= d;
+		return v;
+	}
+	template<class T>
+	friend My_Vector3 operator*(const T d, My_Vector3 v) {
 		v *= d;
 		return v;
 	}

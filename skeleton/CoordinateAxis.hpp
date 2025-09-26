@@ -13,7 +13,7 @@ public:
 	}
 	~CoordinateAxis() {
 		for (int i = 0; i < 4; ++i) {
-			delete go[i];
+			go[i]->cleanup();
 		}
 	}
 };
