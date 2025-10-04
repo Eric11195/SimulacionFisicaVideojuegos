@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <ostream>
+#include "PxPhysicsAPI.h"
 
 struct My_Vector3 {
 	float x, y, z;

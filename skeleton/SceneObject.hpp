@@ -1,18 +1,15 @@
 #pragma once
-#include "PxPhysicsAPI.h"
 #include "My_Vector3.hpp"
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include <list>
 #include "GameObject.hpp"
 
-using Transform = physx::PxTransform;
 using Color = Vector4;
 using namespace physx;
 
 class SceneObject : public GameObject{
 protected:
-	Transform tr;
 	Color cl;
 	RenderItem* render_item;
 	//Shape

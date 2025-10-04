@@ -256,7 +256,10 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CameraProjectileShooter.cpp" />
+    <ClCompile Include="CompositeGameObject.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -268,8 +271,11 @@
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CameraProjectileShooter.hpp" />
+    <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ParticleGenerator.hpp" />
+    <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />

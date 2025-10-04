@@ -1,7 +1,7 @@
 #include "SceneObject.hpp"
 
 SceneObject::SceneObject(PxShape* _sh, My_Vector3 v, Color _cl)
-	: sh(_sh), tr(v.turn()), cl(_cl) {
+	: sh(_sh), cl(_cl), GameObject(Transform(v.turn())) {
 	render_item = new RenderItem(sh, &tr, cl);
 	RegisterRenderItem(render_item);
 }
@@ -9,6 +9,7 @@ SceneObject::SceneObject(PxShape* _sh, My_Vector3 v, Color _cl)
 SceneObject::~SceneObject()
 {
 	DeregisterRenderItem(render_item);
+	delete render_item;
 }
 
 SphereObject::SphereObject(const float rad, My_Vector3 _pos, Color c)

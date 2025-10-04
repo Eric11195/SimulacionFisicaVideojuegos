@@ -1,15 +1,17 @@
 #include "GameObject.hpp"
+#include "CompositeGameObject.hpp"
 
-GameObject::GameObject()
+GameObject::GameObject(Transform t)//, std::list<GameObject*> l)
+	:tr(t)
 {
-	my_it = GameObject_list.insert(GameObject_list.end(), this);
+	//my_it = l.insert(l.end(), this);
 }
 
 void GameObject::cleanup() {
-	GameObject_list.erase(my_it);
+	//Parent will erase them of the list if they are there
 	delete this;
-	//delete render_item;
 }
+/*
 void GameObject::step_all(double dt)
 {
 	for (auto obj : GameObject_list)
@@ -28,3 +30,4 @@ void GameObject::process_input_all(unsigned char key)
 	for (auto obj : GameObject_list)
 		obj->process_input(key);
 }
+*/

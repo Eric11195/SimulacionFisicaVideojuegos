@@ -15,6 +15,9 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="CompositeGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -34,6 +37,9 @@
     <ClInclude Include="PhysicLib.hpp" />
     <ClInclude Include="CameraProjectileShooter.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="ParticleGenerator.hpp" />
+    <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="CompositeGameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

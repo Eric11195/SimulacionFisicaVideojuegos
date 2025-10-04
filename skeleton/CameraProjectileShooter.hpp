@@ -3,7 +3,7 @@
 #include "RenderUtils.hpp"
 #include "GameObject.hpp"
 
-class CameraProjectileShooter : GameObject{
+class CameraProjectileShooter : public GameObject{
 public:
 	CameraProjectileShooter(Projectile::projectile_config);
 	void Shoot();

@@ -7,14 +7,15 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
-#include "GameObject.hpp"
-#include "SceneObject.hpp"
+
 
 #include <iostream>
 #include "CoordinateAxis.hpp"
 #include "Particle.hpp"
 #include "Projectile.hpp"
 #include "CameraProjectileShooter.hpp"
+#include "CompositeGameObject.hpp"
+#include "GameObject.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -35,6 +36,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+CompositeGameObject* scene_game_object = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -60,7 +63,9 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	co = new CoordinateAxis();
+	scene_game_object = new CompositeGameObject();
+
+	scene_game_object->addChild(new CoordinateAxis());
 	
 	//new Particle({ 0,0,0 }, { 2,0,0 }, 0.5);// ->change_accel({ -1,-1,-1 });
 	Projectile::projectile_config c = {
@@ -72,7 +77,7 @@ void initPhysics(bool interactive)
 	};
 	
 
-	new CameraProjectileShooter(c);
+	scene_game_object->addChild(new CameraProjectileShooter(c));
 	//new Projectile(c);
 }
 
@@ -86,7 +91,7 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	GameObject::step_all(t);
+	scene_game_object->step(t);
 }
 
 // Function to clean data
@@ -96,7 +101,7 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 
-	GameObject::release_all();
+	scene_game_object->cleanup();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -115,7 +120,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	PX_UNUSED(camera);
 	//std::cout << key<<'\n';
 
-	GameObject::process_input_all(key);
+	scene_game_object->process_input(key);
 	switch(toupper(key))
 	{
 	case ' ':
