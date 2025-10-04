@@ -65,9 +65,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	scene_game_object = new GlobalCoords_CompositeGameObject();
-	auto aux = new CoordinateAxis();
-	aux->translate({ 20,100,0 });
-	scene_game_object->addChild(aux);
+	scene_game_object->addChild(new CoordinateAxis());
 	
 	//new Particle({ 0,0,0 }, { 2,0,0 }, 0.5);// ->change_accel({ -1,-1,-1 });
 	Projectile::projectile_config c = {
