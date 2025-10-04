@@ -258,6 +258,7 @@
     <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="CompositeGameObject.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="SceneObject.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="SceneObject.hpp" />

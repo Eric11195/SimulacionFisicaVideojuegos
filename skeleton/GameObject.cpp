@@ -2,7 +2,7 @@
 #include "CompositeGameObject.hpp"
 
 GameObject::GameObject(Transform t)//, std::list<GameObject*> l)
-	:tr(t)
+	:local_transform(t), global_transform(t)
 {
 	//my_it = l.insert(l.end(), this);
 }
@@ -10,6 +10,22 @@ GameObject::GameObject(Transform t)//, std::list<GameObject*> l)
 void GameObject::cleanup() {
 	//Parent will erase them of the list if they are there
 	delete this;
+}
+void GameObject::translate(physx::PxVec3 t)
+{
+	translate_to(local_transform.p + t);
+}
+void GameObject::translate_to(physx::PxVec3 t)
+{
+	local_transform.p = t;
+}
+void GameObject::link_to_parent(Transform& parent_tr)
+{
+	update_position(parent_tr);
+}
+void GameObject::update_position(Transform& parent_tr)
+{
+	global_transform = local_transform * parent_tr;
 }
 /*
 void GameObject::step_all(double dt)

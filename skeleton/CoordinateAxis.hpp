@@ -1,8 +1,8 @@
 #pragma once
 #include "SceneObject.hpp"
-#include "CompositeGameObject.hpp"
+#include "GlobalCoords_CompositeGameObject.hpp"
 
-class CoordinateAxis : public CompositeGameObject{
+class CoordinateAxis : public GlobalCoords_CompositeGameObject{
 public:
 	CoordinateAxis() {
 		addChild(new SphereObject(1));

@@ -18,6 +18,7 @@
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="CompositeGameObject.cpp" />
+    <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="CompositeGameObject.hpp" />
+    <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

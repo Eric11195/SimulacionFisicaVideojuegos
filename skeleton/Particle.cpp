@@ -13,7 +13,8 @@ void Particle::init()
 void Particle::step(double dt)
 {
 	integrate(dt);
-	tr.transform(vel.turn());
+	//local_transform.transform();
+	//tr.transform(vel.turn());
 }
 
 
@@ -44,7 +45,8 @@ void Particle::integrate(double dt)
 
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
 	vel += accel * dt;
-	tr.p += dt * vel.turn();
+	//tr.p += dt * vel.turn();
+	translate(dt * vel.turn());
 #elif defined EULER_INTEGRATION
 	tr.p += dt * vel.turn();
 	vel += accel*dt;

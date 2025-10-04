@@ -2,8 +2,14 @@
 #include "Projectile.hpp"
 #include "RenderUtils.hpp"
 #include "GameObject.hpp"
+#include "GlobalCoords_CompositeGameObject.hpp"
 
-class CameraProjectileShooter : public GameObject{
+/*
+Projectile Shotter (Empty)
+	-bullets 0..n
+*/
+
+class CameraProjectileShooter : public GlobalCoords_CompositeGameObject{
 public:
 	CameraProjectileShooter(Projectile::projectile_config);
 	void Shoot();

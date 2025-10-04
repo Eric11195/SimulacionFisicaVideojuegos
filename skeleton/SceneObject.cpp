@@ -2,7 +2,7 @@
 
 SceneObject::SceneObject(PxShape* _sh, My_Vector3 v, Color _cl)
 	: sh(_sh), cl(_cl), GameObject(Transform(v.turn())) {
-	render_item = new RenderItem(sh, &tr, cl);
+	render_item = new RenderItem(sh, &global_transform, cl);
 	RegisterRenderItem(render_item);
 }
 

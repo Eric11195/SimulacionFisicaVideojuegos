@@ -16,6 +16,7 @@
 #include "CameraProjectileShooter.hpp"
 #include "CompositeGameObject.hpp"
 #include "GameObject.hpp"
+#include "GlobalCoords_CompositeGameObject.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -37,7 +38,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-CompositeGameObject* scene_game_object = nullptr;
+GlobalCoords_CompositeGameObject* scene_game_object = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -63,9 +64,10 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	scene_game_object = new CompositeGameObject();
-
-	scene_game_object->addChild(new CoordinateAxis());
+	scene_game_object = new GlobalCoords_CompositeGameObject();
+	auto aux = new CoordinateAxis();
+	aux->translate({ 20,100,0 });
+	scene_game_object->addChild(aux);
 	
 	//new Particle({ 0,0,0 }, { 2,0,0 }, 0.5);// ->change_accel({ -1,-1,-1 });
 	Projectile::projectile_config c = {

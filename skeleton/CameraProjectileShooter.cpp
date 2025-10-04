@@ -14,7 +14,7 @@ void CameraProjectileShooter::Shoot()
 	pr_spawned.initial_dir = My_Vector3::unturn(cam->getDir());
 	pr_spawned.position = My_Vector3::unturn(cam->getEye());
 	std::cout << "dir: " << pr_spawned.initial_dir << " pos: "<<pr_spawned.position<<'\n';
-	new Projectile(pr_spawned);
+	addChild(new Projectile(pr_spawned));
 }
 
 void CameraProjectileShooter::process_input(unsigned char key)
@@ -23,4 +23,5 @@ void CameraProjectileShooter::process_input(unsigned char key)
 	case' ':
 		Shoot();
 	}
+	CompositeGameObject::process_input(key);
 }
