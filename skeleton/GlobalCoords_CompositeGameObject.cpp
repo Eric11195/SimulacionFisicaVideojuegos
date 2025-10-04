@@ -1,26 +1,21 @@
 #include "GlobalCoords_CompositeGameObject.hpp"
+#include "PhysicLib.hpp"
 
-
-GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject()
-    : CompositeGameObject(Transform(0,0,0)){
+GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject(Transform tr)
+    :CompositeGameObject(tr)
+{
 }
 
-/*
 void GlobalCoords_CompositeGameObject::step(double dt)
 {
     for (auto child : child_objects) {
         child->step(dt);
-        child->update_position(global_transform);
+        child->update_position(PhysicLib::NEUTRAL_TRANSFORM);
     }
 }
-*/
 
-//This will do nothing
-void GlobalCoords_CompositeGameObject::update_position(Transform& parent_tr)
+void GlobalCoords_CompositeGameObject::addChild(GameObject* go)
 {
-}
-
-//This will do nothing
-void GlobalCoords_CompositeGameObject::translate_to(physx::PxVec3)
-{
+    auto child = child_objects.insert(child_objects.end(), go);
+    (*child)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 }

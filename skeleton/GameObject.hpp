@@ -11,8 +11,8 @@ struct GameObject {
 	virtual void init() {}
 	virtual void cleanup();
 	virtual void process_input(unsigned char key) {}
-	virtual void link_to_parent(Transform& parent_tr);
-	virtual void update_position(Transform& parent_tr);
+	virtual void link_to_parent(Transform const& parent_tr);
+	virtual void update_position(Transform const& parent_tr);
 	void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
 protected:

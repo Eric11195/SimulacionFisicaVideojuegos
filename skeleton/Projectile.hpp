@@ -26,10 +26,9 @@ gs = gr*(vs^2/vr^2)
 class Projectile : public Particle {
 public:
 	struct projectile_config {
-		My_Vector3 position, initial_dir;
-		speed s_real, s_simulated;
+		Particle::config particle_config;
+		speed s_real;
 		mass m_real;
-		float radius;
 		gravity m_gravity = PhysicLib::GRAVITY;
 		float damping = PhysicLib::NORMAL_DAMPING;
 	};

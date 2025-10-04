@@ -56,7 +56,8 @@ void keyboardCallback(unsigned char key, int x, int y)
 {
 	if(key==27)
 		exit(0);
-
+	//TODO: MODIFY THIS
+	//THIS CAPTURES WASD INPUT, not letting it pass through
 	if(!sCamera->handleKey(key, x, y))
 		keyPress(key, sCamera->getTransform());
 }

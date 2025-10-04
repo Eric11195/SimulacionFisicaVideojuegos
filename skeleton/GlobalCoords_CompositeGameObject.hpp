@@ -1,5 +1,6 @@
 #pragma once
 #include "CompositeGameObject.hpp"
+#include "PhysicLib.hpp"
 
 //If someone tries to move this gameobject it will change_nothing
 
@@ -7,8 +8,7 @@
 class GlobalCoords_CompositeGameObject : public CompositeGameObject {
 public:
 	//Its transform its always the the default, no matter what
-	GlobalCoords_CompositeGameObject();
-	//virtual void step(double dt) override;
-	virtual void update_position(Transform& parent_tr) override;
-	virtual void translate_to(physx::PxVec3) override;
+	GlobalCoords_CompositeGameObject(Transform tr = PhysicLib::NEUTRAL_TRANSFORM);
+	virtual void step(double dt) override;
+	virtual void addChild(GameObject* go) override;
 };

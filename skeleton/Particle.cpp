@@ -1,8 +1,9 @@
 #include "Particle.hpp"
 
-Particle::Particle(My_Vector3 _pos, My_Vector3 _vel, float _radius)
-	: vel(_vel), accel(My_Vector3::zero()),
-	SphereObject(_radius, _pos) {
+Particle::Particle(config c)
+	:vel(c.initial_dir.normalize() * c.initial_speed), accel(My_Vector3::zero()),
+	SphereObject(c.radius, c.pos), time_till_death(c.time_till_death)
+{
 }
 
 void Particle::init()
@@ -12,9 +13,8 @@ void Particle::init()
 
 void Particle::step(double dt)
 {
+	time_till_death -= dt;
 	integrate(dt);
-	//local_transform.transform();
-	//tr.transform(vel.turn());
 }
 
 

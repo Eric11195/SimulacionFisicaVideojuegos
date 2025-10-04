@@ -3,14 +3,12 @@
 #include "My_Vector3.hpp"
 #include "ParticleGenerator.hpp"
 #include <list>
+#include "GlobalCoords_CompositeGameObject.hpp"
 
 
-class ParticleSystem : public GameObject {
+
+class ParticleSystem : public GlobalCoords_CompositeGameObject {
 public:
-	struct config {
-		My_Vector3 origin;
-	};
-	ParticleSystem(config& c, std::initializer_list<ParticleGenerator::config>& pg);
-protected:
-	std::list<GameObject*> particle_generator_list;
+	ParticleSystem();
+	virtual void addChild(GameObject* go) override;
 };

@@ -275,6 +275,7 @@
     <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />

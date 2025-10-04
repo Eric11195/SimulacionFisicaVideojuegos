@@ -5,14 +5,13 @@ void Projectile::step(double dt)
 {
 	//std::cout << "POS: " << tr.p.x << ", " << tr.p.y << ", " << tr.p.z <<"  "<<
 		//"VEL: "<< tr.p.x << ", " << tr.p.y << ", " << tr.p.z<<'\n';
-	//add_accel({0,float(dt*g_simulated),0});
 	Particle::step(dt);
 }
 
 Projectile::Projectile(projectile_config c)
-	: Particle(c.position, c.s_simulated*c.initial_dir.normalize(), c.radius),
+	: Particle(c.particle_config),
 	m_real(c.m_real), s_real(c.s_real), g_real(c.m_gravity),
-	s_simulated(c.s_simulated)
+	s_simulated(c.particle_config.initial_speed)
 {
 	update_s_mass();
 	update_s_gravity();

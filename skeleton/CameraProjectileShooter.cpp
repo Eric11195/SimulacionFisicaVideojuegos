@@ -3,17 +3,15 @@
 
 CameraProjectileShooter::CameraProjectileShooter
 	(Projectile::projectile_config pc)
-	: pr_spawned(pc)
+	: pr_spawned(pc), GlobalCoords_CompositeGameObject(Transform(0,0,0))
 {
 }
 
 void CameraProjectileShooter::Shoot()
 {
-	std::cout << "Shoot \n";
 	auto cam = GetCamera();
-	pr_spawned.initial_dir = My_Vector3::unturn(cam->getDir());
-	pr_spawned.position = My_Vector3::unturn(cam->getEye());
-	std::cout << "dir: " << pr_spawned.initial_dir << " pos: "<<pr_spawned.position<<'\n';
+	pr_spawned.particle_config.initial_dir = My_Vector3::unturn(cam->getDir());
+	pr_spawned.particle_config.pos = My_Vector3::unturn(cam->getEye());
 	addChild(new Projectile(pr_spawned));
 }
 

@@ -18,8 +18,16 @@
 
 class Particle : public SphereObject{
 public:
-	Particle(My_Vector3 _pos, My_Vector3 _vel, float radius);
-	//~Particle();
+	struct config {
+		My_Vector3 pos, initial_dir;
+		float initial_speed;
+		float radius;
+		float time_till_death = std::numeric_limits<float>::infinity();
+	};
+	Particle(config c);
+	inline bool alive() {
+		return time_till_death > 0;
+	};
 	void init() override;
 	virtual void step(double dt) override;
 	void cleanup() override;
@@ -35,6 +43,7 @@ private:
 #ifdef DAMPING
 	float damping_mult = PhysicLib::NORMAL_DAMPING;
 #endif
+	float time_till_death;
 	My_Vector3 vel;
 	My_Vector3 accel;
 };

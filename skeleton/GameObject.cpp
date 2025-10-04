@@ -19,11 +19,11 @@ void GameObject::translate_to(physx::PxVec3 t)
 {
 	local_transform.p = t;
 }
-void GameObject::link_to_parent(Transform& parent_tr)
+void GameObject::link_to_parent(Transform const& parent_tr)
 {
 	update_position(parent_tr);
 }
-void GameObject::update_position(Transform& parent_tr)
+void GameObject::update_position(Transform const& parent_tr)
 {
 	global_transform = local_transform * parent_tr;
 }

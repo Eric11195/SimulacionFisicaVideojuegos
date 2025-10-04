@@ -1,9 +1,15 @@
 #include "ParticleSystem.hpp"
 
-ParticleSystem::ParticleSystem(config& c, std::initializer_list<ParticleGenerator::config>& pg)
-	: GameObject(Transform(c.origin.turn()))
+ParticleSystem::ParticleSystem()
+	: GlobalCoords_CompositeGameObject()
 {
-	for (auto i : pg) {
+}
 
+void ParticleSystem::addChild(GameObject* go)
+{
+	//dynamic cast return nullptr if the cast cannot be done
+	ParticleGenerator* pg = dynamic_cast<ParticleGenerator*>(go);
+	if (pg==nullptr) {
+		throw "Tried to add a non Particle Generator to a ParticleSystem";
 	}
 }

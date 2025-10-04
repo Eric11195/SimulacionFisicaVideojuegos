@@ -6,7 +6,7 @@
 class CompositeGameObject : public GameObject {
 public:
 	CompositeGameObject(Transform t = Transform(0,0,0));
-	void addChild(GameObject* go);
+	virtual void addChild(GameObject* go);
 	virtual void step(double dt) override;
 	void cleanup() override;
 	void process_input(unsigned char key) override;
