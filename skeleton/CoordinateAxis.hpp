@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObject.hpp"
+#include "SceneObject.hpp"
 
 class CoordinateAxis {
 private:
-	GameObject* go[4];
+	SceneObject* go[4];
 public:
 	CoordinateAxis() {
 		go[0] = new SphereObject(1);

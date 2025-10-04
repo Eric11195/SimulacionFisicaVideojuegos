@@ -8,32 +8,33 @@
 //Integradores:
 //	Euler Explicito
 //	Semiexplicito
-#include "GameObject.hpp"
+#include "SceneObject.hpp"
 #include "My_Vector3.hpp"
+#include "PhysicLib.hpp"
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
 #define DAMPING
 
-#ifdef DAMPING
-constexpr float DAMPING_MULT = 0.9999;
-#endif
-
-constexpr float PARTICLE_RADIUS = 5;
-
-
 class Particle : public SphereObject{
 public:
-	Particle(My_Vector3 _pos, My_Vector3 _vel);
+	Particle(My_Vector3 _pos, My_Vector3 _vel, float radius);
 	//~Particle();
 	void init() override;
-	void step(double dt) override;
+	virtual void step(double dt) override;
 	void cleanup() override;
-	void change_accel(My_Vector3 new_accel);
+	void set_accel(My_Vector3 new_accel);
+	void add_accel(My_Vector3 add_accel);
+#ifdef DAMPING
+	void set_dumping(float f);
+#endif
 protected:
 	//updates speed and position
 	void integrate(double t);
 private:
+#ifdef DAMPING
+	float damping_mult = PhysicLib::NORMAL_DAMPING;
+#endif
 	My_Vector3 vel;
 	My_Vector3 accel;
 };

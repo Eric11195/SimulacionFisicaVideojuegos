@@ -1,9 +1,8 @@
 #include "Particle.hpp"
 
-Particle::Particle(My_Vector3 _pos, My_Vector3 _vel)
+Particle::Particle(My_Vector3 _pos, My_Vector3 _vel, float _radius)
 	: vel(_vel), accel(My_Vector3::zero()),
-	SphereObject(PARTICLE_RADIUS, _pos) {
-
+	SphereObject(_radius, _pos) {
 }
 
 void Particle::init()
@@ -17,15 +16,28 @@ void Particle::step(double dt)
 	tr.transform(vel.turn());
 }
 
+
 void Particle::cleanup()
 {
 	SphereObject::cleanup();
 }
 
-void Particle::change_accel(My_Vector3 new_accel)
+void Particle::set_accel(My_Vector3 new_accel)
 {
 	accel = new_accel;
 }
+
+void Particle::add_accel(My_Vector3 add_accel)
+{
+	accel += add_accel;
+}
+
+#ifdef DAMPING
+void Particle::set_dumping(float f)
+{
+	damping_mult = f;
+}
+#endif
 
 void Particle::integrate(double dt)
 {
@@ -39,7 +51,7 @@ void Particle::integrate(double dt)
 #endif
 
 #ifdef DAMPING
-	vel *= pow(DAMPING_MULT, dt);
+	vel *= pow(damping_mult, dt);
 #endif
 
 }

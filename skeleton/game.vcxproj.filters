@@ -11,6 +11,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -23,10 +26,14 @@
     </ClInclude>
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
-    <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="My_Vector3.hpp" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
+    <ClInclude Include="Projectile.hpp" />
+    <ClInclude Include="PhysicLib.hpp" />
+    <ClInclude Include="CameraProjectileShooter.hpp" />
+    <ClInclude Include="GameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

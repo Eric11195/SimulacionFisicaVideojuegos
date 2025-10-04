@@ -1,46 +1,18 @@
 #pragma once
-#include "PxPhysicsAPI.h"
-#include "My_Vector3.hpp"
-#include "core.hpp"
-#include "RenderUtils.hpp"
 #include <list>
 
-using Transform = physx::PxTransform;
-using Color = Vector4;
-using namespace physx;
-
-class GameObject;
-
-class GameObject {
-protected:
-	Transform tr;
-	Color cl;
-	RenderItem* render_item;
-	//Shape
-	PxShape* sh;
-public:
-	GameObject(PxShape* _sh, My_Vector3 v, Color _cl);
-	~GameObject();
-
+struct GameObject {
+	GameObject();
 	virtual void step(double dt) {}
 	virtual void init() {}
 	virtual void cleanup();
-
+	virtual void process_input(unsigned char key) {}
 	//-------------------------------------------------------
 	static void step_all(double dt);
 	static void release_all();
+	static void process_input_all(unsigned char key);
 	//-------------------------------------------------------
-private:
-	inline static std::list<GameObject*> gameobject_list{};
+protected:
+	inline static std::list<GameObject*> GameObject_list{};
 	std::list<GameObject*>::iterator my_it;
-
 };
-
-
-struct SphereObject : GameObject{
-	SphereObject(const float rad, My_Vector3 _pos = My_Vector3::zero(), Color c = Color(1, 1, 1, 1));
-};
-//TO DO:
-//• PxBoxGeometry
-//• PxCapsuleGeometry
-//• PxPlaneGeometry

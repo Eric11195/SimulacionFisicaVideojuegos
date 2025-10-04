@@ -8,10 +8,13 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "GameObject.hpp"
+#include "SceneObject.hpp"
 
 #include <iostream>
 #include "CoordinateAxis.hpp"
 #include "Particle.hpp"
+#include "Projectile.hpp"
+#include "CameraProjectileShooter.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -58,8 +61,19 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	co = new CoordinateAxis();
+	
+	//new Particle({ 0,0,0 }, { 2,0,0 }, 0.5);// ->change_accel({ -1,-1,-1 });
+	Projectile::projectile_config c = {
+		{0,0,0}, {1,1,1}, //Pos, Initial dir
+		20, 10, //SPEED REAL, SIMULATED
+		0.5, //MASS
+		1, //RADIUS
+		-10 //Gravity
+	};
+	
 
-	(new Particle({ 0,0,0 }, { 2,0,0 }));// ->change_accel({ -1,-1,-1 });
+	new CameraProjectileShooter(c);
+	//new Projectile(c);
 }
 
 
@@ -99,11 +113,11 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
+	//std::cout << key<<'\n';
 
+	GameObject::process_input_all(key);
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
 	case ' ':
 	{
 		break;

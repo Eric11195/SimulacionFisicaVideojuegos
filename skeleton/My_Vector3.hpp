@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <ostream>
 
 struct My_Vector3 {
 	float x, y, z;
@@ -10,15 +11,19 @@ struct My_Vector3 {
 	physx::PxVec3 turn() {
 		return { x,y,z };
 	}
+	static My_Vector3 unturn(physx::PxVec3 v) {
+		return { v.x,v.y,v.z };
+	}
 
 	float module() const{
 		return std::sqrt(x * x + y * y + z * z);
 	}
-	float normalize() {
+	My_Vector3 normalize() {
 		auto mod = module();
 		x /= mod;
 		y /= mod;
 		z /= mod;
+		return *this;
 	}
 	float dot(const My_Vector3& v1,const My_Vector3& v2) const {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -61,9 +66,16 @@ struct My_Vector3 {
 		return lhs;
 	}
 
-	static My_Vector3 zero() {
+	static inline My_Vector3 zero() {
 		return My_Vector3(0, 0, 0);
 	};
+
+
+	friend std::ostream& operator<<(std::ostream& os, const My_Vector3& obj)
+	{
+		os << "(" << obj.x << ", " << obj.y << ", " << obj.z << ")";
+		return os;
+	}
 };
 
 inline bool operator==(const My_Vector3& v1, const My_Vector3& v2) {

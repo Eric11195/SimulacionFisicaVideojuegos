@@ -255,19 +255,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
+    <ClInclude Include="CameraProjectileShooter.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />
+    <ClInclude Include="PhysicLib.hpp" />
+    <ClInclude Include="Projectile.hpp" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
