@@ -1,58 +1,34 @@
 #pragma once
 #include <random>
 
-class Distribution {
-public:
-	Distribution()
-		: generator(std::random_device()){}
-	virtual float return_val();
-protected:
-	std::mt19937 generator;
-};
+namespace Distributions {
 
-class ConstantDistribution : public Distribution {
-public:
-	ConstantDistribution(float constant)
-		:constant(constant){}
-	virtual float return_val() {
-		return constant;
-	}
-protected:
-	const float constant;
-};
+	inline static std::default_random_engine generator;
 
-class LinearDistribution : public Distribution {
-public:
-	LinearDistribution(float min, float max){
-		dist = std::uniform_real_distribution<float>(min, max);
-	}
-	float return_val() override {
-		return dist(generator);
-	}
-private:
-	std::uniform_real_distribution<float> dist;
-};
+	class LinearDistribution {
+	public:
+		static float get() {
+			return dist(generator);
+		}
+	private:
+		inline static std::uniform_real_distribution<float> dist = std::uniform_real_distribution<float>(0, 1);
+	};
 
-class NormalDistribution : public Distribution {
-public:
-	NormalDistribution(float mid, float std_deviation) {
-		dist = std::normal_distribution<float>(mid,std_deviation);
-	}
-	float return_val() override {
-		return dist(generator);
-	}
-private:
-	std::normal_distribution<float> dist;
-};
+	class NormalDistribution {
+	public:
+		static float get() {
+			return dist(generator);
+		}
+	private:
+		inline static std::normal_distribution<float> dist = std::normal_distribution<float>(0, 1);
+	};
 
-class RandomSignDistribution : public Distribution {
-public:
-	RandomSignDistribution(){
-		dist = std::uniform_int_distribution<>(0, 1);
-	}
-	float return_val() override{
-		return dist(generator) == 0 ? -1 : 1;
-	}
-private:
-	std::uniform_int_distribution<> dist;
-};
+	class RandomSignDistribution {
+	public:
+		static float get() {
+			return dist(generator) == 0 ? -1 : 1;
+		}
+	private:
+		inline static std::uniform_int_distribution<> dist = std::uniform_int_distribution<>(0, 1);
+	};
+}

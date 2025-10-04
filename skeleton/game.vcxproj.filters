@@ -43,6 +43,7 @@
     <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="Distributions.hpp" />
+    <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

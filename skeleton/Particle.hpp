@@ -23,8 +23,9 @@ public:
 		float initial_speed;
 		float radius;
 		float time_till_death = std::numeric_limits<float>::infinity();
+		My_Vector3 accel = { 0,0,0 };
 	};
-	Particle(config c);
+	Particle(config& c);
 	inline bool alive() {
 		return time_till_death > 0;
 	};

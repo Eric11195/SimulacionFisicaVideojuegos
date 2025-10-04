@@ -17,6 +17,8 @@
 #include "CompositeGameObject.hpp"
 #include "GameObject.hpp"
 #include "GlobalCoords_CompositeGameObject.hpp"
+#include "ParticleGenerator.hpp"
+#include "ParticleGeneratorsDescriptors.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -81,6 +83,8 @@ void initPhysics(bool interactive)
 	
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
+
+	scene_game_object->addChild(new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower));
 	//new Projectile(c);
 }
 

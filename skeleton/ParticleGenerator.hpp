@@ -3,23 +3,34 @@
 #include <list>
 #include "My_Vector3.hpp"
 #include <cstdint>
+#include "GlobalCoords_CompositeGameObject.hpp"
+#include "Particle.hpp"
+#include <functional>
 
-class ParticleGenerator : public GameObject {
+class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
+	struct particle_calculator_functions {
+		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
+		std::function<My_Vector3()> dir = [] { return My_Vector3{0,0,0 }; };
+		std::function<float()> vel = [] { return 0; };
+	};
 	struct config {
-		My_Vector3 origin;
-		float average_speed;
-		uint8_t particle_generated_per_step;
+		uint8_t particle_generated_per_second;
+		Particle::config particle_config;
+		particle_calculator_functions particle_lambdas;
 	};
 	ParticleGenerator(config c);
 	virtual void step(double dt) override;
 	virtual void cleanup() override;
 protected:
-	std::list<GameObject*> particle_list;
 	float avrg_speed;
-	uint8_t particles_generated_per_step;
+	uint8_t particle_generated_per_second;
+	Particle::config p_config;
+	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
-	virtual void generate_particles();
+	virtual void generate_particles(double dt);
+	std::function<void(Particle::config&)> next_particle_config_calculator;
+	particle_calculator_functions my_particle_lambdas;
 };
 
 //---------------------------------------------------------------------------------------------------------

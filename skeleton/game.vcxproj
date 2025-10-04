@@ -278,6 +278,7 @@
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
+    <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />

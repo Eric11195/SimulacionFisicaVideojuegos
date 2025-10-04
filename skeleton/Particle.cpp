@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
-Particle::Particle(config c)
-	:vel(c.initial_dir.normalize() * c.initial_speed), accel(My_Vector3::zero()),
+Particle::Particle(config& c)
+	:vel(c.initial_dir.normalize() * c.initial_speed), accel(c.accel),
 	SphereObject(c.radius, c.pos), time_till_death(c.time_till_death)
 {
 }
