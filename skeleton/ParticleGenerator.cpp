@@ -17,7 +17,7 @@ void ParticleGenerator::step(double dt)
 		auto casted_particle = static_cast<Particle*>(*it);
 		if (!casted_particle->alive()) {
 			//MAY EXPLODE
-			//(*it)->cleanup();
+			(*it)->cleanup();
 			//delete (*it);
 			it = child_objects.erase(it);
 			continue;
