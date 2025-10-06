@@ -9,6 +9,8 @@
 
 class ParticleSystem : public GlobalCoords_CompositeGameObject {
 public:
+	ParticleSystem(const ParticleSystem&) = delete;
+	ParticleSystem& operator =(const ParticleSystem&) = delete;
 	ParticleSystem();
 	virtual void addChild(GameObject* go) override;
 };

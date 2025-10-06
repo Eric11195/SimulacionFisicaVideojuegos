@@ -11,9 +11,7 @@ using namespace physx;
 class SceneObject : public GameObject{
 protected:
 	Color cl;
-	RenderItem* render_item;
-	//Shape
-	PxShape* sh;
+	std::unique_ptr<RenderItem> render_item;
 public:
 	struct config {
 		GameObject::config go_config;

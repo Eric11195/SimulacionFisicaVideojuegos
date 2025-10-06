@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
 #include "CompositeGameObject.hpp"
 
-GameObject::GameObject(config c)
+GameObject::GameObject(config& c)
 	: local_transform(Transform(c.pos.turn())),
 	global_transform(Transform(c.pos.turn())),
 	vel(c.initial_speed_dir.normalize()*c.initial_speed_magnitude),
@@ -17,7 +17,7 @@ void GameObject::step(double dt)
 
 void GameObject::cleanup() {
 	//Parent will erase them of the list if they are there
-	delete this;
+	//delete this;
 }
 void GameObject::translate(physx::PxVec3 t)
 {

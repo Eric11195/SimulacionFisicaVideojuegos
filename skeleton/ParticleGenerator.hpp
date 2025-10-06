@@ -15,11 +15,12 @@ public:
 		std::function<float()> vel = [] { return 0; };
 	};
 	struct config {
+		GlobalCoords_CompositeGameObject::config go_config;
 		uint8_t particle_generated_per_second;
 		Particle::config particle_config;
 		particle_calculator_functions particle_lambdas;
 	};
-	ParticleGenerator(config c);
+	ParticleGenerator(config& c);
 	virtual void step(double dt) override;
 	virtual void cleanup() override;
 protected:

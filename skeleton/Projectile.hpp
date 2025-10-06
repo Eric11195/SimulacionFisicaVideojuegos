@@ -32,7 +32,7 @@ public:
 		gravity m_gravity = PhysicLib::GRAVITY;
 	};
 	virtual void step(double dt) override;
-	Projectile(projectile_config c);
+	Projectile(projectile_config& c);
 protected:
 	mass m_real;
 	mass m_simulated;

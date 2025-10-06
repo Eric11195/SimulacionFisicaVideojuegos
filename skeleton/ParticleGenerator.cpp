@@ -1,9 +1,8 @@
 #include "ParticleGenerator.hpp"
 #include "Particle.hpp"
 
-ParticleGenerator::ParticleGenerator(config c)
-	:GlobalCoords_CompositeGameObject(c.particle_config.spho_config.
-		so_config.go_config), 
+ParticleGenerator::ParticleGenerator(config& c)
+	:GlobalCoords_CompositeGameObject(c.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
 	avrg_speed(c.particle_config.spho_config.
 		so_config.go_config.initial_speed_magnitude), 
@@ -16,7 +15,9 @@ void ParticleGenerator::step(double dt)
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
 		
-		auto casted_particle = static_cast<Particle*>(*it);
+		GameObject* aux_ptr = (*it).get();
+		
+		auto casted_particle = static_cast<Particle*>(aux_ptr);
 		if (!casted_particle->alive()) {
 			//MAY EXPLODE
 			(*it)->cleanup();
@@ -24,15 +25,19 @@ void ParticleGenerator::step(double dt)
 			it = child_objects.erase(it);
 			continue;
 		}
+		
 		(*it)->step(dt);
 		(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
+		
+		
 		++it;
 	}
+	GameObject::step(dt);
 }
 
 void ParticleGenerator::cleanup()
 {
-	for (auto particle : child_objects)
+	for (auto& particle : child_objects)
 		particle->cleanup();
 	GameObject::cleanup();
 }

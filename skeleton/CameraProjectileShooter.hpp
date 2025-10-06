@@ -11,7 +11,7 @@ Projectile Shotter (Empty)
 
 class CameraProjectileShooter : public GlobalCoords_CompositeGameObject{
 public:
-	CameraProjectileShooter(Projectile::projectile_config);
+	CameraProjectileShooter(Projectile::projectile_config&);
 	void Shoot();
 	void process_input(unsigned char key) override;
 private:

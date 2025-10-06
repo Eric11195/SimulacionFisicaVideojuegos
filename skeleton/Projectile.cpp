@@ -8,7 +8,7 @@ void Projectile::step(double dt)
 	Particle::step(dt);
 }
 
-Projectile::Projectile(projectile_config c)
+Projectile::Projectile(projectile_config& c)
 	: Particle(c.particle_config),
 	m_real(c.m_real), s_real(c.s_real), g_real(c.m_gravity),
 	s_simulated(c.particle_config.spho_config.

@@ -3,7 +3,14 @@
 #include "Distributions.hpp"
 
 namespace ParticleGeneratorsDescriptors {
-	const ParticleGenerator::config ball_thrower {
+	ParticleGenerator::config ball_thrower {
+		GameObject::config{
+			{0,0,0}, //Pos
+			{0,0,1}, //speed_dir
+			{0,-1,0},//accel_dir
+			2, //Speed module
+			0//PhysicLib::GRAVITY,//Accel module
+		},
 		4, //Particles per second
 		Particle::config{
 			{//SphO_config
