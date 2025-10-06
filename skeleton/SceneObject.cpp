@@ -1,8 +1,10 @@
 #include "SceneObject.hpp"
 
-SceneObject::SceneObject(PxShape* _sh, My_Vector3 v, Color _cl)
-	: sh(_sh), cl(_cl), GameObject(Transform(v.turn())) {
-	render_item = new RenderItem(sh, &global_transform, cl);
+
+SceneObject::SceneObject(config c, PxShape* shape)
+	:sh(shape),GameObject(c.go_config)
+{
+	render_item = new RenderItem(sh,&global_transform, c.color);
 	RegisterRenderItem(render_item);
 }
 
@@ -12,6 +14,6 @@ SceneObject::~SceneObject()
 	delete render_item;
 }
 
-SphereObject::SphereObject(const float rad, My_Vector3 _pos, Color c)
-	: SceneObject(CreateShape(PxSphereGeometry(rad)), _pos, c) {
-}
+
+SphereObject::SphereObject(config c)
+	:SceneObject(c.so_config, CreateShape(PxSphereGeometry(c.radius))) {}

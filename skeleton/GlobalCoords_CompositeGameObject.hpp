@@ -8,7 +8,7 @@
 class GlobalCoords_CompositeGameObject : public CompositeGameObject {
 public:
 	//Its transform its always the the default, no matter what
-	GlobalCoords_CompositeGameObject(Transform tr = PhysicLib::NEUTRAL_TRANSFORM);
+	GlobalCoords_CompositeGameObject(config = config());
 	virtual void step(double dt) override;
 	virtual void addChild(GameObject* go) override;
 };

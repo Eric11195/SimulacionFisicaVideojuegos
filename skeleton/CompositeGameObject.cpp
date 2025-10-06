@@ -1,7 +1,7 @@
 #include "CompositeGameObject.hpp"
 
-CompositeGameObject::CompositeGameObject(Transform t)
-    :GameObject(t)
+CompositeGameObject::CompositeGameObject(GameObject::config c)
+    :GameObject(c)
 {
 }
 

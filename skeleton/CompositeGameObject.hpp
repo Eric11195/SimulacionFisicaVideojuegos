@@ -5,7 +5,7 @@
 //Contains multiple GameObjects inside, and it has the tools for calling step and cleanup of its childs
 class CompositeGameObject : public GameObject {
 public:
-	CompositeGameObject(Transform t = Transform(0,0,0));
+	CompositeGameObject(config c = config());
 	virtual void addChild(GameObject* go);
 	virtual void step(double dt) override;
 	void cleanup() override;

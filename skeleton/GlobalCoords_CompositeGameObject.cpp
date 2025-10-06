@@ -1,8 +1,8 @@
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "PhysicLib.hpp"
 
-GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject(Transform tr)
-    :CompositeGameObject(tr)
+GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject(config c)
+    :CompositeGameObject(c)
 {
 }
 

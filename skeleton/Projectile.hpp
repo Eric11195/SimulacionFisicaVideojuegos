@@ -30,7 +30,6 @@ public:
 		speed s_real;
 		mass m_real;
 		gravity m_gravity = PhysicLib::GRAVITY;
-		float damping = PhysicLib::NORMAL_DAMPING;
 	};
 	virtual void step(double dt) override;
 	Projectile(projectile_config c);

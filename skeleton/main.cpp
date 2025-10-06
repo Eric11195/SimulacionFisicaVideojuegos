@@ -19,6 +19,7 @@
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
+#include "ParticleDescriptor.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -66,21 +67,14 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	scene_game_object = new GlobalCoords_CompositeGameObject(PhysicLib::NEUTRAL_TRANSFORM);
+	scene_game_object = new GlobalCoords_CompositeGameObject();
 	scene_game_object->addChild(new CoordinateAxis());
 	
-	//new Particle({ 0,0,0 }, { 2,0,0 }, 0.5);// ->change_accel({ -1,-1,-1 });
-	Projectile::projectile_config c = {
-		Particle::config {
-			{0,0,0}, {1,1,1}, //Pos, Initial dir
-			10, //SIM SPEED
-			1, //RAD
-			3 //Time till death
-		},
-		20//,//SPEED REAL
-		//9.8 //Gravity
-	};
-	
+	Projectile::projectile_config c = 
+		{ ParticleDescriptor::regular_ball,
+		30,//SPEED REAL
+		0.5f, //MASS REAL
+		};
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
