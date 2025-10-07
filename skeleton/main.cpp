@@ -89,10 +89,9 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-
+	scene_game_object->step(t);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	scene_game_object->step(t);
 }
 
 // Function to clean data

@@ -20,7 +20,7 @@ public:
 	//FOR DRAGON USE PxShape = Triangle Meshes
 	SceneObject(config c, PxShape* shape);
 		//PxShape* _sh, My_Vector3 v, Color _cl);
-	~SceneObject();
+	~SceneObject() override;
 
 	//virtual void cleanup() override;
 

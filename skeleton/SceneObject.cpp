@@ -5,12 +5,12 @@ SceneObject::SceneObject(config c, PxShape* shape)
 	:GameObject(c.go_config)
 {
 	render_item = std::make_unique<RenderItem>(shape,&global_transform, c.color);
-	RegisterRenderItem(render_item.get());
+	//RegisterRenderItem(render_item.get());
 }
 
 SceneObject::~SceneObject()
 {
-	DeregisterRenderItem(render_item.get());
+	(*render_item).release();
 }
 
 

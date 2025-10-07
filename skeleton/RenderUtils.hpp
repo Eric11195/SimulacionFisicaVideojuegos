@@ -46,7 +46,7 @@ public:
 		{
 			DeregisterRenderItem(this);
 			shape->release();
-			delete this;
+			//delete this;
 		}
 	}
 

@@ -18,6 +18,7 @@ struct GameObject {
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 	};
 	GameObject(config& c = config());//, std::list<GameObject*> l = GameObject_list);
+	virtual ~GameObject() {}
 
 	virtual void step(double dt);
 	virtual void init() {}

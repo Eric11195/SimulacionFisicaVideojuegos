@@ -19,17 +19,14 @@ void ParticleGenerator::step(double dt)
 		
 		auto casted_particle = static_cast<Particle*>(aux_ptr);
 		if (!casted_particle->alive()) {
-			//MAY EXPLODE
 			(*it)->cleanup();
-			//delete (*it);
 			it = child_objects.erase(it);
 			continue;
 		}
-		
 		(*it)->step(dt);
 		(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
-		
-		
+
+
 		++it;
 	}
 	GameObject::step(dt);
