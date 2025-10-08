@@ -11,8 +11,7 @@ void Projectile::step(double dt)
 Projectile::Projectile(projectile_config& c)
 	: Particle(c.particle_config),
 	m_real(c.m_real), s_real(c.s_real), g_real(c.m_gravity),
-	s_simulated(c.particle_config.spho_config.
-		so_config.go_config.initial_speed_magnitude)
+	s_simulated(c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
 {
 	update_s_mass();
 	update_s_gravity();

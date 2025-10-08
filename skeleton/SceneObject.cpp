@@ -16,3 +16,7 @@ SceneObject::~SceneObject()
 
 SphereObject::SphereObject(config c)
 	:SceneObject(c.so_config, CreateShape(PxSphereGeometry(c.radius))) {}
+/*
+SphereObject::SphereObject(SceneObject::config c, PxShape* shape)
+	:SceneObject(c, shape) {}
+*/

@@ -33,6 +33,7 @@ struct SphereObject : public SceneObject{
 		float radius = 1;
 	};
 	SphereObject(config c);
+	SphereObject(SceneObject::config c, PxShape* shape);
 };
 //TO DO:
 //• PxBoxGeometry

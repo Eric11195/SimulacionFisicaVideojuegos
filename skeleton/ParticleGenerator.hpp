@@ -7,12 +7,34 @@
 #include "Particle.hpp"
 #include <functional>
 
+/*
+Datos random:
+	pos inicial
+	vel inicial
+	lifetime
+	color
+	tamaño
+	(aceleración)
+	(damping)
+*/
+
+/*
+Eliminar particulas cuando:
+	lifetime
+	posición (lluvia llega al suelo)
+	salen zona de interes
+	nº max
+*/
+
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
 	struct particle_calculator_functions {
 		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
-		std::function<My_Vector3()> dir = [] { return My_Vector3{0,0,0 }; };
+		std::function<My_Vector3()> dir = [] { return My_Vector3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
+		std::function<float()> lifetime = [] { return 0; };
+		std::function<Vector4()> color = [] {return Vector4( 0,0,0,0 ); };
+		std::function<float()> size = [] {return 0; };
 	};
 	struct config {
 		GlobalCoords_CompositeGameObject::config go_config;
@@ -25,6 +47,9 @@ public:
 	virtual void cleanup() override;
 protected:
 	float avrg_speed;
+	float avrg_lifetime;
+	float avrg_size;
+	Vector4 avrg_color;
 	uint8_t particle_generated_per_second;
 	Particle::config p_config;
 	float particles_per_second_accumulator = 0;

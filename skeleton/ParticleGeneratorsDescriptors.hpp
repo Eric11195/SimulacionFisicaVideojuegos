@@ -8,10 +8,10 @@ namespace ParticleGeneratorsDescriptors {
 			{0,0,0}, //Pos
 			{0,0,1}, //speed_dir
 			{0,-1,0},//accel_dir
-			2, //Speed module
+			0, //Speed module
 			0//PhysicLib::GRAVITY,//Accel module
 		},
-		4, //Particles per second
+		20, //Particles per second
 		Particle::config{
 			{//SphO_config
 				{//SceneObject config
@@ -19,14 +19,15 @@ namespace ParticleGeneratorsDescriptors {
 						{0,0,0}, //Pos
 						{0,1,0}, //speed_dir
 						{0,-1,0},//accel_dir
-						30, //Speed module
+						20, //Speed module
 						PhysicLib::GRAVITY,//Accel module
-					}	
+					},	
+					physx::PxVec4(0,0,0,0)
 					//Color
 				},
 				1 //rad
 			},
-			4 //lifetime
+			2 //lifetime
 		},
 		ParticleGenerator::particle_calculator_functions{
 			[] {return My_Vector3{0,0,0}; },//POS
@@ -39,6 +40,20 @@ namespace ParticleGeneratorsDescriptors {
 			},
 			[] {//SPEED MOD
 				return Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5;
+			},
+			[] {//Lifetime MOD
+				return Distributions::NormalDistribution::get() * 1 * Distributions::RandomSignDistribution::get();
+			},
+			[] {//Vector4
+				return Vector4(
+					Distributions::LinearDistribution::get(),
+					Distributions::LinearDistribution::get(),
+					Distributions::LinearDistribution::get(),
+					1//Distributions::LinearDistribution::get()
+				);
+			},
+			[] {//Size
+				return 0.5*Distributions::NormalDistribution::get();
 			}
 		}
 	};
