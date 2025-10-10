@@ -12,4 +12,5 @@ void ParticleSystem::addChild(GameObject* go)
 	if (pg==nullptr) {
 		throw "Tried to add a non Particle Generator to a ParticleSystem";
 	}
+	GlobalCoords_CompositeGameObject::addChild(go);
 }

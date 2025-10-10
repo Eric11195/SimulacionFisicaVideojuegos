@@ -21,13 +21,11 @@ void ParticleGenerator::step(double dt)
 		GameObject* aux_ptr = (*it).get();
 		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
-			(*it)->cleanup();
 			it = child_objects.erase(it);
 			continue;
 		}
 		auto casted_particle = static_cast<Particle*>(aux_ptr);
 		if (!casted_particle->alive()) {
-			(*it)->cleanup();
 			it = child_objects.erase(it);
 			continue;
 		}
@@ -40,13 +38,6 @@ void ParticleGenerator::step(double dt)
 	GameObject::step(dt);
 }
 
-void ParticleGenerator::cleanup()
-{
-	for (auto& particle : child_objects)
-		particle->cleanup();
-	GameObject::cleanup();
-}
-
 void ParticleGenerator::generate_particles(double dt)
 {
 	float particles_this_frame = particles_per_second_accumulator + particle_generated_per_second * dt;
@@ -57,6 +48,7 @@ void ParticleGenerator::generate_particles(double dt)
 		p_config.spho_config.radius = avrg_size + my_particle_lambdas.size();
 		if (p_config.spho_config.radius <= 0) continue;
 			new_p_config_short.pos = My_Vector3::unturn(global_transform.p) + my_particle_lambdas.pos();
+			new_p_config_short.initial_rotation = local_transform.q;
 			new_p_config_short.initial_accel_magnitude; //= 30;
 			new_p_config_short.initial_accel_dir;// = { 0,-1,0 };
 			new_p_config_short.initial_speed_magnitude = avrg_speed + my_particle_lambdas.vel();

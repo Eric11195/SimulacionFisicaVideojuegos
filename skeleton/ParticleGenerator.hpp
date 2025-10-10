@@ -46,7 +46,6 @@ public:
 	};
 	ParticleGenerator(config& c);
 	virtual void step(double dt) override;
-	virtual void cleanup() override;
 protected:
 	float avrg_speed;
 	float avrg_lifetime;

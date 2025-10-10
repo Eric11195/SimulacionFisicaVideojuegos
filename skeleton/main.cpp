@@ -100,8 +100,6 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-
-	scene_game_object->cleanup();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();

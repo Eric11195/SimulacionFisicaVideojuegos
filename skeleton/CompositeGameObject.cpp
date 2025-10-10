@@ -5,6 +5,11 @@ CompositeGameObject::CompositeGameObject(GameObject::config& c)
 {
 }
 
+CompositeGameObject::~CompositeGameObject()
+{
+    child_objects.clear();
+}
+
 void CompositeGameObject::addChild(GameObject* go)
 {
 
@@ -22,17 +27,6 @@ void CompositeGameObject::step(double dt)
     
     
     GameObject::step(dt);
-}
-
-//No game object can destroy itself, only parents can destroy their childs-----------------------------------------------------------
-void CompositeGameObject::cleanup()
-{
-    //delete all childs
-    child_objects.clear();
-    /*
-    for (auto& child : child_objects)
-        child->cleanup();
-    */
 }
 
 void CompositeGameObject::process_input(unsigned char key)

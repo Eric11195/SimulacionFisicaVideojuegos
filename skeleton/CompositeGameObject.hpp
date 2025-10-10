@@ -9,9 +9,9 @@ public:
 	CompositeGameObject(const CompositeGameObject&) = delete;
 	CompositeGameObject& operator =(const CompositeGameObject&) = delete;
 	CompositeGameObject(config& c = config());
+	~CompositeGameObject();
 	virtual void addChild(GameObject* go);
 	virtual void step(double dt) override;
-	void cleanup() override;
 	void process_input(unsigned char key) override;
 protected:
 	std::list<std::unique_ptr<GameObject>> child_objects;

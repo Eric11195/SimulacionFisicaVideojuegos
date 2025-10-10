@@ -22,8 +22,6 @@ public:
 		//PxShape* _sh, My_Vector3 v, Color _cl);
 	~SceneObject() override;
 
-	//virtual void cleanup() override;
-
 };
 
 

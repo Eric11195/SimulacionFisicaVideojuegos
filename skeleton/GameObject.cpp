@@ -2,8 +2,8 @@
 #include "CompositeGameObject.hpp"
 
 GameObject::GameObject(config& c)
-	: local_transform(Transform(c.pos.turn())),
-	global_transform(Transform(c.pos.turn())),
+	: local_transform(Transform(c.pos.turn(),c.initial_rotation)),
+	global_transform(Transform(c.pos.turn(),c.initial_rotation)),
 	vel(c.initial_speed_dir.normalize()*c.initial_speed_magnitude),
 	accel(c.initial_accel_dir.normalize()*c.initial_accel_magnitude),
 	damping_mult(c.damping_mult)
@@ -19,19 +19,19 @@ void GameObject::step(double dt)
 {
 	integrate(dt);
 }
-
-void GameObject::cleanup() {
-	//Parent will erase them of the list if they are there
-	//delete this;
-}
 void GameObject::translate(physx::PxVec3 t)
 {
-	translate_to(local_transform.p + t);
+	local_transform.p = local_transform.q.rotate(t) + local_transform.p;//, q* src.q
+	//local_transform.transform(t);
+	//translate_to(local_transform.p + t);
 }
+
 void GameObject::translate_to(physx::PxVec3 t)
 {
-	local_transform.p = t;
+	local_transform.p = local_transform.q.rotate(t);
+	//local_transform.p = t;
 }
+
 
 void GameObject::set_accel(My_Vector3 new_accel)
 {
@@ -72,25 +72,5 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
-	global_transform = local_transform * parent_tr;
+	global_transform = local_transform.transform(parent_tr);
 }
-/*
-void GameObject::step_all(double dt)
-{
-	for (auto obj : GameObject_list)
-		obj->step(dt);
-}
-
-void GameObject::release_all()
-{
-	for (auto obj : GameObject_list)
-		delete obj;
-	GameObject_list.clear();
-}
-
-void GameObject::process_input_all(unsigned char key)
-{
-	for (auto obj : GameObject_list)
-		obj->process_input(key);
-}
-*/

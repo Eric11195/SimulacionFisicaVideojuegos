@@ -8,10 +8,13 @@ namespace ParticleGeneratorsDescriptors {
 			{0,0,0}, //Pos
 			{0,0,1}, //speed_dir
 			{0,-1,0},//accel_dir
-			0, //Speed module
-			0//PhysicLib::GRAVITY,//Accel module
+			5, //Speed module
+			0,//PhysicLib::GRAVITY,//Accel module
+			PhysicLib::NORMAL_DAMPING,//DAMPING
+			//physx::PxQuat(0,1,0,0)
 		},
-		20, //Particles per second
+		20, 
+		//Particles per second
 		Particle::config{
 			{//SphO_config
 				{//SceneObject config
