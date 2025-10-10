@@ -19,7 +19,12 @@ void ParticleGenerator::step(double dt)
 	while (it != child_objects.end()) {
 		
 		GameObject* aux_ptr = (*it).get();
-		
+		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		{
+			(*it)->cleanup();
+			it = child_objects.erase(it);
+			continue;
+		}
 		auto casted_particle = static_cast<Particle*>(aux_ptr);
 		if (!casted_particle->alive()) {
 			(*it)->cleanup();

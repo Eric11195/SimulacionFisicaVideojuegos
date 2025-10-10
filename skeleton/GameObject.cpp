@@ -10,6 +10,11 @@ GameObject::GameObject(config& c)
 {
 }
 
+Vector3 GameObject::get_pos()
+{
+	return global_transform.p;
+}
+
 void GameObject::step(double dt)
 {
 	integrate(dt);

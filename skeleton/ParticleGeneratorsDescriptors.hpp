@@ -3,7 +3,7 @@
 #include "Distributions.hpp"
 
 namespace ParticleGeneratorsDescriptors {
-	ParticleGenerator::config ball_thrower {
+	ParticleGenerator::config ball_thrower{
 		GameObject::config{
 			{0,0,0}, //Pos
 			{0,0,1}, //speed_dir
@@ -21,7 +21,7 @@ namespace ParticleGeneratorsDescriptors {
 						{0,-1,0},//accel_dir
 						20, //Speed module
 						PhysicLib::GRAVITY,//Accel module
-					},	
+					},
 					physx::PxVec4(0,0,0,0)
 					//Color
 				},
@@ -30,12 +30,17 @@ namespace ParticleGeneratorsDescriptors {
 			2 //lifetime
 		},
 		ParticleGenerator::particle_calculator_functions{
-			[] {return My_Vector3{0,0,0}; },//POS
+			[] {return My_Vector3{
+				Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
+				Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
+				Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5
+				};
+			},//POS
 			[] {//VEL_DIR
 				return My_Vector3{
-					0.5f * Distributions::NormalDistribution::get(),
+					0.1f * Distributions::NormalDistribution::get(),
 					1,
-					0.5f * Distributions::NormalDistribution::get()
+					0.1f * Distributions::NormalDistribution::get()
 				};
 			},
 			[] {//SPEED MOD
@@ -54,6 +59,12 @@ namespace ParticleGeneratorsDescriptors {
 			},
 			[] {//Size
 				return 0.5*Distributions::NormalDistribution::get();
+			},
+			[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
+				//Inside radius of parent
+				auto vector_from_particle_to_generator = pos_generator - pos_particle;
+				auto module = vector_from_particle_to_generator.magnitude();
+				return module < 10;
 			}
 		}
 	};

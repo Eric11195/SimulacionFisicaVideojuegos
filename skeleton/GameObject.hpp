@@ -3,6 +3,7 @@
 #include "PxPhysicsAPI.h"
 #include "My_Vector3.hpp"
 #include "PhysicLib.hpp"
+#include "core.hpp"
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -17,11 +18,12 @@ struct GameObject {
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 	};
-	GameObject(config& c = config());//, std::list<GameObject*> l = GameObject_list);
-	virtual ~GameObject() {}
+	GameObject(config& c = config());
+	virtual ~GameObject() {};
 
+	virtual Vector3 get_pos();
 	virtual void step(double dt);
-	virtual void init() {}
+	virtual void init() {};
 	virtual void cleanup();
 	virtual void process_input(unsigned char key) {}
 	virtual void link_to_parent(Transform const& parent_tr);
