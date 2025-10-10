@@ -72,5 +72,6 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
+	//global_transform = parent_tr.transform(local_transform);
 	global_transform = local_transform.transform(parent_tr);
 }

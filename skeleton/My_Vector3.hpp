@@ -9,7 +9,7 @@ struct My_Vector3 {
 
 	My_Vector3(float x, float y, float z)
 		:x(x),y(y),z(z){ }
-	physx::PxVec3 turn() {
+	physx::PxVec3 turn() const{
 		return { x,y,z };
 	}
 	static My_Vector3 unturn(physx::PxVec3 v) {

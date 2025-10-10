@@ -12,9 +12,8 @@ CompositeGameObject::~CompositeGameObject()
 
 void CompositeGameObject::addChild(GameObject* go)
 {
-
-    //auto aux_it = child_objects.insert(child_objects.end(), std::unique_ptr<GameObject>(go));
-    //(*aux_it)->link_to_parent(global_transform);
+    auto aux_it = child_objects.insert(child_objects.end(), std::unique_ptr<GameObject>(go));
+    (*aux_it)->link_to_parent(global_transform);
 }
 
 void CompositeGameObject::step(double dt)
@@ -24,7 +23,6 @@ void CompositeGameObject::step(double dt)
         child->step(dt);
         child->update_position(global_transform);
     }
-    
     
     GameObject::step(dt);
 }

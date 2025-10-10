@@ -53,6 +53,7 @@ protected:
 	Vector4 avrg_color;
 	uint8_t particle_generated_per_second;
 	Particle::config p_config;
+	const GameObject::config const_p_config;
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
 	virtual void generate_particles(double dt);

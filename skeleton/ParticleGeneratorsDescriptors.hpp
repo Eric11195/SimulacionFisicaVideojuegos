@@ -2,6 +2,8 @@
 #include "ParticleGenerator.hpp"
 #include "Distributions.hpp"
 
+using namespace Distributions;
+
 namespace ParticleGeneratorsDescriptors {
 	ParticleGenerator::config ball_thrower{
 		GameObject::config{
@@ -11,7 +13,7 @@ namespace ParticleGeneratorsDescriptors {
 			5, //Speed module
 			0,//PhysicLib::GRAVITY,//Accel module
 			PhysicLib::NORMAL_DAMPING,//DAMPING
-			//physx::PxQuat(0,1,0,0)
+			physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 		},
 		20, 
 		//Particles per second
@@ -41,16 +43,16 @@ namespace ParticleGeneratorsDescriptors {
 			},//POS
 			[] {//VEL_DIR
 				return My_Vector3{
-					0.1f * Distributions::NormalDistribution::get(),
+					0.1f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 					1,
-					0.1f * Distributions::NormalDistribution::get()
+					0.1f * Distributions::NormalDistribution::get(NormalDistribution::d_025)
 				};
 			},
 			[] {//SPEED MOD
 				return Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5;
 			},
 			[] {//Lifetime MOD
-				return Distributions::NormalDistribution::get() * 1 * Distributions::RandomSignDistribution::get();
+				return Distributions::NormalDistribution::get(NormalDistribution::d_05) * 1 * Distributions::RandomSignDistribution::get();
 			},
 			[] {//Vector4
 				return Vector4(
@@ -61,7 +63,7 @@ namespace ParticleGeneratorsDescriptors {
 				);
 			},
 			[] {//Size
-				return 0.5*Distributions::NormalDistribution::get();
+				return Distributions::NormalDistribution::get(NormalDistribution::d_025);
 			},
 			[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
 				//Inside radius of parent
