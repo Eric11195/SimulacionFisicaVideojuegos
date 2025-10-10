@@ -10,7 +10,7 @@ public:
 	GlobalCoords_CompositeGameObject(const GlobalCoords_CompositeGameObject&) = delete;
 	GlobalCoords_CompositeGameObject& operator =(const GlobalCoords_CompositeGameObject&) = delete;
 	//Its transform its always the the default, no matter what
-	GlobalCoords_CompositeGameObject(config& = config());
+	GlobalCoords_CompositeGameObject(config& = config(), std::initializer_list<GameObject*> = {});
 	virtual void step(double dt) override;
 	virtual void addChild(GameObject* go) override;
 };

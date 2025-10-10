@@ -1,8 +1,8 @@
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "PhysicLib.hpp"
 
-GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject(config& c)
-    :CompositeGameObject(c)
+GlobalCoords_CompositeGameObject::GlobalCoords_CompositeGameObject(config& c, std::initializer_list<GameObject*> go_s)
+    :CompositeGameObject(c,go_s)
 {
 }
 

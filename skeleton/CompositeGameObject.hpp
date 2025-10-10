@@ -8,7 +8,7 @@ class CompositeGameObject : public GameObject {
 public:
 	CompositeGameObject(const CompositeGameObject&) = delete;
 	CompositeGameObject& operator =(const CompositeGameObject&) = delete;
-	CompositeGameObject(config& c = config());
+	CompositeGameObject(config& c = config(), std::initializer_list<GameObject*> = {});
 	~CompositeGameObject();
 	virtual void addChild(GameObject* go);
 	virtual void step(double dt) override;

@@ -1,8 +1,9 @@
 #include "CompositeGameObject.hpp"
 
-CompositeGameObject::CompositeGameObject(GameObject::config& c)
+CompositeGameObject::CompositeGameObject(GameObject::config& c, std::initializer_list<GameObject*> go_s)
     :GameObject(c)
 {
+    for (auto my_childs : go_s) addChild(my_childs);
 }
 
 CompositeGameObject::~CompositeGameObject()

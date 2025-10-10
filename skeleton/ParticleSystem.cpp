@@ -1,7 +1,7 @@
 #include "ParticleSystem.hpp"
 
-ParticleSystem::ParticleSystem()
-	: GlobalCoords_CompositeGameObject(GlobalCoords_CompositeGameObject::config())
+ParticleSystem::ParticleSystem(std::initializer_list<GameObject*> go_s)
+	: GlobalCoords_CompositeGameObject(GameObject::config(), go_s)
 {
 }
 

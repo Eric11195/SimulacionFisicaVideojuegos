@@ -13,7 +13,7 @@ namespace ParticleGeneratorsDescriptors {
 			5, //Speed module
 			0,//PhysicLib::GRAVITY,//Accel module
 			PhysicLib::NORMAL_DAMPING,//DAMPING
-			physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
+			//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 		},
 		20, 
 		//Particles per second

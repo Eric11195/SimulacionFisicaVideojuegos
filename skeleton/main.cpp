@@ -20,6 +20,7 @@
 #include "ParticleGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
+#include "ParticleSystem.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -78,7 +79,7 @@ void initPhysics(bool interactive)
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
-	scene_game_object->addChild(new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower));
+	scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
 	//new Projectile(c);
 }
 
