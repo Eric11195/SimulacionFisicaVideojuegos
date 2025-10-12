@@ -15,7 +15,7 @@ void CameraProjectileShooter::Shoot()
 	short_pr_config.pos = My_Vector3::unturn(cam->getEye());
 	addChild(new Projectile(pr_spawned));
 }
-
+/*
 void CameraProjectileShooter::process_input(unsigned char key)
 {
 	switch (key) {
@@ -24,3 +24,4 @@ void CameraProjectileShooter::process_input(unsigned char key)
 	}
 	CompositeGameObject::process_input(key);
 }
+*/

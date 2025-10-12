@@ -67,7 +67,8 @@ class TriggeredParticleGenerator : public ParticleGenerator {
 public:
 	TriggeredParticleGenerator(ParticleGenerator::config c);
 	//Generates particles as specified config
-	void Trigger();
+	void trigger();
+	void step(double dt) override;
 };
 
 //---------------------------------------------------------------------------------------------------------
@@ -89,11 +90,4 @@ class AdjustableParticleGenerator : public ToggleParticleGenerator {
 private:
 float ratio;
 };
-*/
-
-
-
-//IMP
-/*
-Cada sistema almacena 2 lambdas, una para cuando las particulas se generan, y otra para cuando se destruyen
 */

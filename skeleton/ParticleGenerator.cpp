@@ -1,5 +1,5 @@
 #include "ParticleGenerator.hpp"
-#include "Particle.hpp"
+//#include "Particle.hpp"
 
 ParticleGenerator::ParticleGenerator(config& c)
 	:GlobalCoords_CompositeGameObject(c.go_config),
@@ -18,13 +18,13 @@ void ParticleGenerator::step(double dt)
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-		
-		GameObject* aux_ptr = (*it).get();
 		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
 			it = child_objects.erase(it);
 			continue;
 		}
+
+		GameObject* aux_ptr = (*it).get();
 		auto casted_particle = static_cast<Particle*>(aux_ptr);
 		if (!casted_particle->alive()) {
 			it = child_objects.erase(it);
@@ -68,9 +68,35 @@ TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config
 {
 }
 
-void TriggeredParticleGenerator::Trigger()
+void TriggeredParticleGenerator::trigger()
 {
-	generate_particles(0);
+	generate_particles(1);
+}
+
+void TriggeredParticleGenerator::step(double dt)
+{
+	//Missing generate particles
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
+
+		GameObject* aux_ptr = (*it).get();
+		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		{
+			it = child_objects.erase(it);
+			continue;
+		}
+		auto casted_particle = static_cast<Particle*>(aux_ptr);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}
+		(*it)->step(dt);
+		(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
+
+
+		++it;
+	}
+	GameObject::step(dt);
 }
 
 ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state)

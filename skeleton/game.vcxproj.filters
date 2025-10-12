@@ -19,6 +19,9 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="CompositeGameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
+    <ClCompile Include="ShipCannon.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="InputProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -45,6 +48,9 @@
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
+    <ClInclude Include="ShipCannon.hpp" />
+    <ClInclude Include="Ship.hpp" />
+    <ClInclude Include="InputProcessor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

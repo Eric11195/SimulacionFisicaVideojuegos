@@ -18,9 +18,10 @@
 #include "GameObject.hpp"
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
-#include "ParticleGeneratorsDescriptors.hpp"
+//#include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
 #include "ParticleSystem.hpp"
+#include "Ship.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -79,7 +80,8 @@ void initPhysics(bool interactive)
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
-	scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
+	scene_game_object->addChild(new Ship());
+	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
 	//new Projectile(c);
 }
 
@@ -113,22 +115,23 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 }
 
-// Function called when a key is pressed
-void keyPress(unsigned char key, const PxTransform& camera)
+void keyPress(unsigned char key)
 {
-	PX_UNUSED(camera);
-	//std::cout << key<<'\n';
+	scene_game_object->handle_keyboard_button_down(key);
+}
 
-	scene_game_object->process_input(key);
-	switch(toupper(key))
-	{
-	case ' ':
-	{
-		break;
-	}
-	default:
-		break;
-	}
+void keyRelease(unsigned char key)
+{
+	scene_game_object->handle_keyboard_button_up(key);
+}
+void mouseReleased(uint8_t button) {
+	scene_game_object->handle_mouse_button_up(button);
+}
+void mousePressed(uint8_t button) {
+	scene_game_object->handle_mouse_button_down(button);
+}
+void mousePosUpdated(int x, int y) {
+	scene_game_object->handle_mouse_pos(x,y);
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

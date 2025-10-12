@@ -28,9 +28,32 @@ void CompositeGameObject::step(double dt)
     GameObject::step(dt);
 }
 
-void CompositeGameObject::process_input(unsigned char key)
+void CompositeGameObject::handle_mouse_pos(int x, int y)
 {
     for (auto& child : child_objects)
-        child->process_input(key);
+        child->handle_mouse_pos(x,y);
+}
 
+void CompositeGameObject::handle_mouse_button_up(uint8_t mb_id)
+{
+    for (auto& child : child_objects)
+        child->handle_mouse_button_up(mb_id);
+}
+
+void CompositeGameObject::handle_mouse_button_down(uint8_t mb_id)
+{
+    for (auto& child : child_objects)
+        child->handle_mouse_button_down(mb_id);
+}
+
+void CompositeGameObject::handle_keyboard_button_down(unsigned char key)
+{
+    for (auto& child : child_objects)
+        child->handle_keyboard_button_down(key);
+}
+
+void CompositeGameObject::handle_keyboard_button_up(unsigned char key)
+{
+    for (auto& child : child_objects)
+        child->handle_keyboard_button_up(key);
 }

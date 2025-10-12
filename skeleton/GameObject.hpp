@@ -4,6 +4,7 @@
 #include "My_Vector3.hpp"
 #include "PhysicLib.hpp"
 #include "core.hpp"
+#include "InputProcessor.hpp"
 //#include "Px.h"
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
@@ -14,7 +15,7 @@ using Transform = physx::PxTransform;
 using Quaternion = physx::PxQuat;
 class CompositeGameObject;
 
-struct GameObject {
+struct GameObject : public InputProcessor{
 	struct config {
 		My_Vector3 pos = My_Vector3::zero(), initial_speed_dir = { 0,1,0 }, initial_accel_dir = {0,-1,0};
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
@@ -27,7 +28,7 @@ struct GameObject {
 	virtual Vector3 get_pos();
 	virtual void step(double dt);
 	virtual void init() {};
-	virtual void process_input(unsigned char key) {}
+	//virtual void process_input(unsigned char key) {}
 	virtual void link_to_parent(Transform const& parent_tr);
 	virtual void update_position(Transform const& parent_tr);
 	void translate(physx::PxVec3);

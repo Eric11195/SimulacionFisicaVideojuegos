@@ -13,7 +13,7 @@ class CameraProjectileShooter : public GlobalCoords_CompositeGameObject{
 public:
 	CameraProjectileShooter(Projectile::projectile_config&);
 	void Shoot();
-	void process_input(unsigned char key) override;
+	//void process_input(unsigned char key) override;
 private:
 	Projectile::projectile_config pr_spawned;
 };
