@@ -282,7 +282,7 @@ void setupDefaultRenderState()
 }
 
 
-void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
+void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, const physx::PxVec3& cameraUp, PxReal clipNear, PxReal clipFar)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -297,7 +297,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(GLdouble(cameraEye.x), GLdouble(cameraEye.y), GLdouble(cameraEye.z), GLdouble(cameraEye.x + cameraDir.x), GLdouble(cameraEye.y + cameraDir.y), GLdouble(cameraEye.z + cameraDir.z), 0.0, 1.0, 0.0);
+	gluLookAt(GLdouble(cameraEye.x), GLdouble(cameraEye.y), GLdouble(cameraEye.z), GLdouble(cameraEye.x + cameraDir.x), GLdouble(cameraEye.y + cameraDir.y), GLdouble(cameraEye.z + cameraDir.z), cameraUp.x, cameraUp.y, cameraUp.z);
 
 	glColor4f(0.4f, 0.4f, 0.4f, 1.0f);
 

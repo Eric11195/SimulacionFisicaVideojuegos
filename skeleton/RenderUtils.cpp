@@ -109,7 +109,7 @@ void renderCallback()
 	stepPhysics(true, t);
 #endif
 
-	startRender(sCamera->getEye(), sCamera->getDir());
+	startRender(sCamera->getEye(), sCamera->getDir(), sCamera->getUp());
 
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
 	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)

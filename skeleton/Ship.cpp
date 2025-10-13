@@ -19,6 +19,11 @@ void Ship::step(double dt)
 	//if(current_angular_velocity)
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
 		rotate(PxQuat(dt*current_angular_velocity.angle, current_angular_velocity.rotation_axis));
+
+	float virar_radians_vel = 1 * dt * (virar_buttons[0] - virar_buttons[1]);
+	std::cout << "rotate_dir: " << virar_radians_vel  << '\n';
+	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
+	std::cout << "quat: " << local_transform.q.x << ', '<<local_transform.q.y <<', '<<local_transform.q.z<<', '<<local_transform.q.w << '\n';
 }
 
 void Ship::handle_keyboard_button_down(unsigned char c)
@@ -28,6 +33,10 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 		static_cast<ShipCannon*>(child_objects.front().get())->start_fire();
 		break;
 	case 'a':
+		virar_buttons[0] = 1;
+		break;
+	case 'd':
+		virar_buttons[1] = 1;
 		break;
 	}
 
@@ -35,8 +44,19 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 
 void Ship::handle_keyboard_button_up(unsigned char c)
 {
-	if(c==' ')
-		static_cast<ShipCannon*>(child_objects.front().get())->stop_fire();
+
+	switch (c) {
+	case ' ':
+			static_cast<ShipCannon*>(child_objects.front().get())->stop_fire();
+			break;
+	case 'a':
+		virar_buttons[0] = 0;
+		break;
+	case 'd':
+		virar_buttons[1] = 0;
+		break;
+	}
+
 }
 
 

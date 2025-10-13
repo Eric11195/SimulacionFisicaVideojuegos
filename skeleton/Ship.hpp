@@ -17,4 +17,5 @@ protected:
 		physx::PxVec3 rotation_axis;
 	};
 	angular_velocity current_angular_velocity = { 0,{0,0,1} };
+	physx::PxVec2 virar_buttons = {0,0};
 };
