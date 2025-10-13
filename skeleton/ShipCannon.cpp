@@ -1,5 +1,6 @@
 #include "ShipCannon.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
+#include <iostream>
 
 
 
@@ -18,7 +19,7 @@ ShipCannon::ShipCannon()
 void ShipCannon::step(double dt)
 {
 	ParticleSystem::step(dt);
-	
+
 	if (!active) return;
 
 	time_acumulated += dt;
@@ -45,6 +46,8 @@ void ShipCannon::shoot()
 	GameObject* aux_ptr = (*cannon_it).get();
 	auto casted_trigger = static_cast<TriggeredParticleGenerator*>(aux_ptr);
 	casted_trigger->trigger();
+
+	//std::cout << local_transform.p.x << " " << local_transform.p.y << " " << local_transform.p.z << '\n';
 
 	++cannon_it;
 	if (cannon_it == child_objects.end()) cannon_it = child_objects.begin();

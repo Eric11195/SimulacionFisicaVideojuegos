@@ -3,7 +3,7 @@
 #include "ParticleSystem.hpp"
 //#include "ParticleGeneratorsDescriptors.hpp"
 
-constexpr float time_between_shots = 0.25;
+constexpr float time_between_shots = 0.15;
 
 class ShipCannon : public ParticleSystem {
 public:

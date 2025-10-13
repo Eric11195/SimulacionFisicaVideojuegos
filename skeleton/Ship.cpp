@@ -14,7 +14,6 @@ Ship::Ship()
 constexpr int max_speed = 3;
 void Ship::step(double dt)
 {
-	CompositeGameObject::step(dt);
 	GetCamera()->setTransform(global_transform);
 	//if(current_angular_velocity)
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
@@ -25,10 +24,12 @@ void Ship::step(double dt)
 	
 	if (current_state != constante) {
 		float desired_speed = min(1, max(0, int(current_state)));
-		std::cout << int(current_state) << "\n";
 		speed += dt * (desired_speed - speed);
 		set_vel({ 0,0,max_speed * speed });
 	}
+
+	CompositeGameObject::step(dt);
+
 }
 
 void Ship::handle_keyboard_button_down(unsigned char c)
@@ -95,6 +96,5 @@ void Ship::handle_mouse_pos(int x, int y)
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(-y_rot,-x_rot, 0);
 	float magnitude = normalized_rot_direction.normalize();
-	//std::cout << magnitude << " <-- " << normalized_rot_direction.magnitude() << '\n';
 	current_angular_velocity = { 3.14f * min(magnitude,1) , normalized_rot_direction };
 }

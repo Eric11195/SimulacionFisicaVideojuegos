@@ -3,8 +3,6 @@
 
 void Projectile::step(double dt)
 {
-	//std::cout << "POS: " << tr.p.x << ", " << tr.p.y << ", " << tr.p.z <<"  "<<
-		//"VEL: "<< tr.p.x << ", " << tr.p.y << ", " << tr.p.z<<'\n';
 	Particle::step(dt);
 }
 
