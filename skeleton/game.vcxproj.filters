@@ -51,6 +51,8 @@
     <ClInclude Include="ShipCannon.hpp" />
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
+    <ClInclude Include="ScreenSizeConstants.hpp" />
+    <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

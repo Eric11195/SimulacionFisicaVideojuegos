@@ -240,7 +240,7 @@ void reshapeCallback(int width, int height)
 }
 }
 
-void setupDefaultWindow(const char *name)
+void setupDefaultWindow(const char *name, int screen_width, int screen_height)
 {
 	char* namestr = new char[strlen(name)+1];
 	strcpy(namestr, name);
@@ -249,7 +249,7 @@ void setupDefaultWindow(const char *name)
 
 	glutInit(&argc, argv);
 	
-	glutInitWindowSize(512, 512);
+	glutInitWindowSize(screen_width, screen_height);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);

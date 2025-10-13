@@ -32,6 +32,10 @@ void GameObject::translate_to(physx::PxVec3 t)
 	//local_transform.p = t;
 }
 
+void GameObject::rotate(physx::PxQuat q)
+{
+	local_transform.q *= q;
+}
 
 void GameObject::set_accel(My_Vector3 new_accel)
 {

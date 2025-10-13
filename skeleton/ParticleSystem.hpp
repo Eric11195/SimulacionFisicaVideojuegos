@@ -7,7 +7,7 @@
 
 
 
-class ParticleSystem : public GlobalCoords_CompositeGameObject {
+class ParticleSystem : public /*GlobalCoords_*/ CompositeGameObject{
 public:
 	ParticleSystem(const ParticleSystem&) = delete;
 	ParticleSystem& operator =(const ParticleSystem&) = delete;

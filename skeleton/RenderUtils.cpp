@@ -4,6 +4,7 @@
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
+#include "ScreenSizeConstants.hpp";
 
 
 using namespace physx;
@@ -152,7 +153,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos");
+	setupDefaultWindow("Simulacion Fisica Videojuegos", screen_size_constants::WINDOW_LENGTH, screen_size_constants::WINDOW_HEIGHT);
 	setupDefaultRenderState();
 
 	initPhysics(true);
@@ -162,7 +163,7 @@ void renderLoop()
 	glutKeyboardFunc(keyboardCallback);
 	glutKeyboardUpFunc(keyboardUpCallback);
 	glutMouseFunc(mouseCallback);
-	glutMotionFunc(motionCallback);
+	glutPassiveMotionFunc(motionCallback);
 	motionCallback(0,0);
 	glutIgnoreKeyRepeat(1);//If its 0 it will not ignore them
 

@@ -3,7 +3,7 @@
 #include "ParticleSystem.hpp"
 //#include "ParticleGeneratorsDescriptors.hpp"
 
-constexpr float time_between_shots = 0.5;
+constexpr float time_between_shots = 0.25;
 
 class ShipCannon : public ParticleSystem {
 public:
@@ -12,7 +12,7 @@ public:
 	void start_fire();
 	void stop_fire();
 protected:
-	bool active = true;
+	bool active = false;
 	void shoot();
 	std::list<std::unique_ptr<GameObject>>::iterator cannon_it;
 	float time_acumulated = 0;

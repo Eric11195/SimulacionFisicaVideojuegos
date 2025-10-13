@@ -33,6 +33,7 @@ struct GameObject : public InputProcessor{
 	virtual void update_position(Transform const& parent_tr);
 	void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
+	virtual void rotate(physx::PxQuat);
 
 	void set_accel(My_Vector3 new_accel);
 	void add_accel(My_Vector3 add_accel);
