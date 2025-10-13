@@ -20,4 +20,10 @@ protected:
 	physx::PxVec2 virar_buttons = {0,0};
 	//from 0 to 1
 	float speed = 0;
+	enum state {
+		constante = 0,
+		acelerando = 1,
+		decelerando = -1
+	};
+	state current_state = constante;
 };
