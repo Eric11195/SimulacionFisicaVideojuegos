@@ -103,7 +103,7 @@ PxTransform Camera::getTransform() const
 	if(viewY.normalize()<1e-6f) 
 		return PxTransform(mEye);
 
-	PxMat33 m(mDir.cross(viewY), viewY, -mDir);
+	const PxMat33 m(mDir.cross(viewY), viewY, -mDir);
 	return PxTransform(mEye, PxQuat(m));
 }
 
