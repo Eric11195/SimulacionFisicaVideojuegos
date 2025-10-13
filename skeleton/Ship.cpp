@@ -11,7 +11,7 @@ Ship::Ship()
 	addChild(new ShipCannon());
 }
 
-
+constexpr int max_speed = 3;
 void Ship::step(double dt)
 {
 	CompositeGameObject::step(dt);
@@ -21,9 +21,10 @@ void Ship::step(double dt)
 		rotate(PxQuat(dt*current_angular_velocity.angle, current_angular_velocity.rotation_axis));
 
 	float virar_radians_vel = 1 * dt * (virar_buttons[0] - virar_buttons[1]);
-	std::cout << "rotate_dir: " << virar_radians_vel  << '\n';
+	//std::cout << "rotate_dir: " << virar_radians_vel  << '\n';
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
-	std::cout << "quat: " << local_transform.q.x << ', '<<local_transform.q.y <<', '<<local_transform.q.z<<', '<<local_transform.q.w << '\n';
+	//std::cout << "quat: " << local_transform.q.x << ', '<<local_transform.q.y <<', '<<local_transform.q.z<<', '<<local_transform.q.w << '\n';
+	set_vel({ 0,0,max_speed*speed });
 }
 
 void Ship::handle_keyboard_button_down(unsigned char c)
@@ -37,6 +38,12 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 		break;
 	case 'd':
 		virar_buttons[1] = 1;
+		break;
+	case'w':
+		speed += (1 - speed) * 0.65;
+		break;
+	case 's':
+		speed -= speed * 0.65;
 		break;
 	}
 

@@ -47,6 +47,11 @@ void GameObject::add_accel(My_Vector3 add_accel)
 	accel += add_accel;
 }
 
+void GameObject::set_vel(My_Vector3 new_vel)
+{
+	vel = new_vel;
+}
+
 #ifdef DAMPING
 void GameObject::set_dumping(float f)
 {

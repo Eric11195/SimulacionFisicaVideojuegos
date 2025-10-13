@@ -37,6 +37,7 @@ struct GameObject : public InputProcessor{
 
 	void set_accel(My_Vector3 new_accel);
 	void add_accel(My_Vector3 add_accel);
+	void set_vel(My_Vector3 vel);
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif

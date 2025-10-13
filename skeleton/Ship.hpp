@@ -18,4 +18,6 @@ protected:
 	};
 	angular_velocity current_angular_velocity = { 0,{0,0,1} };
 	physx::PxVec2 virar_buttons = {0,0};
+	//from 0 to 1
+	float speed = 0;
 };
