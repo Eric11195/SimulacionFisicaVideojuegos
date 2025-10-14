@@ -171,6 +171,7 @@ void renderLoop()
 	glutKeyboardUpFunc(keyboardUpCallback);
 	glutMouseFunc(mouseCallback);
 	glutPassiveMotionFunc(motionCallback);
+	glutMotionFunc(motionCallback);
 	motionCallback(0,0);
 	glutIgnoreKeyRepeat(1);//If its 0 it will not ignore them
 
