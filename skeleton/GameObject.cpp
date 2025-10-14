@@ -104,7 +104,7 @@ void GameObject::update_position(Transform const& parent_tr)
 }
 
 
-void GameObject::handle_mouse_pos(int x, int y)
+void GameObject::handle_mouse_pos(float x, float y)
 {
 	for (auto& child : child_objects)
 		child->handle_mouse_pos(x, y);

@@ -78,22 +78,21 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 }
 
 
-constexpr int dead_zone = 5;
+constexpr int dead_zone = 0.0005;
 //constexpr float max_rot;
-void Ship::handle_mouse_pos(int x, int y)
+void Ship::handle_mouse_pos(float x, float y)
 {
-	float max_pixels_out_x = 1 / (WINDOW_LENGTH_HALF * 0.8);
-	float max_pixels_out_y = 1 / (WINDOW_HEIGHT_HALF * 0.8);
-
 	float x_rot, y_rot;
-	int px_out_x = x - WINDOW_LENGTH_HALF;
+	float px_out_x = 2 *(x - 0.5);
 	if (abs(px_out_x) < dead_zone) px_out_x = 0;
-	int px_out_y = -(y - WINDOW_HEIGHT_HALF);
+	float px_out_y = -2*(y - 0.5);
 	if (abs(px_out_y) < dead_zone) px_out_y = 0;
 
+	std::cout << "x: "<<x<<'>'<<px_out_x << "y: "<<y<<'>'<< px_out_y << '\n';
+
 	//lerp from -1 to 1, 
-	x_rot = utils::lerp(0.0f, 0.5f, max(-1,min(1,px_out_x * max_pixels_out_x)));
-	y_rot = utils::lerp(0.0f, 0.5f, max(-1, min(1, px_out_y * max_pixels_out_y)));
+	x_rot = utils::lerp(0.0f, 0.5f, px_out_x);
+	y_rot = utils::lerp(0.0f, 0.5f, px_out_y);
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(-y_rot,-x_rot, 0);
 	float magnitude = normalized_rot_direction.normalize();

@@ -1,6 +1,6 @@
 #include "InputProcessor.hpp"
 
-void InputProcessor::handle_mouse_pos(int x, int y)
+void InputProcessor::handle_mouse_pos(float x, float y)
 {
 }
 

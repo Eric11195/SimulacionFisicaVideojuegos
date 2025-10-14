@@ -17,7 +17,7 @@ extern void keyPress(unsigned char key);
 extern void keyRelease(unsigned char key);
 extern void mousePressed(uint8_t button);
 extern void mouseReleased(uint8_t button);
-extern void mousePosUpdated(int x, int y);
+extern void mousePosUpdated(float x, float y);
 extern PxPhysics* gPhysics;
 extern PxMaterial* gMaterial;
 
@@ -55,8 +55,12 @@ namespace
 
 void motionCallback(int x, int y)
 {
-	//sCamera->handleMotion(x, y);
-	mousePosUpdated(x, y);
+	//From 0 to 1
+	float x_float = float(x)/WINDOW_LENGTH;
+	float y_float = float(y)/WINDOW_HEIGHT;
+	x_float = max(0.0f, min(1, x_float));
+	y_float = max(0.0f, min(1, y_float));
+	mousePosUpdated(x_float, y_float);
 }
 
 void keyboardCallback(unsigned char key, int x, int y)

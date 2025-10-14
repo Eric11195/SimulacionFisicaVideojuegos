@@ -129,7 +129,7 @@ void mouseReleased(uint8_t button) {
 void mousePressed(uint8_t button) {
 	scene_game_object->handle_mouse_button_down(button);
 }
-void mousePosUpdated(int x, int y) {
+void mousePosUpdated(float x, float y) {
 	scene_game_object->handle_mouse_pos(x,y);
 }
 

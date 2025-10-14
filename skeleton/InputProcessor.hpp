@@ -26,7 +26,7 @@ protected:
 	};
 public:
 	void handle_input(event_type ev_t, extra_info ei);
-	virtual void handle_mouse_pos(int x, int y);
+	virtual void handle_mouse_pos(float x, float y);
 	virtual void handle_mouse_button_up(uint8_t mb_id);
 	virtual void handle_mouse_button_down(uint8_t mb_id);
 	virtual void handle_keyboard_button_down(unsigned char key);

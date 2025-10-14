@@ -43,7 +43,7 @@ struct GameObject : public InputProcessor{
 	void add_accel(My_Vector3 add_accel);
 	void set_vel(My_Vector3 vel);
 
-	virtual void handle_mouse_pos(int x, int y) override;
+	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
 	virtual void handle_mouse_button_down(uint8_t mb_id) override;
 	virtual void handle_keyboard_button_down(unsigned char key) override;
