@@ -153,7 +153,7 @@ Particle::config{
 			},
 			physx::PxVec4(1,1,1,1)//Color
 },
-1 //rad
+0.5 //rad
 },
 7 //lifetime
 	},
