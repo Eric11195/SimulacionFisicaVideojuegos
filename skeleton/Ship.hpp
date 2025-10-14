@@ -11,6 +11,8 @@ public:
 	virtual void handle_keyboard_button_down(unsigned char c) override;
 	virtual void handle_keyboard_button_up(unsigned char c) override;
 	virtual void handle_mouse_pos(float x, float y) override;
+	virtual void handle_mouse_button_down(uint8_t) override;
+	virtual void handle_mouse_button_up(uint8_t) override;
 protected:
 	struct angular_velocity {
 		float angle;

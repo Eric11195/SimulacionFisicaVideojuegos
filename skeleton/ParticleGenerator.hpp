@@ -57,6 +57,7 @@ protected:
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
 	virtual void generate_particles(double dt);
+	virtual void set_up_particle(Particle*);
 	std::function<void(Particle::config&)> next_particle_config_calculator;
 	particle_calculator_functions my_particle_lambdas;
 };

@@ -22,6 +22,8 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="ScreenSizeConstants.cpp" />
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -52,6 +54,7 @@
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="utils.hpp" />
+    <ClInclude Include="Missile.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

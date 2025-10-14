@@ -259,7 +259,9 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
@@ -280,6 +282,7 @@
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
+    <ClInclude Include="Missile.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
