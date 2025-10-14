@@ -20,6 +20,8 @@ protected:
 	physx::PxVec2 virar_buttons = {0,0};
 	//from 0 to 1
 	float speed = 0;
+	float angular_speed_radians_per_second = 1;
+	float virar_radians_per_second = 1.5f;
 	enum state {
 		constante = 0,
 		acelerando = 1,

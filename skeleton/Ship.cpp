@@ -17,9 +17,9 @@ void Ship::step(double dt)
 	GetCamera()->setTransform(global_transform);
 	//if(current_angular_velocity)
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
-		rotate(PxQuat(dt*current_angular_velocity.angle, current_angular_velocity.rotation_axis));
+		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
 
-	float virar_radians_vel = 1 * dt * (virar_buttons[0] - virar_buttons[1]);
+	float virar_radians_vel = -virar_radians_per_second * dt * (virar_buttons[0] - virar_buttons[1]);
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 	
 	if (current_state != constante) {
@@ -79,22 +79,19 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 
 
 constexpr int dead_zone = 0.0005;
+float max_rot_val = 0.75;
 //constexpr float max_rot;
 void Ship::handle_mouse_pos(float x, float y)
 {
-	float x_rot, y_rot;
-	float px_out_x = 2 *(x - 0.5);
-	if (abs(px_out_x) < dead_zone) px_out_x = 0;
-	float px_out_y = -2*(y - 0.5);
-	if (abs(px_out_y) < dead_zone) px_out_y = 0;
+	//ESTO SOLO TIENE EN CUENTA PARA CUANDO X > 0.5
 
-	std::cout << "x: "<<x<<'>'<<px_out_x << "y: "<<y<<'>'<< px_out_y << '\n';
+	float x_m1_1_val = 2*(x-0.5);
+	x_m1_1_val = (x_m1_1_val < 0 ? -1 : 1) * min(1, abs(x_m1_1_val / max_rot_val));
+	float y_m1_1_val = 2 * (y - 0.5);
+	y_m1_1_val = (y_m1_1_val < 0 ? -1 : 1) * min(1, abs(y_m1_1_val / max_rot_val));
 
-	//lerp from -1 to 1, 
-	x_rot = utils::lerp(0.0f, 0.5f, px_out_x);
-	y_rot = utils::lerp(0.0f, 0.5f, px_out_y);
 	//std::lerp
-	PxVec3 normalized_rot_direction = PxVec3(-y_rot,-x_rot, 0);
-	float magnitude = normalized_rot_direction.normalize();
+	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
+	const float magnitude = normalized_rot_direction.normalize();
 	current_angular_velocity = { 3.14f * min(magnitude,1) , normalized_rot_direction };
 }
