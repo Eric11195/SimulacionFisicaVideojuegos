@@ -6,7 +6,7 @@
 #include "ScreenSizeConstants.hpp"
 
 Ship::Ship()
-	:CompositeGameObject()
+	:GameObject()
 {
 	addChild(new ShipCannon());
 }
@@ -28,7 +28,7 @@ void Ship::step(double dt)
 		set_vel({ 0,0,max_speed * speed });
 	}
 
-	CompositeGameObject::step(dt);
+	GameObject::step(dt);
 
 }
 
@@ -78,16 +78,17 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 }
 
 
-constexpr float max_pixels_out_x = 1/ (screen_size_constants::WINDOW_LENGTH_HALF * 0.8);
-constexpr float max_pixels_out_y = 1 / (screen_size_constants::WINDOW_HEIGHT_HALF * 0.8);
 constexpr int dead_zone = 5;
 //constexpr float max_rot;
 void Ship::handle_mouse_pos(int x, int y)
 {
+	float max_pixels_out_x = 1 / (WINDOW_LENGTH_HALF * 0.8);
+	float max_pixels_out_y = 1 / (WINDOW_HEIGHT_HALF * 0.8);
+
 	float x_rot, y_rot;
-	int px_out_x = x - screen_size_constants::WINDOW_LENGTH_HALF;
+	int px_out_x = x - WINDOW_LENGTH_HALF;
 	if (abs(px_out_x) < dead_zone) px_out_x = 0;
-	int px_out_y = -(y - screen_size_constants::WINDOW_HEIGHT_HALF);
+	int px_out_y = -(y - WINDOW_HEIGHT_HALF);
 	if (abs(px_out_y) < dead_zone) px_out_y = 0;
 
 	//lerp from -1 to 1, 

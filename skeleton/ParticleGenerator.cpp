@@ -75,6 +75,8 @@ void TriggeredParticleGenerator::trigger()
 
 void TriggeredParticleGenerator::step(double dt)
 {
+	integrate(dt);
+
 	//Missing generate particles
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
@@ -96,7 +98,7 @@ void TriggeredParticleGenerator::step(double dt)
 
 		++it;
 	}
-	GameObject::step(dt);
+	//GameObject::step(dt);
 }
 
 ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state)

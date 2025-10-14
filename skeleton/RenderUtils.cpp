@@ -2,9 +2,10 @@
 
 #include "PxPhysicsAPI.h"
 
-#include "core.hpp"
+//#include "core.hpp"
 #include "RenderUtils.hpp"
 #include "ScreenSizeConstants.hpp";
+#include <iostream>
 
 
 using namespace physx;
@@ -90,6 +91,8 @@ float stepTime = 0.0f;
 
 void renderCallback()
 {
+	update(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	
 	double t = GetCounter();
 #ifdef FIXED_STEP
 	if (t < (1.0f / 30.0f))
@@ -153,7 +156,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos", screen_size_constants::WINDOW_LENGTH, screen_size_constants::WINDOW_HEIGHT);
+	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_LENGTH, WINDOW_HEIGHT);
 	setupDefaultRenderState();
 
 	initPhysics(true);

@@ -17,11 +17,11 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="CompositeGameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="ShipCannon.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="ScreenSizeConstants.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -43,7 +43,6 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
-    <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />

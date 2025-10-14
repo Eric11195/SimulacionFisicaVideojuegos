@@ -5,7 +5,7 @@
 #include "PhysicLib.hpp"
 #include "core.hpp"
 #include "InputProcessor.hpp"
-//#include "Px.h"
+#include <memory>
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -22,8 +22,12 @@ struct GameObject : public InputProcessor{
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
 	};
-	GameObject(config& c = config());
-	virtual ~GameObject() {};
+	GameObject(const CompositeGameObject&) = delete;
+	GameObject& operator =(const CompositeGameObject&) = delete;
+	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
+	virtual ~GameObject();
+
+	virtual void addChild(GameObject* go);
 
 	virtual Vector3 get_pos();
 	virtual void step(double dt);
@@ -38,14 +42,22 @@ struct GameObject : public InputProcessor{
 	void set_accel(My_Vector3 new_accel);
 	void add_accel(My_Vector3 add_accel);
 	void set_vel(My_Vector3 vel);
+
+	virtual void handle_mouse_pos(int x, int y) override;
+	virtual void handle_mouse_button_up(uint8_t mb_id) override;
+	virtual void handle_mouse_button_down(uint8_t mb_id) override;
+	virtual void handle_keyboard_button_down(unsigned char key) override;
+	virtual void handle_keyboard_button_up(unsigned char key) override;
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif
-protected:
+//protected:
 	void integrate(double t);
 	Transform global_transform;
 	//Use only in calculations;
 	Transform local_transform;
+	std::list<std::unique_ptr<GameObject>> child_objects;
+
 private:
 #ifdef DAMPING
 	float damping_mult;

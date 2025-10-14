@@ -14,7 +14,6 @@
 #include "Particle.hpp"
 #include "Projectile.hpp"
 #include "CameraProjectileShooter.hpp"
-#include "CompositeGameObject.hpp"
 #include "GameObject.hpp"
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"

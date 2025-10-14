@@ -256,7 +256,6 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CameraProjectileShooter.cpp" />
-    <ClCompile Include="CompositeGameObject.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
@@ -269,13 +268,13 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="ScreenSizeConstants.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="ShipCannon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CameraProjectileShooter.hpp" />
-    <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />

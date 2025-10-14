@@ -1,9 +1,9 @@
 #pragma once
-#include "CompositeGameObject.hpp"
+#include "GameObject.hpp"
 
 //class PxVec3;
 
-class Ship : public CompositeGameObject {
+class Ship : public GameObject {
 public:
 	Ship();
 	//virtual void process_input(unsigned char c) override;

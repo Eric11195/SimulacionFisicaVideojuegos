@@ -1,13 +1,26 @@
 #include "GameObject.hpp"
-#include "CompositeGameObject.hpp"
 
-GameObject::GameObject(config& c)
+GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	: local_transform(Transform(c.pos.turn(),c.initial_rotation)),
 	global_transform(Transform(c.pos.turn(),c.initial_rotation)),
 	vel(c.initial_speed_dir.normalize()*c.initial_speed_magnitude),
 	accel(c.initial_accel_dir.normalize()*c.initial_accel_magnitude),
 	damping_mult(c.damping_mult)
 {
+	for (auto go : go_s) {
+		addChild(go);
+	}
+}
+
+GameObject::~GameObject()
+{
+	child_objects.clear();
+}
+
+void GameObject::addChild(GameObject* go)
+{
+	auto aux_it = child_objects.insert(child_objects.end(), std::unique_ptr<GameObject>(go));
+	(*aux_it)->link_to_parent(global_transform);
 }
 
 Vector3 GameObject::get_pos()
@@ -18,6 +31,11 @@ Vector3 GameObject::get_pos()
 void GameObject::step(double dt)
 {
 	integrate(dt);
+
+	for (auto& child : child_objects) {
+		child->step(dt);
+		child->update_position(global_transform);
+	}
 }
 void GameObject::translate(physx::PxVec3 t)
 {
@@ -83,4 +101,35 @@ void GameObject::update_position(Transform const& parent_tr)
 {
 	//global_transform = parent_tr.transform(local_transform);
 	global_transform = parent_tr.transform(local_transform);
+}
+
+
+void GameObject::handle_mouse_pos(int x, int y)
+{
+	for (auto& child : child_objects)
+		child->handle_mouse_pos(x, y);
+}
+
+void GameObject::handle_mouse_button_up(uint8_t mb_id)
+{
+	for (auto& child : child_objects)
+		child->handle_mouse_button_up(mb_id);
+}
+
+void GameObject::handle_mouse_button_down(uint8_t mb_id)
+{
+	for (auto& child : child_objects)
+		child->handle_mouse_button_down(mb_id);
+}
+
+void GameObject::handle_keyboard_button_down(unsigned char key)
+{
+	for (auto& child : child_objects)
+		child->handle_keyboard_button_down(key);
+}
+
+void GameObject::handle_keyboard_button_up(unsigned char key)
+{
+	for (auto& child : child_objects)
+		child->handle_keyboard_button_up(key);
 }
