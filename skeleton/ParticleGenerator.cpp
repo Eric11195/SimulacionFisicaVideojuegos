@@ -58,7 +58,6 @@ void ParticleGenerator::generate_particles(double dt)
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
 		auto new_particle = new Particle(p_config);
 		set_up_particle(new_particle);
-		//addChild(new_particle);
 	}
 
 }

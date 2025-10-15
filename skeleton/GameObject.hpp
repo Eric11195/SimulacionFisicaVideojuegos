@@ -27,7 +27,7 @@ struct GameObject : public InputProcessor{
 	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
-	virtual void addChild(GameObject* go);
+	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
 	virtual Vector3 get_pos();
 	virtual void step(double dt);

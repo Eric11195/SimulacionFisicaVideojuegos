@@ -22,8 +22,9 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="ScreenSizeConstants.cpp" />
-    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
+    <ClCompile Include="PassThrough_CompositeGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -54,7 +55,8 @@
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="utils.hpp" />
-    <ClInclude Include="Missile.hpp" />
+    <ClInclude Include="MissileGenerator.hpp" />
+    <ClInclude Include="PassThrough_CompositeGameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

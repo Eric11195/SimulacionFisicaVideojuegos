@@ -17,10 +17,11 @@ GameObject::~GameObject()
 	child_objects.clear();
 }
 
-void GameObject::addChild(GameObject* go)
+std::list<std::unique_ptr<GameObject>>::iterator GameObject::addChild(GameObject* go)
 {
 	auto aux_it = child_objects.insert(child_objects.end(), std::unique_ptr<GameObject>(go));
 	(*aux_it)->link_to_parent(global_transform);
+	return aux_it;
 }
 
 Vector3 GameObject::get_pos()

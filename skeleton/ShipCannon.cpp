@@ -1,19 +1,24 @@
 #include "ShipCannon.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include <iostream>
+#include "MissileGenerator.hpp"
 
 
-
-ShipCannon::ShipCannon()
+ShipCannon::ShipCannon(Transform const& parent_tr)
+	: ParticleSystem(parent_tr)
 {
 	for (int i = -1; i < 2; i = i + 2) {
 		for (int j = -1; j < 2; j = j + 2) {
 			GameObject* pg = new TriggeredParticleGenerator(x_wing_shoot_type);
-			pg->translate_to({j*10.0f,i*10.0f,20});
+			pg->translate_to({ j * 1.5f,i * 1.0f,0 });
 			addChild(pg);
 		}
 	}
 	cannon_it = child_objects.begin();
+
+	GameObject* pg = new MissileGenerator();
+	pg->translate_to({ 0,-1,0 });
+	missile_cannon = addChild(pg);
 }
 
 void ShipCannon::step(double dt)
@@ -36,12 +41,21 @@ void ShipCannon::stop_fire()
 	//time_acumulated = time_between_shots;
 }
 
-void ShipCannon::trigger_fire()
+void ShipCannon::fire_missile()
 {
-	shoot();
+	GameObject* aux_ptr = (*missile_cannon).get();
+	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
+	casted_trigger->trigger();
 }
 
-void ShipCannon::shoot()
+/*
+void ShipCannon::trigger_fire()
+{
+	fire_missile();
+}
+*/
+
+void ShipCannon::normal_shoot()
 {
 	GameObject* aux_ptr = (*cannon_it).get();
 	auto casted_trigger = static_cast<TriggeredParticleGenerator*>(aux_ptr);
@@ -53,9 +67,13 @@ void ShipCannon::step_fire(double dt)
 	time_acumulated += dt;
 	if (time_acumulated > time_between_shots) {
 		time_acumulated -= time_between_shots;
-		shoot();
+		normal_shoot();
 
 		++cannon_it;
-		if (cannon_it == child_objects.end()) cannon_it = child_objects.begin();
+		++n_cannon;
+		if (n_cannon >= 4) {
+			n_cannon = 0;
+			cannon_it = child_objects.begin();
+		}
 	}
 }

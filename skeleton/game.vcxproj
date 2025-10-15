@@ -259,10 +259,11 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
-    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PassThrough_CompositeGameObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -282,11 +283,12 @@
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
-    <ClInclude Include="Missile.hpp" />
+    <ClInclude Include="MissileGenerator.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="PassThrough_CompositeGameObject.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />

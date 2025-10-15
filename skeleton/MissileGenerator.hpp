@@ -2,13 +2,15 @@
 #include "ParticleGenerator.hpp"
 #include "ShipCannon.hpp"
 
+/*
 class MissileCannon : public ShipCannon {
-	MissileCannon();
+	MissileCannon(parent_tr);
 };
+*/
 
-class Missile : public TriggeredParticleGenerator {
+class MissileGenerator : public TriggeredParticleGenerator {
 public:
-	Missile();
+	MissileGenerator();
 protected:
 	virtual void set_up_particle(Particle* p) override;
 };

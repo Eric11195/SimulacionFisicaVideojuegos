@@ -5,13 +5,11 @@
 #include "utils.hpp"
 #include "ScreenSizeConstants.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
-#include "Missile.hpp"
 
 Ship::Ship()
 	:GameObject()
 {
-	addChild(new ShipCannon());
-	addChild(new Missile());
+	addChild(new ShipCannon(global_transform));
 }
 
 constexpr int max_speed = 3;
@@ -61,7 +59,8 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 
 	switch (c) {
 	case ' ':
-		static_cast<Missile*>((*(++child_objects.begin())).get())->trigger();
+		static_cast<ShipCannon*>(child_objects.front().get())->fire_missile();
+		//static_cast<Missile*>((*(++child_objects.begin())).get())->trigger();
 		break;
 	case 'a':
 		virar_buttons[0] = 0;
