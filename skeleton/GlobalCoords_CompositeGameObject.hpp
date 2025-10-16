@@ -12,5 +12,6 @@ public:
 	//Its transform its always the the default, no matter what
 	GlobalCoords_CompositeGameObject(config& = config(), std::initializer_list<GameObject*> = {});
 	virtual void step(double dt) override;
+	virtual void update_position(Transform const& parent) override;
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go) override;
 };

@@ -13,8 +13,15 @@ void GlobalCoords_CompositeGameObject::step(double dt)
 
     for (auto& child : child_objects) {
         child->step(dt);
-        child->update_position(PhysicLib::NEUTRAL_TRANSFORM);
+        //child->update_position(PhysicLib::NEUTRAL_TRANSFORM);
     }
+}
+
+void GlobalCoords_CompositeGameObject::update_position(Transform const& parent)
+{
+    global_transform = parent.transform(local_transform);
+    for (auto& child : child_objects)
+        child->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 }
 
 std::list<std::unique_ptr<GameObject>>::iterator GlobalCoords_CompositeGameObject::addChild(GameObject* go)

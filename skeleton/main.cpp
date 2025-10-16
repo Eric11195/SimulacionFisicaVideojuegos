@@ -92,6 +92,7 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 	scene_game_object->step(t);
+	scene_game_object->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }

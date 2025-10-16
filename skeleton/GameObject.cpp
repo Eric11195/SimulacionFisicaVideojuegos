@@ -35,7 +35,6 @@ void GameObject::step(double dt)
 
 	for (auto& child : child_objects) {
 		child->step(dt);
-		child->update_position(global_transform);
 	}
 }
 void GameObject::translate(physx::PxVec3 t)
@@ -100,8 +99,9 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
-	//global_transform = parent_tr.transform(local_transform);
 	global_transform = parent_tr.transform(local_transform);
+	for (auto& child : child_objects)
+		child->update_position(global_transform);
 }
 
 

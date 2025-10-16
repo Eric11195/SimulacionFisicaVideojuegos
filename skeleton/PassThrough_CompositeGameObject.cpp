@@ -11,8 +11,14 @@ void PassThrough_CompositeGameObject::step(double dt)
 
 	for (auto& child : child_objects) {
 		child->step(dt);
-		child->update_position(parent_transform);
 	}
+}
+
+void PassThrough_CompositeGameObject::update_position(Transform const& parent)
+{
+	global_transform = parent.transform(local_transform);
+	for (auto& child : child_objects)
+		child->update_position(parent_transform);
 }
 
 std::list<std::unique_ptr<GameObject>>::iterator PassThrough_CompositeGameObject::addChild(GameObject* go)

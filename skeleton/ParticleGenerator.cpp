@@ -16,7 +16,8 @@ ParticleGenerator::ParticleGenerator(config& c)
 void ParticleGenerator::step(double dt)
 {
 	generate_particles(dt);
-	GameObject::step(dt);
+	//GameObject::step(dt);
+	integrate(dt);
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
@@ -33,7 +34,7 @@ void ParticleGenerator::step(double dt)
 			continue;
 		}
 		(*it)->step(dt);
-		(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
+		//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 
 		++it;
 	}
@@ -96,6 +97,7 @@ void TriggeredParticleGenerator::trigger()
 void TriggeredParticleGenerator::step(double dt)
 {
 	integrate(dt);
+	//GameObject::step(dt);
 
 	//Missing generate particles
 	auto it = child_objects.begin();
@@ -112,13 +114,11 @@ void TriggeredParticleGenerator::step(double dt)
 			it = child_objects.erase(it);
 			continue;
 		}
-		(*it)->step(dt);
-		(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
-
+		//(*it)->step(dt);
 		
 		++it;
 	}
-	//GameObject::step(dt);
+	GameObject::step(dt);
 }
 
 ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state)

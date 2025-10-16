@@ -15,6 +15,8 @@ Ship::Ship()
 constexpr int max_speed = 3;
 void Ship::step(double dt)
 {
+	GameObject::step(dt);
+
 	GetCamera()->setTransform(global_transform);
 	//if(current_angular_velocity)
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
@@ -28,8 +30,6 @@ void Ship::step(double dt)
 		speed += dt * (desired_speed - speed);
 		set_vel({ 0,0,max_speed * speed });
 	}
-
-	GameObject::step(dt);
 
 }
 
