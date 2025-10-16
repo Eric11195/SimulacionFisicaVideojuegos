@@ -87,7 +87,7 @@ ParticleGenerator::config x_wing_shoot_type{
 					{0,0,0}, //Pos
 					{0,0,1}, //speed_dir
 					{0,-1,0},//accel_dir
-					20, //Speed module
+					40, //Speed module
 					0//PhysicLib::GRAVITY,//Accel module
 				},
 				physx::PxVec4(1,0,0,1)
@@ -98,10 +98,12 @@ ParticleGenerator::config x_wing_shoot_type{
 5 //lifetime
 },
 ParticleGenerator::particle_calculator_functions{
-	[] {return My_Vector3{
+	[] {return My_Vector3{0,0,0
+		/*
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10) * Distributions::RandomSignDistribution::get(), //0,0,0
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10)* Distributions::RandomSignDistribution::get(),
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10)* Distributions::RandomSignDistribution::get()
+			*/
 		};
 	},//POS
 	[] {//VEL_DIR
@@ -150,7 +152,7 @@ Particle::config{
 				{0,0,0}, //Pos
 				{0,0,1}, //speed_dir
 				{0,-1,0},//accel_dir
-				10,//10, //Speed module
+				6,//10, //Speed module
 				0//PhysicLib::GRAVITY,//Accel module
 			},
 			physx::PxVec4(1,1,1,1)//Color
@@ -160,9 +162,7 @@ Particle::config{
 7 //lifetime
 	},
 		ParticleGenerator::particle_calculator_functions{
-			[] {return My_Vector3{
-				0,0,0
-				};
+			[] {return My_Vector3{ 0,0,0};
 			},//POS
 			[] {//VEL_DIR
 				return My_Vector3{
@@ -223,10 +223,10 @@ ParticleGenerator::config missile_particle_system{
 0.5 //lifetime
 },
 ParticleGenerator::particle_calculator_functions{
-	[] {return My_Vector3{0,0,0
-	//Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
-	//Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
-	//Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5
+	[] {return My_Vector3{
+	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
 	};
 },//POS
 [] {//VEL_DIR

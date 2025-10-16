@@ -17,7 +17,6 @@ void Ship::step(double dt)
 {
 	GameObject::step(dt);
 
-	GetCamera()->setTransform(global_transform);
 	//if(current_angular_velocity)
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
 		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
@@ -31,6 +30,12 @@ void Ship::step(double dt)
 		set_vel({ 0,0,max_speed * speed });
 	}
 
+}
+
+void Ship::update_position(Transform const& tr)
+{
+	GameObject::update_position(tr);
+	GetCamera()->setTransform(global_transform);
 }
 
 void Ship::handle_keyboard_button_down(unsigned char c)
