@@ -60,16 +60,6 @@ void ParticleGenerator::generate_particles(double dt)
 		auto new_particle = new Particle(p_config);
 		set_up_particle(new_particle);
 	}
-
-
-	auto& e = global_transform.p;
-	auto& d = global_transform.q;
-	std::cout << "Parent: " << e.x << " " << e.y << " " << e.z << " --- " << d.x << " " << d.y << " " << d.z << " " << d.w << '\n';
-	for (auto& c : child_objects) {
-		auto& e = c->global_transform.p;
-		auto& d = c->global_transform.q;
-		std::cout << "Child:  " << e.x << " " << e.y << " " << e.z << " --- " << d.x << " " << d.y << " " << d.z << " " << d.w << '\n';
-	}
 }
 
 void ParticleGenerator::set_up_particle(Particle* p)
