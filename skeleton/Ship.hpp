@@ -1,8 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
 
-//class PxVec3;
-
 class Ship : public GameObject {
 public:
 	Ship();

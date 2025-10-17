@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include "PxPhysicsAPI.h"
-#include "My_Vector3.hpp"
 #include "PhysicLib.hpp"
 #include "core.hpp"
 #include "InputProcessor.hpp"
@@ -17,7 +16,7 @@ class CompositeGameObject;
 
 struct GameObject : public InputProcessor{
 	struct config {
-		My_Vector3 pos = My_Vector3::zero(), initial_speed_dir = { 0,1,0 }, initial_accel_dir = {0,-1,0};
+		physx::PxVec3 pos = { 0,0,0 }, initial_speed_dir = { 0,1,0 }, initial_accel_dir = { 0,-1,0 };
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
@@ -39,9 +38,9 @@ struct GameObject : public InputProcessor{
 	virtual void translate_to(physx::PxVec3);
 	virtual void rotate(physx::PxQuat);
 
-	void set_accel(My_Vector3 new_accel);
-	void add_accel(My_Vector3 add_accel);
-	void set_vel(My_Vector3 vel);
+	void set_accel(physx::PxVec3 new_accel);
+	void add_accel(physx::PxVec3 add_accel);
+	void set_vel(physx::PxVec3 vel);
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
@@ -62,6 +61,6 @@ private:
 #ifdef DAMPING
 	float damping_mult;
 #endif
-	My_Vector3 vel;
-	My_Vector3 accel;
+	physx::PxVec3 vel;
+	physx::PxVec3 accel;
 };

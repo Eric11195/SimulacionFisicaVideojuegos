@@ -1,7 +1,6 @@
 #pragma once
 #include "Particle.hpp"
 #include "PhysicLib.hpp"
-#include "My_Vector3.hpp"
 
 using namespace PhysicLib;
 

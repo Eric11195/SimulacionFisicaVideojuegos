@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
 #include <list>
-#include "My_Vector3.hpp"
 #include <cstdint>
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
@@ -29,8 +28,8 @@ Eliminar particulas cuando:
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
 	struct particle_calculator_functions {
-		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
-		std::function<My_Vector3()> dir = [] { return My_Vector3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> pos = [] { return physx::PxVec3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> dir = [] { return physx::PxVec3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
 		std::function<float()> lifetime = [] { return 0; };
 		std::function<Vector4()> color = [] { return Vector4( 0,0,0,0 ); };
