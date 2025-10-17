@@ -1,8 +1,9 @@
 #include "GameObject.hpp"
+#include "ForceGenerator.hpp"
 
 GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
-	: local_transform(Transform(c.pos.turn(),c.initial_rotation)),
-	global_transform(Transform(c.pos.turn(),c.initial_rotation)),
+	: local_transform(Transform(c.pos,c.initial_rotation)),
+	global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.normalize()*c.initial_speed_magnitude),
 	accel(c.initial_accel_dir.normalize()*c.initial_accel_magnitude),
 	damping_mult(c.damping_mult)
@@ -55,17 +56,22 @@ void GameObject::rotate(physx::PxQuat q)
 	local_transform.q *= q;
 }
 
-void GameObject::set_accel(My_Vector3 new_accel)
+void GameObject::reset_accel()
+{
+	accel = { 0,0,0 };
+}
+
+void GameObject::set_accel(PxVec3 new_accel)
 {
 	accel = new_accel;
 }
 
-void GameObject::add_accel(My_Vector3 add_accel)
+void GameObject::add_accel(PxVec3 add_accel)
 {
 	accel += add_accel;
 }
 
-void GameObject::set_vel(My_Vector3 new_vel)
+void GameObject::set_vel(PxVec3 new_vel)
 {
 	vel = new_vel;
 }
@@ -80,9 +86,15 @@ void GameObject::integrate(double dt)
 {
 
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
+	/*
+	reset_accel();
+	for (auto& force : forces_applied_to_this_obj) {
+		add_accel(force->apply_force(*this));
+	}
+	*/
 	vel += accel * dt;
 	//tr.p += dt * vel.turn();
-	translate(dt * vel.turn());
+	translate(dt * vel);
 #elif defined EULER_INTEGRATION
 	tr.p += dt * vel.turn();
 	vel += accel * dt;
@@ -99,6 +111,8 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
+	global_to_local_transform = parent_tr.getInverse();
+
 	global_transform = parent_tr.transform(local_transform);
 	for (auto& child : child_objects)
 		child->update_position(global_transform);
@@ -133,4 +147,9 @@ void GameObject::handle_keyboard_button_up(unsigned char key)
 {
 	for (auto& child : child_objects)
 		child->handle_keyboard_button_up(key);
+}
+
+void GameObject::add_force_to_myself(ForceGenerator* f)
+{
+	forces_applied_to_this_obj.insert(forces_applied_to_this_obj.end(), std::shared_ptr<ForceGenerator>(f));
 }

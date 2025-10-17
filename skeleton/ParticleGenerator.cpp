@@ -49,7 +49,7 @@ void ParticleGenerator::generate_particles(double dt)
 	for (int i = 0; i < particles_generated_in_current_frame; ++i) {
 		p_config.spho_config.radius = avrg_size + my_particle_lambdas.size();
 		if (p_config.spho_config.radius <= 0) continue;
-		new_p_config_short.pos = My_Vector3::unturn(global_transform.p + my_particle_lambdas.pos().turn());//My_Vector3::unturn(global_transform.p + global_transform.rotate(my_particle_lambdas.pos().turn()));//p_config.spho_config.so_config.go_config.pos + my_particle_lambdas.pos();
+		new_p_config_short.pos = global_transform.p + my_particle_lambdas.pos();//My_Vector3::unturn(global_transform.p + global_transform.rotate(my_particle_lambdas.pos().turn()));//p_config.spho_config.so_config.go_config.pos + my_particle_lambdas.pos();
 		new_p_config_short.initial_rotation = global_transform.q;// = global_transform.q;
 		new_p_config_short.initial_accel_magnitude; //= 30;
 		new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;//My_Vector3::unturn(global_transform.q.rotate(const_p_config.initial_accel_dir.turn())); //Le falta lambda de accel inicial
@@ -59,23 +59,17 @@ void ParticleGenerator::generate_particles(double dt)
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
 		auto new_particle = new Particle(p_config);
 		set_up_particle(new_particle);
-
-		/*
-		auto& u = global_transform.p;
-		auto& q = global_transform.q;
-		std::cout << "Parent: " << u.x << " " << u.y << " " << u.z << " --- " << q.x << " " << q.y << " " << q.z << " " << q.w << '\n';
-
-		auto& u2 = new_particle->global_transform.p;
-		auto& q2 = new_particle->global_transform.q;
-		std::cout << "Child:  " << u2.x << " " << u2.y << " " << u2.z << " --- " << q2.x << " " << q2.y << " " << q2.z << " " << q2.w << '\n';
-		*/
-		/*
-		auto& u3 = new_particle->child_objects.front()->global_transform.p;
-		auto& q3 = new_particle->child_objects.front()->global_transform.q;
-		std::cout << "Gen:    " << u3.x << " " << u3.y << " " << u3.z << " --- " << q3.x << " " << q3.y << " " << q3.z << " " << q3.w << '\n';
-		*/
 	}
 
+
+	auto& e = global_transform.p;
+	auto& d = global_transform.q;
+	std::cout << "Parent: " << e.x << " " << e.y << " " << e.z << " --- " << d.x << " " << d.y << " " << d.z << " " << d.w << '\n';
+	for (auto& c : child_objects) {
+		auto& e = c->global_transform.p;
+		auto& d = c->global_transform.q;
+		std::cout << "Child:  " << e.x << " " << e.y << " " << e.z << " --- " << d.x << " " << d.y << " " << d.z << " " << d.w << '\n';
+	}
 }
 
 void ParticleGenerator::set_up_particle(Particle* p)

@@ -30,14 +30,14 @@ ParticleGenerator::config ball_thrower{
 		2 //lifetime
 	},
 	ParticleGenerator::particle_calculator_functions{
-		[] {return My_Vector3{
+		[] {return PxVec3{
 			Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
 			Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
 			Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5
 			};
 		},//POS
 		[] {//VEL_DIR
-			return My_Vector3{
+			return PxVec3{
 				0.1f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 				1,
 				0.1f * Distributions::NormalDistribution::get(NormalDistribution::d_025)
@@ -60,7 +60,7 @@ ParticleGenerator::config ball_thrower{
 		[] {//Size
 			return Distributions::NormalDistribution::get(NormalDistribution::d_025);
 		},
-		[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
+		[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent
 		auto vector_from_particle_to_generator = pos_generator - pos_particle;
 		auto module = vector_from_particle_to_generator.magnitude();
@@ -98,7 +98,7 @@ ParticleGenerator::config x_wing_shoot_type{
 5 //lifetime
 },
 ParticleGenerator::particle_calculator_functions{
-	[] {return My_Vector3{0,0,0
+	[] {return PxVec3{0,0,0
 		/*
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10) * Distributions::RandomSignDistribution::get(), //0,0,0
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10)* Distributions::RandomSignDistribution::get(),
@@ -107,7 +107,7 @@ ParticleGenerator::particle_calculator_functions{
 		};
 	},//POS
 	[] {//VEL_DIR
-		return My_Vector3{
+		return PxVec3{
 			0,0,1
 		};
 	},
@@ -126,7 +126,7 @@ ParticleGenerator::particle_calculator_functions{
 	[] {//Size
 		return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_025);
 	},
-	[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
+	[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent
 		auto vector_from_particle_to_generator = pos_generator - pos_particle;
 		auto module = vector_from_particle_to_generator.magnitude();
@@ -162,10 +162,10 @@ Particle::config{
 7 //lifetime
 	},
 		ParticleGenerator::particle_calculator_functions{
-			[] {return My_Vector3{ 0,0,0};
+			[] {return PxVec3{ 0,0,0};
 			},//POS
 			[] {//VEL_DIR
-				return My_Vector3{
+				return PxVec3{
 					0,0,1
 				};
 			},
@@ -184,7 +184,7 @@ Particle::config{
 			[] {//Size
 				return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_025);
 			},
-			[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
+			[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent
 		auto vector_from_particle_to_generator = pos_generator - pos_particle;
 		auto module = vector_from_particle_to_generator.magnitude();
@@ -223,14 +223,14 @@ ParticleGenerator::config missile_particle_system{
 0.5 //lifetime
 },
 ParticleGenerator::particle_calculator_functions{
-	[] {return My_Vector3{
+	[] {return PxVec3{
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
 	};
 },//POS
 [] {//VEL_DIR
-	return My_Vector3{
+	return PxVec3{
 		0.25f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 		0.25f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 		-1,
@@ -253,7 +253,7 @@ ParticleGenerator::particle_calculator_functions{
 [] {//Size
 	return 0.01*Distributions::NormalDistribution::get(NormalDistribution::d_025);
 },
-[](Vector3 pos_particle, Vector3 pos_generator) {//Area of interest
+[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		/*
 		//Inside radius of parent
 		auto vector_from_particle_to_generator = pos_generator - pos_particle;

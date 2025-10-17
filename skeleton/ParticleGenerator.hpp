@@ -29,14 +29,14 @@ Eliminar particulas cuando:
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
 	struct particle_calculator_functions {
-		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
-		std::function<My_Vector3()> dir = [] { return My_Vector3{ 0,0,0 }; };
+		std::function<PxVec3()> pos = [] { return PxVec3{ 0,0,0 }; };
+		std::function<PxVec3()> dir = [] { return PxVec3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
 		std::function<float()> lifetime = [] { return 0; };
 		std::function<Vector4()> color = [] { return Vector4( 0,0,0,0 ); };
 		std::function<float()> size = [] { return 0; };
-		std::function<bool(Vector3 pos_particle, Vector3 pos_generator)> inside_area_of_interest 
-			= [](Vector3 pos_particle, Vector3 pos_generator) {return true; };
+		std::function<bool(PxVec3 pos_particle, PxVec3 pos_generator)> inside_area_of_interest
+			= [](PxVec3 pos_particle, PxVec3 pos_generator) {return true; };
 	};
 	struct config {
 		GlobalCoords_CompositeGameObject::config go_config;

@@ -28,14 +28,14 @@ public:
 	struct projectile_config {
 		Particle::config particle_config;
 		speed s_real;
-		mass m_real;
+		PhysicLib::mass m_real;
 		gravity m_gravity = PhysicLib::GRAVITY;
 	};
 	virtual void step(double dt) override;
 	Projectile(projectile_config& c);
 protected:
-	mass m_real;
-	mass m_simulated;
+	PhysicLib::mass m_real;
+	PhysicLib::mass m_simulated;
 	speed s_real;
 	speed s_simulated;
 	gravity g_simulated;

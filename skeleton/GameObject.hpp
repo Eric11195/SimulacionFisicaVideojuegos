@@ -1,11 +1,12 @@
 #pragma once
 #include <list>
 #include "PxPhysicsAPI.h"
-#include "My_Vector3.hpp"
+#include "core.hpp"
 #include "PhysicLib.hpp"
 #include "core.hpp"
 #include "InputProcessor.hpp"
 #include <memory>
+
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -14,10 +15,13 @@
 using Transform = physx::PxTransform;
 using Quaternion = physx::PxQuat;
 class CompositeGameObject;
+class ForceGenerator;
+
+using namespace physx;
 
 struct GameObject : public InputProcessor{
 	struct config {
-		My_Vector3 pos = My_Vector3::zero(), initial_speed_dir = { 0,1,0 }, initial_accel_dir = {0,-1,0};
+		PxVec3 pos = PxVec3(0,0,0), initial_speed_dir = {0,1,0}, initial_accel_dir = {0,-1,0};
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
@@ -39,29 +43,37 @@ struct GameObject : public InputProcessor{
 	virtual void translate_to(physx::PxVec3);
 	virtual void rotate(physx::PxQuat);
 
-	void set_accel(My_Vector3 new_accel);
-	void add_accel(My_Vector3 add_accel);
-	void set_vel(My_Vector3 vel);
+	void reset_accel();
+	void set_accel(PxVec3 new_accel);
+	void add_accel(PxVec3 add_accel);
+	void set_vel(PxVec3 vel);
+	float get_mass() { return mass; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
 	virtual void handle_mouse_button_down(uint8_t mb_id) override;
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual void handle_keyboard_button_up(unsigned char key) override;
+
+	void add_force_to_myself(ForceGenerator*);
+
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif
 //protected:
 	void integrate(double t);
+	float mass;
 	Transform global_transform;
 	//Use only in calculations;
 	Transform local_transform;
+	Transform global_to_local_transform;
 	std::list<std::unique_ptr<GameObject>> child_objects;
+	std::list<std::shared_ptr<ForceGenerator>> forces_applied_to_this_obj;
 
 private:
 #ifdef DAMPING
 	float damping_mult;
 #endif
-	My_Vector3 vel;
-	My_Vector3 accel;
+	PxVec3 vel;
+	PxVec3 accel;
 };

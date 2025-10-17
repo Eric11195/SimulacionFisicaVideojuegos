@@ -256,6 +256,7 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CameraProjectileShooter.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />
+    <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="MissileGenerator.hpp" />
