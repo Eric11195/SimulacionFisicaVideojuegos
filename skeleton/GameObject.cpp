@@ -4,8 +4,8 @@
 GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	: local_transform(Transform(c.pos,c.initial_rotation)),
 	global_transform(Transform(c.pos,c.initial_rotation)),
-	vel(c.initial_speed_dir.normalize()*c.initial_speed_magnitude),
-	accel(c.initial_accel_dir.normalize()*c.initial_accel_magnitude),
+	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
+	accel(c.initial_accel_dir.getNormalized()*c.initial_accel_magnitude),
 	damping_mult(c.damping_mult)
 {
 	for (auto go : go_s) {
@@ -66,12 +66,12 @@ void GameObject::set_accel(PxVec3 new_accel)
 	accel = new_accel;
 }
 
-void GameObject::add_accel(PxVec3 add_accel)
+void GameObject::add_accel(physx::PxVec3 add_accel)
 {
 	accel += add_accel;
 }
 
-void GameObject::set_vel(PxVec3 new_vel)
+void GameObject::set_vel(physx::PxVec3 new_vel)
 {
 	vel = new_vel;
 }

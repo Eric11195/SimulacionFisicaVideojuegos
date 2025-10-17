@@ -262,7 +262,7 @@
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
-    <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
+    <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PassThrough_CompositeGameObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
@@ -299,7 +299,6 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
-    <ClInclude Include="My_Vector3.hpp" />
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="ShipCannon.hpp" />

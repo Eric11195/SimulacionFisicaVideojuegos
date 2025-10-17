@@ -1,6 +1,5 @@
 #pragma once
 #include "PassThrough_CompositeGameObject.hpp"
-#include "My_Vector3.hpp"
 #include "ParticleGenerator.hpp"
 #include <list>
 #include "GlobalCoords_CompositeGameObject.hpp"

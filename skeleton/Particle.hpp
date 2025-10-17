@@ -9,7 +9,6 @@
 //	Euler Explicito
 //	Semiexplicito
 #include "SceneObject.hpp"
-#include "My_Vector3.hpp"
 #include "PhysicLib.hpp"
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION

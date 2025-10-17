@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
 #include <list>
-#include "My_Vector3.hpp"
 #include <cstdint>
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
@@ -13,24 +12,24 @@ Datos random:
 	vel inicial
 	lifetime
 	color
-	tamaño
-	(aceleración)
+	tamaï¿½o
+	(aceleraciï¿½n)
 	(damping)
 */
 
 /*
 Eliminar particulas cuando:
 	lifetime
-	posición (lluvia llega al suelo)
+	posiciï¿½n (lluvia llega al suelo)
 	salen zona de interes
-	nº max
+	nï¿½ max
 */
 
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
 	struct particle_calculator_functions {
-		std::function<PxVec3()> pos = [] { return PxVec3{ 0,0,0 }; };
-		std::function<PxVec3()> dir = [] { return PxVec3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> pos = [] { return physx::PxVec3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> dir = [] { return physx::PxVec3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
 		std::function<float()> lifetime = [] { return 0; };
 		std::function<Vector4()> color = [] { return Vector4( 0,0,0,0 ); };

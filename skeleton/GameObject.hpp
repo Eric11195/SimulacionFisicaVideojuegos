@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include "PxPhysicsAPI.h"
-#include "core.hpp"
 #include "PhysicLib.hpp"
 #include "core.hpp"
 #include "InputProcessor.hpp"
@@ -17,11 +16,9 @@ using Quaternion = physx::PxQuat;
 class CompositeGameObject;
 class ForceGenerator;
 
-using namespace physx;
-
 struct GameObject : public InputProcessor{
 	struct config {
-		PxVec3 pos = PxVec3(0,0,0), initial_speed_dir = {0,1,0}, initial_accel_dir = {0,-1,0};
+		physx::PxVec3 pos = { 0,0,0 }, initial_speed_dir = { 0,1,0 }, initial_accel_dir = { 0,-1,0 };
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
@@ -44,9 +41,9 @@ struct GameObject : public InputProcessor{
 	virtual void rotate(physx::PxQuat);
 
 	void reset_accel();
-	void set_accel(PxVec3 new_accel);
-	void add_accel(PxVec3 add_accel);
-	void set_vel(PxVec3 vel);
+	void set_accel(physx::PxVec3 new_accel);
+	void add_accel(physx::PxVec3 add_accel);
+	void set_vel(physx::PxVec3 vel);
 	float get_mass() { return mass; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
@@ -74,6 +71,6 @@ private:
 #ifdef DAMPING
 	float damping_mult;
 #endif
-	PxVec3 vel;
-	PxVec3 accel;
+	physx::PxVec3 vel;
+	physx::PxVec3 accel;
 };

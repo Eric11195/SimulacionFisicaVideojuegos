@@ -1,5 +1,4 @@
 #pragma once
-#include "My_Vector3.hpp"
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include <list>
@@ -19,9 +18,7 @@ public:
 	};
 	//FOR DRAGON USE PxShape = Triangle Meshes
 	SceneObject(config c, PxShape* shape);
-		//PxShape* _sh, My_Vector3 v, Color _cl);
 	~SceneObject() override;
-
 };
 
 
