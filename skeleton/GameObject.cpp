@@ -6,7 +6,7 @@ GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
 	accel(c.initial_accel_dir.getNormalized()*c.initial_accel_magnitude),
-	damping_mult(c.damping_mult)
+	damping_mult(c.damping_mult), mass(c.mass)
 {
 	for (auto go : go_s) {
 		addChild(go);
@@ -61,7 +61,7 @@ void GameObject::reset_accel()
 	accel = { 0,0,0 };
 }
 
-void GameObject::set_accel(PxVec3 new_accel)
+void GameObject::set_accel(physx::PxVec3 new_accel)
 {
 	accel = new_accel;
 }
@@ -86,12 +86,11 @@ void GameObject::integrate(double dt)
 {
 
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
-	/*
 	reset_accel();
 	for (auto& force : forces_applied_to_this_obj) {
 		add_accel(force->apply_force(*this));
 	}
-	*/
+
 	vel += accel * dt;
 	//tr.p += dt * vel.turn();
 	translate(dt * vel);
@@ -149,7 +148,17 @@ void GameObject::handle_keyboard_button_up(unsigned char key)
 		child->handle_keyboard_button_up(key);
 }
 
-void GameObject::add_force_to_myself(ForceGenerator* f)
+void GameObject::add_force_to_myself(std::shared_ptr<ForceGenerator> f)
 {
-	forces_applied_to_this_obj.insert(forces_applied_to_this_obj.end(), std::shared_ptr<ForceGenerator>(f));
+	//This ptr is not created correctly
+	forces_applied_to_this_obj.insert(forces_applied_to_this_obj.end(), f);
+}
+
+void GameObject::add_force_to_myself(std::string name)
+{
+	auto it = force_generators_map.find(name);
+	if (it == force_generators_map.end())
+		throw "No generator exist with that name";
+	//This ptr is not created correctly
+	add_force_to_myself((*it).second);
 }

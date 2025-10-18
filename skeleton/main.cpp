@@ -21,6 +21,7 @@
 #include "ParticleDescriptor.hpp"
 #include "ParticleSystem.hpp"
 #include "Ship.hpp"
+#include "ForceGenerator.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -68,7 +69,13 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
+	//INSTANTIATE SCENE NODE
 	scene_game_object = new GlobalCoords_CompositeGameObject();
+	//CREATE ALL FORCE GENERATORS:
+	scene_game_object->addChild(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
+
+	//------------------------------
+
 	scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 

@@ -20,6 +20,7 @@ void MissileGenerator::set_up_particle(Particle* p)
 	addChild(p);
 	auto c = new ParticleGenerator(missile_particle_system);
 	p->addChild(c);
+	p->add_force_to_myself("gravity");
 	//p->local_transform.q = local_transform.q;
 
 	/*

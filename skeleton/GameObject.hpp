@@ -5,7 +5,8 @@
 #include "core.hpp"
 #include "InputProcessor.hpp"
 #include <memory>
-
+#include <map>
+#include <string>
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -17,11 +18,13 @@ class CompositeGameObject;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
+	inline static std::map<std::string, std::shared_ptr<ForceGenerator>> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 }, initial_speed_dir = { 0,1,0 }, initial_accel_dir = { 0,-1,0 };
 		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
+		float mass = 1;
 	};
 	GameObject(const CompositeGameObject&) = delete;
 	GameObject& operator =(const CompositeGameObject&) = delete;
@@ -52,7 +55,8 @@ struct GameObject : public InputProcessor{
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual void handle_keyboard_button_up(unsigned char key) override;
 
-	void add_force_to_myself(ForceGenerator*);
+	void add_force_to_myself(std::shared_ptr<ForceGenerator>);
+	void add_force_to_myself(std::string);
 
 #ifdef DAMPING
 	void set_dumping(float f);
