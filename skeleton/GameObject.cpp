@@ -82,10 +82,9 @@ void GameObject::set_dumping(float f)
 	damping_mult = f;
 }
 #endif
-void GameObject::calculate_global_to_local_rot(Transform const& parent_tr)
+void GameObject::calculate_global_to_local_rot()
 {
-	global_to_local_rot = parent_tr.getInverse().q;
-	global_to_local_rot *= local_transform.q.getConjugate();
+	global_to_local_rot = global_transform.q.getConjugate();
 }
 void GameObject::integrate(double dt)
 {
@@ -117,10 +116,9 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
-
-	calculate_global_to_local_rot(parent_tr);
-
 	global_transform = parent_tr.transform(local_transform);
+
+	calculate_global_to_local_rot();
 
 	for (auto& child : child_objects)
 		child->update_position(global_transform);

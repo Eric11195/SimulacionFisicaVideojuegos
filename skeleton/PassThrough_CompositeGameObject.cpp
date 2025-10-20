@@ -16,8 +16,8 @@ void PassThrough_CompositeGameObject::step(double dt)
 
 void PassThrough_CompositeGameObject::update_position(Transform const& parent)
 {
-	calculate_global_to_local_rot(parent);
 	global_transform = parent.transform(local_transform);
+	calculate_global_to_local_rot();
 	for (auto& child : child_objects)
 		child->update_position(parent_transform);
 }

@@ -63,7 +63,7 @@ struct GameObject : public InputProcessor{
 	void set_dumping(float f);
 #endif
 protected:
-	void calculate_global_to_local_rot(Transform const& parent_tr);
+	void calculate_global_to_local_rot();
 	void integrate(double t);
 	float mass;
 	Transform global_transform;

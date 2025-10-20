@@ -19,9 +19,8 @@ void GlobalCoords_CompositeGameObject::step(double dt)
 
 void GlobalCoords_CompositeGameObject::update_position(Transform const& parent)
 {
-    calculate_global_to_local_rot(parent);
-
     global_transform = parent.transform(local_transform);
+    calculate_global_to_local_rot();
     for (auto& child : child_objects)
         child->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 }
