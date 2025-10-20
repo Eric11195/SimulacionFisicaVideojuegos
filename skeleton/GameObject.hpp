@@ -48,6 +48,7 @@ struct GameObject : public InputProcessor{
 	void add_accel(physx::PxVec3 add_accel);
 	void set_vel(physx::PxVec3 vel);
 	float get_mass() { return mass; }
+	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
@@ -61,13 +62,14 @@ struct GameObject : public InputProcessor{
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif
-//protected:
+protected:
+	void calculate_global_to_local_rot(Transform const& parent_tr);
 	void integrate(double t);
 	float mass;
 	Transform global_transform;
 	//Use only in calculations;
 	Transform local_transform;
-	Transform global_to_local_transform;
+	Quaternion global_to_local_rot;
 	std::list<std::unique_ptr<GameObject>> child_objects;
 	std::list<std::shared_ptr<ForceGenerator>> forces_applied_to_this_obj;
 

@@ -82,13 +82,20 @@ void GameObject::set_dumping(float f)
 	damping_mult = f;
 }
 #endif
+void GameObject::calculate_global_to_local_rot(Transform const& parent_tr)
+{
+	global_to_local_rot = parent_tr.getInverse().q;
+	global_to_local_rot *= local_transform.q.getConjugate();
+}
 void GameObject::integrate(double dt)
 {
 
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
 	reset_accel();
 	for (auto& force : forces_applied_to_this_obj) {
-		add_accel(force->apply_force(*this));
+		//Get matrix transformation only on rotation, to pass from global to local
+		auto new_accel = global_to_local_rot.rotate(force->apply_force(*this));
+		add_accel(new_accel);
 	}
 
 	vel += accel * dt;
@@ -110,9 +117,11 @@ void GameObject::link_to_parent(Transform const& parent_tr)
 }
 void GameObject::update_position(Transform const& parent_tr)
 {
-	global_to_local_transform = parent_tr.getInverse();
+
+	calculate_global_to_local_rot(parent_tr);
 
 	global_transform = parent_tr.transform(local_transform);
+
 	for (auto& child : child_objects)
 		child->update_position(global_transform);
 }
