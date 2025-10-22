@@ -28,7 +28,15 @@ struct SphereObject : public SceneObject{
 		float radius = 1;
 	};
 	SphereObject(config c);
-	SphereObject(SceneObject::config c, PxShape* shape);
+	//SphereObject(SceneObject::config c, PxShape* shape);
+};
+struct CubeObject : public SceneObject {
+	struct config {
+		SceneObject::config so_config;
+		PxVec3 half_extents;
+	};
+	CubeObject(config c);
+	//CubeObject(SceneObject::config c, PxShape* shape);
 };
 //TO DO:
 //• PxBoxGeometry

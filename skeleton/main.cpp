@@ -22,6 +22,7 @@
 #include "ParticleSystem.hpp"
 #include "Ship.hpp"
 #include "ForceGenerator.hpp"
+#include "EnemyShip.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -86,7 +87,10 @@ void initPhysics(bool interactive)
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
-	scene_game_object->addChild(new Ship());
+	auto player = new Ship();
+	scene_game_object->addChild(player);
+	scene_game_object->addChild(new EnemyShip(player));
+
 	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
 	//new Projectile(c);
 }

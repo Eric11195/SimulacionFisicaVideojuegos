@@ -23,9 +23,10 @@
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="ScreenSizeConstants.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
-    <ClCompile Include="ParticleGeneratorsDescriptros.cpp" />
     <ClCompile Include="PassThrough_CompositeGameObject.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
+    <ClCompile Include="EnemyShip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -38,7 +39,6 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="SceneObject.hpp" />
-    <ClInclude Include="My_Vector3.hpp" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="Projectile.hpp" />
@@ -59,6 +59,7 @@
     <ClInclude Include="MissileGenerator.hpp" />
     <ClInclude Include="PassThrough_CompositeGameObject.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
+    <ClInclude Include="EnemyShip.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

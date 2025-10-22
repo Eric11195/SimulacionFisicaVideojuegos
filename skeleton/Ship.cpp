@@ -17,13 +17,15 @@ void Ship::step(double dt)
 {
 	GameObject::step(dt);
 
-	//if(current_angular_velocity)
+	//Girar
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
 		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
 
+	//Virar
 	float virar_radians_vel = -virar_radians_per_second * dt * (virar_buttons[0] - virar_buttons[1]);
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 	
+	//advance
 	if (current_state != constante) {
 		float desired_speed = min(1, max(0, int(current_state)));
 		speed += dt * (desired_speed - speed);

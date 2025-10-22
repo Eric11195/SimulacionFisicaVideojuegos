@@ -56,6 +56,11 @@ void GameObject::rotate(physx::PxQuat q)
 	local_transform.q *= q;
 }
 
+void GameObject::set_velocity(physx::PxVec3 v)
+{
+	vel = v;
+}
+
 void GameObject::reset_accel()
 {
 	accel = { 0,0,0 };

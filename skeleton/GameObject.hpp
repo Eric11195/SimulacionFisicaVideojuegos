@@ -14,7 +14,6 @@
 
 using Transform = physx::PxTransform;
 using Quaternion = physx::PxQuat;
-class CompositeGameObject;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
@@ -26,8 +25,8 @@ struct GameObject : public InputProcessor{
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
 		float mass = 1;
 	};
-	GameObject(const CompositeGameObject&) = delete;
-	GameObject& operator =(const CompositeGameObject&) = delete;
+	GameObject(const GameObject&) = delete;
+	GameObject& operator =(const GameObject&) = delete;
 	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
@@ -41,14 +40,16 @@ struct GameObject : public InputProcessor{
 	virtual void update_position(Transform const& parent_tr);
 	void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
-	virtual void rotate(physx::PxQuat);
+	virtual void rotate(Quaternion);
 
+	void set_velocity(physx::PxVec3);
 	void reset_accel();
 	void set_accel(physx::PxVec3 new_accel);
 	void add_accel(physx::PxVec3 add_accel);
 	void set_vel(physx::PxVec3 vel);
 	float get_mass() { return mass; }
 	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
+	Transform get_global_tr() { return global_transform; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
