@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cmath>
 #include <ctgmath>
+#include "ParticleGeneratorsDescriptors.hpp"
+#include "ParticleGenerator.hpp"
 
 EnemyShip::EnemyShip(GameObject* player)
 	: GameObject(), player_go(player)
@@ -14,6 +16,12 @@ EnemyShip::EnemyShip(GameObject* player)
 		cube->translate({ i * 1.2f,0,0 });
 		addChild(cube);
 	}
+	SceneObject::config c{};
+	c.color = {1,0,0,1};
+	auto cube = new CubeObject({ c, {0.1, 0.1, 1} });
+	cube->translate({ 0,0,0.5 });
+	addChild(cube);
+	
 	//Set random pos
 	translate_to({
 		(Distributions::LinearDistribution::get() * 50) - 25,
@@ -21,6 +29,9 @@ EnemyShip::EnemyShip(GameObject* player)
 		(Distributions::LinearDistribution::get() * 50) - 25
 	});
 	set_vel({ 0,0,10});
+
+	ParticleGenerator* paco = new ParticleGenerator(missile_particle_system);
+	addChild(paco);
 }
 
 void EnemyShip::step(double dt)
@@ -49,21 +60,25 @@ physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) 
 
 void EnemyShip::think_step(double dt)
 {
+	//PREGUNTA AL PROFE => COMO SABER PARA DONDE TENEMOS QUE ROTAR LA NAVE??????????????????????????????????????????????????????????????????????
+
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_direction_to_player = (global_transform.p - player_tr.p).getNormalized();
 	//global_direction_to_player = global_direction_to_player;//local_transform.q.rotate(global_direction_to_player).getNormalized();
 	PxVec3 global_ship_direction = local_transform.q.rotate({ 0,0,1 }).getNormalized();
 	PxVec3 v_orthogonal_to_rotation = global_direction_to_player.cross(global_ship_direction).getNormalized();
+	//SACAR SI LA X DE ESTE VECTOR EN EL SISTEMA DE COORDENADAS LOCAL APUNTA HACIA LA DERECHA O HACIA LA IZQUIERA
 	float rotation_to_apply_in_radians = 0.5 * dt;
-	float arccos_of_angle_to_player_pos_rot = global_direction_to_player.dot(global_ship_direction);
-	float rotation_from_current_rot_to_player_pointing_rot = acos(arccos_of_angle_to_player_pos_rot);
-	std::cout << arccos_of_angle_to_player_pos_rot <<" rot " << rotation_from_current_rot_to_player_pointing_rot << '\n';// << "  vec " << v_orthogonal_to_rotation.x << " " << v_orthogonal_to_rotation.y << " " << v_orthogonal_to_rotation.z << '\n';
+	//PxVec3 unconverted_x = local_transform.q.getConjugate().rotate(v_orthogonal_to_rotation);
+	//float arccos_of_angle_to_player_pos_rot = global_direction_to_player.dot(global_ship_direction);
+	//float rotation_from_current_rot_to_player_pointing_rot = acos(arccos_of_angle_to_player_pos_rot);
+	//std::cout <</* " rot " << rotation_from_current_rot_to_player_pointing_rot << */" (" << unconverted_x.x << ", " << unconverted_x.y << ", " << unconverted_x.z << ')' << '\n';// << "  vec " << v_orthogonal_to_rotation.x << " " << v_orthogonal_to_rotation.y << " " << v_orthogonal_to_rotation.z << '\n';
 	
 	//std::cout << rotation_to_apply_in_radians * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1) <<"\n";
 	if (PxAbs(1.0f - v_orthogonal_to_rotation.magnitude()) < 1e-3f){
 		PxQuat rot_quat = PxQuat(
-			rotation_to_apply_in_radians * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1), 
+			rotation_to_apply_in_radians,// * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1), 
 			v_orthogonal_to_rotation.getNormalized()
 		);
 		rotate(rot_quat);
