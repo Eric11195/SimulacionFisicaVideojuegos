@@ -45,9 +45,6 @@ struct GameObject : public InputProcessor{
 	virtual void rotate(Quaternion);
 
 	void set_velocity(physx::PxVec3);
-	void reset_accel();
-	void set_accel(physx::PxVec3 new_accel);
-	void add_accel(physx::PxVec3 add_accel);
 	void set_vel(physx::PxVec3 vel);
 	float get_inv_mass() const { return m.inv_mass; }
 	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
@@ -75,11 +72,9 @@ protected:
 	Quaternion global_to_local_rot;
 	std::list<std::unique_ptr<GameObject>> child_objects;
 	std::list<std::shared_ptr<ForceGenerator>> forces_applied_to_this_obj;
-
+	physx::PxVec3 vel;
 private:
 #ifdef DAMPING
 	float damping_mult;
 #endif
-	physx::PxVec3 vel;
-	physx::PxVec3 accel;
 };

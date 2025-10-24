@@ -7,7 +7,7 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleGenerator.hpp"
 
-constexpr float near_threshold_to_flee = 20;
+constexpr float near_threshold_to_flee = 10;
 
 EnemyShip::EnemyShip(GameObject* player)
 	: GameObject(), player_go(player)
@@ -30,7 +30,7 @@ EnemyShip::EnemyShip(GameObject* player)
 		(Distributions::LinearDistribution::get() * 100) - 50,
 		(Distributions::LinearDistribution::get() * 100) - 50
 	});
-	set_vel({ 0,0,10});
+	set_vel({ 0,0,15});
 
 	ParticleGenerator* paco = new ParticleGenerator(missile_particle_system);
 	addChild(paco);
@@ -67,17 +67,25 @@ void EnemyShip::think_step(double dt)
 
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
-	PxVec3 vector_to_player = player_tr.p - global_transform.p;
-	float distance_to_player = vector_to_player.normalize();
-	if (distance_to_player < near_threshold_to_flee) {
-		vector_to_player *= -1;
+	PxVec3 global_vector_to_player = player_tr.p - global_transform.p;
+	PxVec3 local_direction_to_player = global_to_local_rot.rotate(global_vector_to_player);
+	float distance_to_player = (local_direction_to_player - vel).magnitude();
+	float rotation_to_apply_in_radians = 0.33*dt;
+
+	PxVec3 local_ship_direction = { 0,0,1 };
+
+	//Si estan mirando en dirección hacia el player
+	if ((local_direction_to_player + local_ship_direction).z > 0) {
+		//rotan más rápido para apuntarte mejor y cosas de gameplay y tal
+		rotation_to_apply_in_radians = 1*dt;
 	}
-	PxVec3 global_direction_to_player =	global_to_local_rot.rotate(	vector_to_player.getNormalized() );
-	//global_direction_to_player = global_direction_to_player;//local_transform.q.rotate(global_direction_to_player).getNormalized();
-	PxVec3 global_ship_direction = { 0,0,1 };		//local_transform.q.rotate({ 0,0,1 }).getNormalized();
-	PxVec3 v_orthogonal_to_rotation = global_direction_to_player.cross(global_ship_direction).getNormalized();
+	if (distance_to_player < near_threshold_to_flee) {
+		//Si estan muy cerca huyen
+		local_direction_to_player *= -1;
+	}
+
+	PxVec3 v_orthogonal_to_rotation = local_direction_to_player.cross(local_ship_direction).getNormalized();
 	//SACAR SI LA X DE ESTE VECTOR EN EL SISTEMA DE COORDENADAS LOCAL APUNTA HACIA LA DERECHA O HACIA LA IZQUIERA
-	float rotation_to_apply_in_radians = 0.5 * dt;
 
 	if (PxAbs(1.0f - v_orthogonal_to_rotation.magnitude()) < 1e-3f){
 		PxQuat rot_quat = PxQuat(

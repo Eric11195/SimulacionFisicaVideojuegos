@@ -13,7 +13,7 @@ Projectile::Projectile(projectile_config& c)
 {
 	update_s_mass();
 	update_s_gravity();
-	set_accel({0,-g_simulated, 0});
+//	set_accel({0,-g_simulated, 0});
 }
 
 void Projectile::update_s_gravity()
