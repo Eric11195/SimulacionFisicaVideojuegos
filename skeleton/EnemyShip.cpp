@@ -7,6 +7,8 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleGenerator.hpp"
 
+constexpr float near_threshold_to_flee = 20;
+
 EnemyShip::EnemyShip(GameObject* player)
 	: GameObject(), player_go(player)
 {
@@ -45,7 +47,7 @@ void EnemyShip::update_position(physx::PxTransform const& parent_tr)
 	parent_to_child_tr = parent_tr;
 	GameObject::update_position(parent_tr);
 }
-
+/*
 physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) {
 	physx::PxQuat q;
 	physx::PxVec3 a = from.cross(to);
@@ -57,6 +59,7 @@ physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) 
 	q.w = (sqrt((from_mag * from_mag * to_mag * to_mag)) + from.dot(to));
 	return q;
 }
+*/
 
 void EnemyShip::think_step(double dt)
 {
@@ -64,7 +67,12 @@ void EnemyShip::think_step(double dt)
 
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
-	PxVec3 global_direction_to_player =	global_to_local_rot.rotate(	(player_tr.p - global_transform.p).getNormalized() );
+	PxVec3 vector_to_player = player_tr.p - global_transform.p;
+	float distance_to_player = vector_to_player.normalize();
+	if (distance_to_player < near_threshold_to_flee) {
+		vector_to_player *= -1;
+	}
+	PxVec3 global_direction_to_player =	global_to_local_rot.rotate(	vector_to_player.getNormalized() );
 	//global_direction_to_player = global_direction_to_player;//local_transform.q.rotate(global_direction_to_player).getNormalized();
 	PxVec3 global_ship_direction = { 0,0,1 };		//local_transform.q.rotate({ 0,0,1 }).getNormalized();
 	PxVec3 v_orthogonal_to_rotation = global_direction_to_player.cross(global_ship_direction).getNormalized();
