@@ -63,37 +63,37 @@ physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) 
 
 void EnemyShip::think_step(double dt)
 {
-	//PREGUNTA AL PROFE => COMO SABER PARA DONDE TENEMOS QUE ROTAR LA NAVE??????????????????????????????????????????????????????????????????????
-
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_vector_to_player = player_tr.p - global_transform.p;
 	PxVec3 local_direction_to_player = global_to_local_rot.rotate(global_vector_to_player);
 	float distance_to_player = (local_direction_to_player - vel).magnitude();
-	float rotation_to_apply_in_radians = 0.33*dt;
+	float rotation_to_apply_in_radians;
 
 	PxVec3 local_ship_direction = { 0,0,1 };
 
-	//Si estan mirando en dirección hacia el player
+	//Si está mirando en dirección hacia el player
 	if ((local_direction_to_player + local_ship_direction).z > 0) {
-		//rotan más rápido para apuntarte mejor y cosas de gameplay y tal
+		//rota más rápido para apuntarte mejor y cosas de gameplay y tal
 		rotation_to_apply_in_radians = 1*dt;
 	}
+	else {
+		//Rotan más lento para que se alejen más del player al hacer una batida. Y así le vuelve a dar tiempo a apuntarte
+		rotation_to_apply_in_radians = 0.33 * dt;
+	}
+
 	if (distance_to_player < near_threshold_to_flee) {
 		//Si estan muy cerca huyen
 		local_direction_to_player *= -1;
 	}
 
 	PxVec3 v_orthogonal_to_rotation = local_direction_to_player.cross(local_ship_direction).getNormalized();
-	//SACAR SI LA X DE ESTE VECTOR EN EL SISTEMA DE COORDENADAS LOCAL APUNTA HACIA LA DERECHA O HACIA LA IZQUIERA
 
 	if (PxAbs(1.0f - v_orthogonal_to_rotation.magnitude()) < 1e-3f){
 		PxQuat rot_quat = PxQuat(
-			-rotation_to_apply_in_radians,// * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1), 
+			-rotation_to_apply_in_radians,
 			v_orthogonal_to_rotation.getNormalized()
 		);
-		//std::cout << rot_quat.x <<" "<< rot_quat.y << " " << rot_quat.z << " " << rot_quat.w << '\n';
 		rotate(rot_quat);
-		//rotate(perfect_rotation);
 	}
 }
