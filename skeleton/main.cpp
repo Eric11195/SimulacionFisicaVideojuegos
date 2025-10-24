@@ -90,7 +90,7 @@ void initPhysics(bool interactive)
 
 	auto player = new Ship();
 	scene_game_object->addChild(player);
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		scene_game_object->addChild(new EnemyShip(player));
 	}
 	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));

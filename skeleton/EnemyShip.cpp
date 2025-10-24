@@ -24,9 +24,9 @@ EnemyShip::EnemyShip(GameObject* player)
 	
 	//Set random pos
 	translate_to({
-		(Distributions::LinearDistribution::get() * 50) - 25,
-		(Distributions::LinearDistribution::get() * 50) - 25,
-		(Distributions::LinearDistribution::get() * 50) - 25
+		(Distributions::LinearDistribution::get() * 100) - 50,
+		(Distributions::LinearDistribution::get() * 100) - 50,
+		(Distributions::LinearDistribution::get() * 100) - 50
 	});
 	set_vel({ 0,0,10});
 
