@@ -51,8 +51,8 @@ void ParticleGenerator::generate_particles(double dt)
 		if (p_config.spho_config.radius <= 0) continue;
 		new_p_config_short.pos = global_transform.p + my_particle_lambdas.pos();
 		new_p_config_short.initial_rotation = global_transform.q;
-		new_p_config_short.initial_accel_magnitude; //= 30;
-		new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
+		//new_p_config_short.initial_accel_magnitude; //= 30;
+		//new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
 		new_p_config_short.initial_speed_magnitude = avrg_speed + my_particle_lambdas.vel();
 		new_p_config_short.initial_speed_dir = const_p_config.initial_speed_dir + my_particle_lambdas.dir();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();

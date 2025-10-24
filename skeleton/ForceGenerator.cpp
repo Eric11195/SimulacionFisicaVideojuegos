@@ -10,9 +10,9 @@ Directional_ForceGenerator::Directional_ForceGenerator(std::string name, physx::
 
 
 //F = masa * accel
-physx::PxVec3 Directional_ForceGenerator::apply_force(GameObject& g)
+physx::PxVec3 Directional_ForceGenerator::apply_force(GameObject const& g)
 {
-	return global_force / g.get_mass();
+	return global_force;
 }
 
 void Directional_ForceGenerator::update_position(Transform const& parent_tr)
@@ -37,4 +37,22 @@ ForceGenerator::~ForceGenerator()
 	if (it == GameObject::force_generators_map.end()) {
 		throw "There is no force generator with that name. Probably it has already been deleted";
 	}
+}
+Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v)
+	: Directional_ForceGenerator("gravity", v, 9.8f) {}
+
+physx::PxVec3 Gravity_ForceGenerator::apply_force(GameObject const& g)
+{
+	return global_force / g.get_mass();
+}
+
+Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude)
+	:Directional_ForceGenerator(s, v, magnitude)
+{
+}
+
+physx::PxVec3 Wind_ForceGenerator::apply_force(GameObject const& g)
+{
+	//float new_force = 
+	return physx::PxVec3();
 }

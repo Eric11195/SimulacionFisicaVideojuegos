@@ -64,30 +64,20 @@ void EnemyShip::think_step(double dt)
 
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
-	PxVec3 global_direction_to_player = (global_transform.p - player_tr.p).getNormalized();
+	PxVec3 global_direction_to_player =	global_to_local_rot.rotate(	(player_tr.p - global_transform.p).getNormalized() );
 	//global_direction_to_player = global_direction_to_player;//local_transform.q.rotate(global_direction_to_player).getNormalized();
-	PxVec3 global_ship_direction = local_transform.q.rotate({ 0,0,1 }).getNormalized();
+	PxVec3 global_ship_direction = { 0,0,1 };		//local_transform.q.rotate({ 0,0,1 }).getNormalized();
 	PxVec3 v_orthogonal_to_rotation = global_direction_to_player.cross(global_ship_direction).getNormalized();
 	//SACAR SI LA X DE ESTE VECTOR EN EL SISTEMA DE COORDENADAS LOCAL APUNTA HACIA LA DERECHA O HACIA LA IZQUIERA
 	float rotation_to_apply_in_radians = 0.5 * dt;
-	//PxVec3 unconverted_x = local_transform.q.getConjugate().rotate(v_orthogonal_to_rotation);
-	//float arccos_of_angle_to_player_pos_rot = global_direction_to_player.dot(global_ship_direction);
-	//float rotation_from_current_rot_to_player_pointing_rot = acos(arccos_of_angle_to_player_pos_rot);
-	//std::cout <</* " rot " << rotation_from_current_rot_to_player_pointing_rot << */" (" << unconverted_x.x << ", " << unconverted_x.y << ", " << unconverted_x.z << ')' << '\n';// << "  vec " << v_orthogonal_to_rotation.x << " " << v_orthogonal_to_rotation.y << " " << v_orthogonal_to_rotation.z << '\n';
-	
-	//std::cout << rotation_to_apply_in_radians * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1) <<"\n";
+
 	if (PxAbs(1.0f - v_orthogonal_to_rotation.magnitude()) < 1e-3f){
 		PxQuat rot_quat = PxQuat(
-			rotation_to_apply_in_radians,// * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1), 
+			-rotation_to_apply_in_radians,// * (rotation_from_current_rot_to_player_pointing_rot > 0 ? 1 : -1), 
 			v_orthogonal_to_rotation.getNormalized()
 		);
+		//std::cout << rot_quat.x <<" "<< rot_quat.y << " " << rot_quat.z << " " << rot_quat.w << '\n';
 		rotate(rot_quat);
+		//rotate(perfect_rotation);
 	}
-
-/* Perfect aim
-	PxQuat perfect_rotation_to_player = get_rotation_to(global_direction_to_player, global_ship_direction).getNormalized();
-	rotate(perfect_rotation_to_player);
-*/
-	//Poner que rote una cantidad por delta time en esa dirección
-	//Shoot
 }

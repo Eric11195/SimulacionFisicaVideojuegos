@@ -19,8 +19,9 @@ class ForceGenerator;
 struct GameObject : public InputProcessor{
 	inline static std::map<std::string, std::shared_ptr<ForceGenerator>> force_generators_map = {};
 	struct config {
-		physx::PxVec3 pos = { 0,0,0 }, initial_speed_dir = { 0,1,0 }, initial_accel_dir = { 0,-1,0 };
-		float initial_speed_magnitude = 0, initial_accel_magnitude = 0;
+		physx::PxVec3 pos = { 0,0,0 };
+		physx::PxVec3 initial_speed_dir = { 0,1,0 };//, initial_accel_dir = { 0,-1,0 };
+		float initial_speed_magnitude = 0;// , initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
 		float mass = 1;
@@ -47,7 +48,7 @@ struct GameObject : public InputProcessor{
 	void set_accel(physx::PxVec3 new_accel);
 	void add_accel(physx::PxVec3 add_accel);
 	void set_vel(physx::PxVec3 vel);
-	float get_mass() { return mass; }
+	float get_mass() const { return mass; }
 	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
 	Transform get_global_tr() { return global_transform; }
 

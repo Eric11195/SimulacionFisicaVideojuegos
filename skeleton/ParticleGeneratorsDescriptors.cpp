@@ -4,9 +4,9 @@ ParticleGenerator::config ball_thrower{
 	GameObject::config{
 		{0,0,0}, //Pos
 		{0,0,1}, //speed_dir
-		{0,-1,0},//accel_dir
+		//{0,-1,0},//accel_dir
 		5, //Speed module
-		0,//PhysicLib::GRAVITY,//Accel module
+		//0,//PhysicLib::GRAVITY,//Accel module
 		PhysicLib::NORMAL_DAMPING,//DAMPING
 		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 	},
@@ -18,9 +18,9 @@ ParticleGenerator::config ball_thrower{
 				{//GameObject config
 					{0,0,0}, //Pos
 					{0,1,0}, //speed_dir
-					{0,-1,0},//accel_dir
+					//{0,-1,0},//accel_dir
 					20, //Speed module
-					PhysicLib::GRAVITY,//Accel module
+					//PhysicLib::GRAVITY,//Accel module
 				},
 				physx::PxVec4(0,0,0,0)
 				//Color
@@ -73,9 +73,9 @@ ParticleGenerator::config x_wing_shoot_type{
 	GameObject::config{
 		{0,0,0}, //Pos
 		{0,0,1}, //speed_dir
-		{0,-1,0},//accel_dir
+		//{0,-1,0},//accel_dir
 		0, //Speed module
-		0,//PhysicLib::GRAVITY,//Accel module
+		//0,//PhysicLib::GRAVITY,//Accel module
 		PhysicLib::NORMAL_DAMPING,//DAMPING
 		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 	},
@@ -86,9 +86,9 @@ ParticleGenerator::config x_wing_shoot_type{
 				{//GameObject config
 					{0,0,0}, //Pos
 					{0,0,1}, //speed_dir
-					{0,-1,0},//accel_dir
+					//{0,-1,0},//accel_dir
 					40, //Speed module
-					0//PhysicLib::GRAVITY,//Accel module
+					//0//PhysicLib::GRAVITY,//Accel module
 				},
 				physx::PxVec4(1,0,0,1)
 	//Color
@@ -138,10 +138,10 @@ ParticleGenerator::config missile{
 	GameObject::config{
 		{0,0,0}, //Pos
 		{0,0,1}, //speed_dir
-		{0,-1,0},//accel_dir
+		//{0,-1,0},//accel_dir
 		0, //Speed module
 		0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
+		//PhysicLib::NORMAL_DAMPING,//DAMPING
 		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 },
 1,//Particles per second
@@ -151,9 +151,9 @@ Particle::config{
 			{//GameObject config
 				{0,0,0}, //Pos
 				{0,0,1}, //speed_dir
-				{0,-1,0},//accel_dir
+				//{0,-1,0},//accel_dir
 				6,//10, //Speed module
-				0//PhysicLib::GRAVITY,//Accel module
+				//0//PhysicLib::GRAVITY,//Accel module
 			},
 			physx::PxVec4(1,1,1,1)//Color
 },
@@ -196,9 +196,9 @@ ParticleGenerator::config missile_particle_system{
 	GameObject::config{
 		{0,0,0}, //Pos
 		{0,0,-1}, //speed_dir
-		{0,0,1},//accel_dir
+		//{0,0,1},//accel_dir
 		0,//5, //Speed module
-		0,//2.5,//PhysicLib::GRAVITY,//Accel module
+		//0,//2.5,//PhysicLib::GRAVITY,//Accel module
 		PhysicLib::NORMAL_DAMPING,//DAMPING
 		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
 	},
@@ -210,9 +210,9 @@ ParticleGenerator::config missile_particle_system{
 				{//GameObject config
 					{0,0,0}, //Pos
 					{0,0,0}, //speed_dir
-					{0,0,-1},//accel_dir
+					//{0,0,-1},//accel_dir
 					5,//5, //Speed module
-					0,//ACCEL
+					//0,//ACCEL
 					PhysicLib::NORMAL_DAMPING//2.5//DUMPING
 				},
 				physx::PxVec4(1,0,0,1)
