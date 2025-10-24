@@ -6,7 +6,7 @@ GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
 	accel({0,0,0}),
-	damping_mult(c.damping_mult), mass(c.mass)
+	damping_mult(c.damping_mult), m(c.inverse_mass)
 {
 	for (auto go : go_s) {
 		addChild(go);
@@ -96,7 +96,7 @@ void GameObject::integrate(double dt)
 
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
 	//In theory this does not exist
-	//reset_accel();
+	reset_accel();
 	for (auto& force : forces_applied_to_this_obj) {
 		//Get matrix transformation only on rotation, to pass from global to local
 		auto new_accel = global_to_local_rot.rotate(force->apply_force(*this));

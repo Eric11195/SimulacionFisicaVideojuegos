@@ -7,6 +7,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include "inverse_mass.hpp"
 
 #define EULER_SEMI_EXPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -24,7 +25,7 @@ struct GameObject : public InputProcessor{
 		float initial_speed_magnitude = 0;// , initial_accel_magnitude = 0;
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
-		float mass = 1;
+		InvMass inverse_mass = InvMass(1);
 	};
 	GameObject(const GameObject&) = delete;
 	GameObject& operator =(const GameObject&) = delete;
@@ -48,7 +49,7 @@ struct GameObject : public InputProcessor{
 	void set_accel(physx::PxVec3 new_accel);
 	void add_accel(physx::PxVec3 add_accel);
 	void set_vel(physx::PxVec3 vel);
-	float get_mass() const { return mass; }
+	float get_inv_mass() const { return m.inv_mass; }
 	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
 	Transform get_global_tr() { return global_transform; }
 
@@ -67,7 +68,7 @@ struct GameObject : public InputProcessor{
 protected:
 	void calculate_global_to_local_rot();
 	void integrate(double t);
-	float mass;
+	InvMass m;
 	Transform global_transform;
 	//Use only in calculations;
 	Transform local_transform;

@@ -39,11 +39,12 @@ ForceGenerator::~ForceGenerator()
 	}
 }
 Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v)
-	: Directional_ForceGenerator("gravity", v, 9.8f) {}
+	: Directional_ForceGenerator("gravity", v, 0.98f) {}
 
+//returns the force to give the given object
 physx::PxVec3 Gravity_ForceGenerator::apply_force(GameObject const& g)
 {
-	return global_force / g.get_mass();
+	return global_force * g.get_inv_mass();
 }
 
 Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude)
