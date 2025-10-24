@@ -14,13 +14,15 @@
 #include "Particle.hpp"
 #include "Projectile.hpp"
 #include "CameraProjectileShooter.hpp"
-#include "CompositeGameObject.hpp"
 #include "GameObject.hpp"
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
-#include "ParticleGeneratorsDescriptors.hpp"
+//#include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
 #include "ParticleSystem.hpp"
+#include "Ship.hpp"
+#include "ForceGenerator.hpp"
+#include "EnemyShip.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -68,7 +70,14 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
+	//INSTANTIATE SCENE NODE
 	scene_game_object = new GlobalCoords_CompositeGameObject();
+	//CREATE ALL FORCE GENERATORS:
+	scene_game_object->addChild(new Gravity_ForceGenerator(physx::PxVec3( 0,-1,0 )));
+		//(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
+
+	//------------------------------
+
 	scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 
@@ -79,7 +88,12 @@ void initPhysics(bool interactive)
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
-	scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
+	auto player = new Ship();
+	scene_game_object->addChild(player);
+	for (int i = 0; i < 3; ++i) {
+		scene_game_object->addChild(new EnemyShip(player));
+	}
+	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
 	//new Projectile(c);
 }
 
@@ -91,6 +105,7 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 	scene_game_object->step(t);
+	scene_game_object->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -113,22 +128,23 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 }
 
-// Function called when a key is pressed
-void keyPress(unsigned char key, const PxTransform& camera)
+void keyPress(unsigned char key)
 {
-	PX_UNUSED(camera);
-	//std::cout << key<<'\n';
+	scene_game_object->handle_keyboard_button_down(key);
+}
 
-	scene_game_object->process_input(key);
-	switch(toupper(key))
-	{
-	case ' ':
-	{
-		break;
-	}
-	default:
-		break;
-	}
+void keyRelease(unsigned char key)
+{
+	scene_game_object->handle_keyboard_button_up(key);
+}
+void mouseReleased(uint8_t button) {
+	scene_game_object->handle_mouse_button_up(button);
+}
+void mousePressed(uint8_t button) {
+	scene_game_object->handle_mouse_button_down(button);
+}
+void mousePosUpdated(float x, float y) {
+	scene_game_object->handle_mouse_pos(x,y);
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

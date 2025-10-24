@@ -9,9 +9,9 @@ namespace ParticleDescriptor {
 				GameObject::config{
 					{0,0,0},//POS
 					{0,1,0},//VEL DIR
-					{0,-1,0},//ACCEL_DIR
+					//{0,-1,0},//ACCEL_DIR
 					5, //VEL MAG
-					PhysicLib::GRAVITY //ACELL MOD
+					//PhysicLib::GRAVITY //ACELL MOD
 					//DAMPING MULT
 				},
 				{1,1,1,1}//COLOR

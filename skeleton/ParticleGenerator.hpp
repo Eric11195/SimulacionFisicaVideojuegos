@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
 #include <list>
-#include "My_Vector3.hpp"
 #include <cstdint>
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
@@ -13,30 +12,30 @@ Datos random:
 	vel inicial
 	lifetime
 	color
-	tamaño
-	(aceleración)
+	tamaï¿½o
+	(aceleraciï¿½n)
 	(damping)
 */
 
 /*
 Eliminar particulas cuando:
 	lifetime
-	posición (lluvia llega al suelo)
+	posiciï¿½n (lluvia llega al suelo)
 	salen zona de interes
-	nº max
+	nï¿½ max
 */
 
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
 	struct particle_calculator_functions {
-		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
-		std::function<My_Vector3()> dir = [] { return My_Vector3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> pos = [] { return physx::PxVec3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> dir = [] { return physx::PxVec3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
 		std::function<float()> lifetime = [] { return 0; };
 		std::function<Vector4()> color = [] { return Vector4( 0,0,0,0 ); };
 		std::function<float()> size = [] { return 0; };
-		std::function<bool(Vector3 pos_particle, Vector3 pos_generator)> inside_area_of_interest 
-			= [](Vector3 pos_particle, Vector3 pos_generator) {return true; };
+		std::function<bool(PxVec3 pos_particle, PxVec3 pos_generator)> inside_area_of_interest
+			= [](PxVec3 pos_particle, PxVec3 pos_generator) {return true; };
 	};
 	struct config {
 		GlobalCoords_CompositeGameObject::config go_config;
@@ -57,6 +56,7 @@ protected:
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
 	virtual void generate_particles(double dt);
+	virtual void set_up_particle(Particle*);
 	std::function<void(Particle::config&)> next_particle_config_calculator;
 	particle_calculator_functions my_particle_lambdas;
 };
@@ -67,7 +67,8 @@ class TriggeredParticleGenerator : public ParticleGenerator {
 public:
 	TriggeredParticleGenerator(ParticleGenerator::config c);
 	//Generates particles as specified config
-	void Trigger();
+	void trigger();
+	void step(double dt) override;
 };
 
 //---------------------------------------------------------------------------------------------------------
@@ -89,11 +90,4 @@ class AdjustableParticleGenerator : public ToggleParticleGenerator {
 private:
 float ratio;
 };
-*/
-
-
-
-//IMP
-/*
-Cada sistema almacena 2 lambdas, una para cuando las particulas se generan, y otra para cuando se destruyen
 */

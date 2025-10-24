@@ -2,8 +2,10 @@
 
 #include "PxPhysicsAPI.h"
 
-#include "core.hpp"
+//#include "core.hpp"
 #include "RenderUtils.hpp"
+#include "ScreenSizeConstants.hpp";
+#include <iostream>
 
 
 using namespace physx;
@@ -11,7 +13,11 @@ using namespace physx;
 extern void initPhysics(bool interactive);
 extern void stepPhysics(bool interactive, double t);	
 extern void cleanupPhysics(bool interactive);
-extern void keyPress(unsigned char key, const PxTransform& camera);
+extern void keyPress(unsigned char key);
+extern void keyRelease(unsigned char key);
+extern void mousePressed(uint8_t button);
+extern void mouseReleased(uint8_t button);
+extern void mousePosUpdated(float x, float y);
 extern PxPhysics* gPhysics;
 extern PxMaterial* gMaterial;
 
@@ -49,22 +55,34 @@ namespace
 
 void motionCallback(int x, int y)
 {
-	sCamera->handleMotion(x, y);
+	//From 0 to 1
+	float x_float = float(x)/WINDOW_LENGTH;
+	float y_float = float(y)/WINDOW_HEIGHT;
+	x_float = max(0.0f, min(1, x_float));
+	y_float = max(0.0f, min(1, y_float));
+	mousePosUpdated(x_float, y_float);
 }
 
 void keyboardCallback(unsigned char key, int x, int y)
 {
 	if(key==27)
 		exit(0);
-	//TODO: MODIFY THIS
-	//THIS CAPTURES WASD INPUT, not letting it pass through
-	if(!sCamera->handleKey(key, x, y))
-		keyPress(key, sCamera->getTransform());
+
+	keyPress(key);
+}
+void keyboardUpCallback(unsigned char key, int x, int y) {
+	keyRelease(key);
 }
 
 void mouseCallback(int button, int state, int x, int y)
 {
-	sCamera->handleMouse(button, state, x, y);
+	//sCamera->handleMouse(button, state, x, y);
+	if (state == GLUT_UP) {
+		mouseReleased(button);
+	}
+	else {
+		mousePressed(button);
+	}
 }
 
 void idleCallback()
@@ -77,6 +95,8 @@ float stepTime = 0.0f;
 
 void renderCallback()
 {
+	update(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	
 	double t = GetCounter();
 #ifdef FIXED_STEP
 	if (t < (1.0f / 30.0f))
@@ -96,7 +116,7 @@ void renderCallback()
 	stepPhysics(true, t);
 #endif
 
-	startRender(sCamera->getEye(), sCamera->getDir());
+	startRender(sCamera->getEye(), sCamera->getDir(), sCamera->getUp());
 
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
 	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
@@ -140,19 +160,23 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos");
+	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_LENGTH, WINDOW_HEIGHT);
 	setupDefaultRenderState();
+
+	initPhysics(true);
 
 	glutIdleFunc(idleCallback);
 	glutDisplayFunc(renderCallback);
 	glutKeyboardFunc(keyboardCallback);
+	glutKeyboardUpFunc(keyboardUpCallback);
 	glutMouseFunc(mouseCallback);
+	glutPassiveMotionFunc(motionCallback);
 	glutMotionFunc(motionCallback);
 	motionCallback(0,0);
+	glutIgnoreKeyRepeat(1);//If its 0 it will not ignore them
 
 	atexit(exitCallback);
 
-	initPhysics(true);
 	glutMainLoop();
 }
 

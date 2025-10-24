@@ -240,7 +240,7 @@ void reshapeCallback(int width, int height)
 }
 }
 
-void setupDefaultWindow(const char *name)
+void setupDefaultWindow(const char *name, int screen_width, int screen_height)
 {
 	char* namestr = new char[strlen(name)+1];
 	strcpy(namestr, name);
@@ -249,7 +249,7 @@ void setupDefaultWindow(const char *name)
 
 	glutInit(&argc, argv);
 	
-	glutInitWindowSize(512, 512);
+	glutInitWindowSize(screen_width, screen_height);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);
@@ -282,7 +282,7 @@ void setupDefaultRenderState()
 }
 
 
-void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
+void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, const physx::PxVec3& cameraUp, PxReal clipNear, PxReal clipFar)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -297,7 +297,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(GLdouble(cameraEye.x), GLdouble(cameraEye.y), GLdouble(cameraEye.z), GLdouble(cameraEye.x + cameraDir.x), GLdouble(cameraEye.y + cameraDir.y), GLdouble(cameraEye.z + cameraDir.z), 0.0, 1.0, 0.0);
+	gluLookAt(GLdouble(cameraEye.x), GLdouble(cameraEye.y), GLdouble(cameraEye.z), GLdouble(cameraEye.x + cameraDir.x), GLdouble(cameraEye.y + cameraDir.y), GLdouble(cameraEye.z + cameraDir.z), cameraUp.x, cameraUp.y, cameraUp.z);
 
 	glColor4f(0.4f, 0.4f, 0.4f, 1.0f);
 
