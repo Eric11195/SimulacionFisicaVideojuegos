@@ -28,6 +28,9 @@ public:
 
 class Wind_ForceGenerator : public Directional_ForceGenerator {
 public:
-	Wind_ForceGenerator(std::string s, physx::PxVec3, float magnitude);
+	Wind_ForceGenerator(std::string s, physx::PxVec3, float magnitude, float air_density, float avance_resistance_aerodinamic_coef);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+protected:
+	//El valor calculado en el constructor constante por el que se multiplicará la fuerza
+	const float cd_p_medios;
 };

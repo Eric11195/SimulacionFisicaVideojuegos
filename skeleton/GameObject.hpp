@@ -35,6 +35,7 @@ struct GameObject : public InputProcessor{
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
 	virtual Vector3 get_pos();
+	virtual Vector3 get_vel() const;
 	virtual void step(double dt);
 	virtual void init() {};
 	//virtual void process_input(unsigned char key) {}

@@ -44,16 +44,25 @@ Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v)
 //returns the force to give the given object
 physx::PxVec3 Gravity_ForceGenerator::apply_force(GameObject const& g)
 {
-	return global_force * g.get_inv_mass();
+	auto mass = g.get_inv_mass();
+	if (mass < 0.005f) return { 0,0,0 };
+	return global_force * mass;
 }
 
-Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude)
-	:Directional_ForceGenerator(s, v, magnitude)
+Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
+	:Directional_ForceGenerator(s, v, magnitude), cd_p_medios(0.5*air_density*avance_resistance_aerodinamic_coef)
 {
 }
 
 physx::PxVec3 Wind_ForceGenerator::apply_force(GameObject const& g)
 {
-	//float new_force = 
-	return physx::PxVec3();
+	//DIAPO 25 forma sencilla
+	//velocidad al cuadrado => vector velocidad por su modulo
+	return cd_p_medios * global_force * global_force.magnitude();
+	//DIAPO 26 => No entiendo que tiene que ver la velocidad del objeto para calcular la fuerza
+	/*
+	physx::PxVec3 vel_delta = g.get_vel() - global_force;
+	float module = vel_delta.magnitude();
+	return cd_p_medios * module * vel_delta;// *g.get_inv_mass();
+	*/
 }

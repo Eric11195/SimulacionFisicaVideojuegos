@@ -29,6 +29,11 @@ Vector3 GameObject::get_pos()
 	return global_transform.p;
 }
 
+Vector3 GameObject::get_vel() const
+{
+	return vel;
+}
+
 void GameObject::step(double dt)
 {
 	integrate(dt);
@@ -86,6 +91,8 @@ void GameObject::integrate(double dt)
 		auto new_accel = global_to_local_rot.rotate(force->apply_force(*this));
 		accel += new_accel;
 	}
+	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	accel *= m.inv_mass;
 
 	vel += accel * dt;
 	//tr.p += dt * vel.turn();

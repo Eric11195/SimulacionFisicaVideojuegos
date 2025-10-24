@@ -7,7 +7,7 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleGenerator.hpp"
 
-constexpr float near_threshold_to_flee = 10;
+constexpr float near_threshold_to_flee = 12;
 
 EnemyShip::EnemyShip(GameObject* player)
 	: GameObject(), player_go(player)
