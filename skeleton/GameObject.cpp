@@ -1,5 +1,6 @@
 #include "GameObject.hpp"
 #include "ForceGenerator.hpp"
+#include <iostream>
 
 GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	: local_transform(Transform(c.pos,c.initial_rotation)),
@@ -93,7 +94,7 @@ void GameObject::integrate(double dt)
 	}
 	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
 	accel *= m.inv_mass;
-
+	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
 	vel += accel * dt;
 	//tr.p += dt * vel.turn();
 	translate(dt * vel);

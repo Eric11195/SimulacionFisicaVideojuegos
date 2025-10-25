@@ -23,6 +23,7 @@
 #include "Ship.hpp"
 #include "ForceGenerator.hpp"
 #include "EnemyShip.hpp"
+#include "BlackHole.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -87,6 +88,9 @@ void initPhysics(bool interactive)
 		};
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
+
+
+	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
 
 	auto player = new Ship();
 	scene_game_object->addChild(player);

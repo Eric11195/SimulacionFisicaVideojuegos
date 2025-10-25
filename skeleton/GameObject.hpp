@@ -34,6 +34,7 @@ struct GameObject : public InputProcessor{
 
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
+	void set_local_pos(physx::PxVec3 new_local_p) { local_transform.p = new_local_p; }
 	virtual Vector3 get_pos();
 	virtual Vector3 get_vel() const;
 	virtual void step(double dt);
@@ -49,7 +50,7 @@ struct GameObject : public InputProcessor{
 	void set_vel(physx::PxVec3 vel);
 	float get_inv_mass() const { return m.inv_mass; }
 	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
-	Transform get_global_tr() { return global_transform; }
+	Transform get_global_tr()const { return global_transform; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;

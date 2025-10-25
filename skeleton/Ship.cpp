@@ -10,6 +10,7 @@ Ship::Ship()
 	:GameObject()
 {
 	addChild(new ShipCannon(global_transform));
+	//add_force_to_myself("black_hole");
 }
 
 constexpr int max_speed = 3;

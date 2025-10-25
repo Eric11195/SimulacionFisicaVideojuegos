@@ -27,6 +27,7 @@
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
+    <ClCompile Include="BlackHole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -60,6 +61,8 @@
     <ClInclude Include="PassThrough_CompositeGameObject.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
+    <ClInclude Include="inverse_mass.hpp" />
+    <ClInclude Include="BlackHole.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -34,6 +34,8 @@ EnemyShip::EnemyShip(GameObject* player)
 
 	ParticleGenerator* paco = new ParticleGenerator(missile_particle_system);
 	addChild(paco);
+
+	//add_force_to_myself("black_hole");
 }
 
 void EnemyShip::step(double dt)
