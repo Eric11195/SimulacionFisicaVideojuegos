@@ -20,7 +20,7 @@ ShipCannon::ShipCannon(Transform const& parent_tr)
 	pg->translate_to({ 0,-1,0 });
 	missile_cannon = addChild(pg);
 
-	bomb_cannon = addChild(new BombGenerator(200,-300));
+	bomb_cannon = addChild(new BombGenerator(60,-90));
 }
 
 void ShipCannon::step(double dt)

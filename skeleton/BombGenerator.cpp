@@ -11,6 +11,7 @@ BombGenerator::BombGenerator(float force_mag, float force_added_per_second, std:
 Particle* BombGenerator::set_up_particle(Particle::config& p_config)
 {
 	auto p = TriggeredParticleGenerator::set_up_particle(p_config);
+	
 	auto force_raw_ptr = new Variable_ForceGenerator(force_mag,
 		[](float force_mag, GameObject const& self, GameObject const& g) {
 			const physx::PxVec3 force_applied = (g.get_global_tr().p - self.get_global_tr().p).getNormalized();
@@ -21,6 +22,7 @@ Particle* BombGenerator::set_up_particle(Particle::config& p_config)
 			force_mag += force_added_per_second * dt;
 		}
 	);
+
 	//std::shared_ptr<ForceGenerator> force_ptr = std::shared_ptr<ForceGenerator>(force_raw_ptr);
 	p->addChild(force_raw_ptr);
 	auto generator = new TriggeredParticleGenerator(bomb_particle_generator, {}, {force_raw_ptr});// , { force_ptr });

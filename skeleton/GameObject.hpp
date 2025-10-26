@@ -23,9 +23,9 @@ struct GameObject : public InputProcessor{
 		physx::PxVec3 pos = { 0,0,0 };
 		physx::PxVec3 initial_speed_dir = { 0,1,0 };//, initial_accel_dir = { 0,-1,0 };
 		float initial_speed_magnitude = 0;// , initial_accel_magnitude = 0;
+		InvMass inverse_mass = InvMass(1);
 		float damping_mult = PhysicLib::NORMAL_DAMPING;
 		Quaternion initial_rotation = Quaternion(physx::PxIDENTITY::PxIdentity);
-		InvMass inverse_mass = InvMass(1);
 	};
 	GameObject(const GameObject&) = delete;
 	GameObject& operator =(const GameObject&) = delete;

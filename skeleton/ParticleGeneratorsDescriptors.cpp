@@ -21,6 +21,7 @@ ParticleGenerator::config bomb{
 					{0,1,0}, //speed_dir
 					//{0,-1,0},//accel_dir
 					0, //Speed module
+					Mass(100) //mass
 					//PhysicLib::GRAVITY,//Accel module
 				},
 				physx::PxVec4(0,0,0,1)
@@ -88,6 +89,7 @@ ParticleGenerator::config bomb_particle_generator{
 					{0,1,0}, //speed_dir
 					//{0,-1,0},//accel_dir
 					0, //Speed module
+					Mass(0.1)//mass
 					//PhysicLib::GRAVITY,//Accel module
 				},
 				physx::PxVec4(0,0,0,0)
