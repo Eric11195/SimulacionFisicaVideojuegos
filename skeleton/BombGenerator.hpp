@@ -4,9 +4,9 @@
 
 class BombGenerator : public TriggeredParticleGenerator {
 public:
-	BombGenerator(float force_mag, float force_reduction_coef, std::initializer_list<std::string> forces = {});
+	BombGenerator(float force_mag, float froce_added_per_second, std::initializer_list<std::string> forces = {});
 	virtual Particle* set_up_particle(Particle::config& p);
 protected:
 	const float force_mag;
-	const float force_reduction_coef;
+	const float force_added_per_second;
 };

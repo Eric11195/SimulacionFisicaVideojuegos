@@ -15,20 +15,20 @@ ParticleGenerator::config bomb{
 	//Particles per second
 	Particle::config{
 		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
+			SceneObject::config{//SceneObject config
+				GameObject::config{//GameObject config
 					{0,0,10}, //Pos
 					{0,1,0}, //speed_dir
 					//{0,-1,0},//accel_dir
 					0, //Speed module
 					//PhysicLib::GRAVITY,//Accel module
 				},
-				physx::PxVec4(0,0,0,0)
+				physx::PxVec4(0,0,0,1)
 				//Color
 			},
-			1 //rad
+			0.0001 //rad
 		},
-		2 //lifetime
+		1.5f //lifetime
 	},
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
@@ -50,9 +50,9 @@ ParticleGenerator::config bomb{
 		},
 		[] {//Vector4
 			return Vector4(
-				Distributions::LinearDistribution::get(),
-				Distributions::LinearDistribution::get(),
-				Distributions::LinearDistribution::get(),
+				0,
+				0,
+				0,
 				1//Distributions::LinearDistribution::get()
 			);
 		},
@@ -93,15 +93,15 @@ ParticleGenerator::config bomb_particle_generator{
 				physx::PxVec4(0,0,0,0)
 				//Color
 			},
-			1.0f //rad
+			0.1f //rad
 		},
-		2 //lifetime
+		10 //lifetime
 	},
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
-				Distributions::LinearDistribution::get() * 5 -2.5f,
-				Distributions::LinearDistribution::get() * 5 -2.5f,
-				Distributions::LinearDistribution::get() * 5 -2.5f
+				Distributions::LinearDistribution::get() * 1 -0.5f,
+				Distributions::LinearDistribution::get() * 1 -0.5f,
+				Distributions::LinearDistribution::get() * 1 -0.5f
 			};
 		},//POS
 		[] {//VEL_DIR
@@ -119,10 +119,10 @@ ParticleGenerator::config bomb_particle_generator{
 		},
 		[] {//Vector4
 			return Vector4(
-				Distributions::LinearDistribution::get(),
-				Distributions::LinearDistribution::get(),
-				Distributions::LinearDistribution::get(),
-				1//Distributions::LinearDistribution::get()
+				0,
+				0,
+				0,
+				0//Distributions::LinearDistribution::get()
 			);
 		},
 		[] {//Size

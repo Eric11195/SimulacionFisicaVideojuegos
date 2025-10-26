@@ -114,8 +114,8 @@ void ParticleGenerator::generate_particles(double dt)
 	for (int i = 0; i < particles_generated_in_current_frame; ++i) {
 		p_config.spho_config.radius = avrg_size + my_particle_lambdas.size();
 		if (p_config.spho_config.radius <= 0) continue;
-		new_p_config_short.pos = global_transform.p + particle_start_pos + my_particle_lambdas.pos();
 		new_p_config_short.initial_rotation = global_transform.q;
+		new_p_config_short.pos = global_transform.p + global_transform.q.rotate(particle_start_pos + my_particle_lambdas.pos());
 		//new_p_config_short.initial_accel_magnitude; //= 30;
 		//new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
 		new_p_config_short.initial_speed_magnitude = avrg_speed + my_particle_lambdas.vel();
