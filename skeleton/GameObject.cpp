@@ -6,7 +6,7 @@ GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	: local_transform(Transform(c.pos,c.initial_rotation)),
 	global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
-	damping_mult(c.damping_mult), m(c.inverse_mass)
+	damping_mult(c.damping_mult), m(c.mass)
 {
 	for (auto go : go_s) {
 		addChild(go);

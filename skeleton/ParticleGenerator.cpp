@@ -72,6 +72,7 @@ ParticleGenerator::ParticleGenerator(config& c)
 	particle_start_pos(c.particle_config.spho_config.so_config.go_config.pos),
 	avrg_speed(c.particle_config.spho_config.
 		so_config.go_config.initial_speed_magnitude),
+	avrg_mass(c.particle_config.spho_config.so_config.go_config.mass),
 	avrg_lifetime(c.particle_config.time_till_death),
 	avrg_color(c.particle_config.spho_config.so_config.color),
 	avrg_size(c.particle_config.spho_config.radius),
@@ -120,6 +121,7 @@ void ParticleGenerator::generate_particles(double dt)
 		//new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
 		new_p_config_short.initial_speed_magnitude = avrg_speed + my_particle_lambdas.vel();
 		new_p_config_short.initial_speed_dir = const_p_config.initial_speed_dir + my_particle_lambdas.dir();
+		new_p_config_short.mass = avrg_mass + my_particle_lambdas.mass();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
 		addChild(set_up_particle(p_config));

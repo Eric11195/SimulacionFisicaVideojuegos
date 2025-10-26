@@ -6,6 +6,7 @@
 #include "Particle.hpp"
 #include <functional>
 #include <vector>
+#include "inverse_mass.hpp"
 
 
 /*
@@ -39,6 +40,7 @@ public:
 		std::function<float()> size = [] { return 0; };
 		std::function<bool(PxVec3 pos_particle, PxVec3 pos_generator)> inside_area_of_interest
 			= [](PxVec3 pos_particle, PxVec3 pos_generator) {return true; };
+		std::function<Mass()> mass = [] {return Mass(0); };
 	};
 	struct config {
 		GlobalCoords_CompositeGameObject::config go_config;
@@ -52,6 +54,7 @@ protected:
 	float avrg_speed;
 	float avrg_lifetime;
 	float avrg_size;
+	Mass avrg_mass;
 	physx::PxVec3 particle_start_pos;
 	Vector4 avrg_color;
 	float particle_generated_per_second;

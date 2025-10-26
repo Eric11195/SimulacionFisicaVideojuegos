@@ -133,7 +133,12 @@ ParticleGenerator::config bomb_particle_generator{
 		[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent;
 		return true;
-	}
+		},
+		[] {
+			float dist_ret = LinearDistribution::get();
+			float new_mass = max(0,1 * dist_ret);
+			return Mass(new_mass);
+		}
 }
 
 };
