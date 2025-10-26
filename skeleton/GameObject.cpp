@@ -153,7 +153,7 @@ void GameObject::handle_keyboard_button_up(unsigned char key)
 		child->handle_keyboard_button_up(key);
 }
 
-void GameObject::add_force_to_myself(std::shared_ptr<ForceGenerator> f)
+void GameObject::add_force_to_myself(ForceGenerator* f)
 {
 	//This ptr is not created correctly
 	forces_applied_to_this_obj.insert(forces_applied_to_this_obj.end(), f);

@@ -74,7 +74,7 @@ void initPhysics(bool interactive)
 	//INSTANTIATE SCENE NODE
 	scene_game_object = new GlobalCoords_CompositeGameObject();
 	//CREATE ALL FORCE GENERATORS:
-	scene_game_object->addChild(new Gravity_ForceGenerator(physx::PxVec3( 0,-1,0 )));
+	scene_game_object->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
 		//(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
 
 	//------------------------------

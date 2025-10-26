@@ -20,7 +20,7 @@ ShipCannon::ShipCannon(Transform const& parent_tr)
 	pg->translate_to({ 0,-1,0 });
 	missile_cannon = addChild(pg);
 
-	//bomb_cannon = addChild(new Bomb(GameObject::config(), 5, 0.5));
+	bomb_cannon = addChild(new BombGenerator(5, 0.5));
 }
 
 void ShipCannon::step(double dt)
@@ -53,6 +53,9 @@ void ShipCannon::fire_missile()
 void ShipCannon::fire_bomb()
 {
 	//new Bomb();
+	GameObject* aux_ptr = (*bomb_cannon).get();
+	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
+	casted_trigger->trigger();
 }
 
 /*

@@ -52,8 +52,9 @@ protected:
 	float avrg_speed;
 	float avrg_lifetime;
 	float avrg_size;
+	physx::PxVec3 particle_start_pos;
 	Vector4 avrg_color;
-	uint8_t particle_generated_per_second;
+	float particle_generated_per_second;
 	Particle::config p_config;
 	const GameObject::config const_p_config;
 	float particles_per_second_accumulator = 0;
@@ -68,10 +69,11 @@ protected:
 
 class ForceAffectedParticleGenerator : public ParticleGenerator {
 public:
-	ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces);
+	ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	virtual Particle* set_up_particle(Particle::config& p) override;
 protected:
 	std::vector<std::string> force_names;
+	std::vector<ForceGenerator*> force_ptr;
 };
 
 
@@ -79,7 +81,7 @@ protected:
 
 class TriggeredParticleGenerator : public ForceAffectedParticleGenerator {
 public:
-	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {});
+	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	//Generates particles as specified config
 	void trigger();
 	void step(double dt) override;

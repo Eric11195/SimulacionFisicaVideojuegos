@@ -3,7 +3,7 @@
 
 ParticleGenerator::config bomb{
 	GameObject::config{
-		{0,0,10}, //Pos
+		{0,0,0}, //Pos
 		{0,0,1}, //speed_dir
 		//{0,-1,0},//accel_dir
 		0, //Speed module
@@ -17,7 +17,7 @@ ParticleGenerator::config bomb{
 		{//SphO_config
 			{//SceneObject config
 				{//GameObject config
-					{0,0,0}, //Pos
+					{0,0,10}, //Pos
 					{0,1,0}, //speed_dir
 					//{0,-1,0},//accel_dir
 					0, //Speed module
@@ -26,15 +26,13 @@ ParticleGenerator::config bomb{
 				physx::PxVec4(0,0,0,0)
 				//Color
 			},
-			0.1f //rad
+			1 //rad
 		},
 		2 //lifetime
 	},
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
-				Distributions::LinearDistribution::get() * 5 - 2.5f,
-				Distributions::LinearDistribution::get() * 5 - 2.5f,
-				Distributions::LinearDistribution::get() * 5 - 2.5f
+				0,0,0
 			};
 		},//POS
 		[] {//VEL_DIR
@@ -72,7 +70,7 @@ ParticleGenerator::config bomb{
 
 ParticleGenerator::config bomb_particle_generator{
 	GameObject::config{
-		{0,0,10}, //Pos
+		{0,0,1}, //Pos
 		{0,0,1}, //speed_dir
 		//{0,-1,0},//accel_dir
 		0, //Speed module
@@ -95,7 +93,7 @@ ParticleGenerator::config bomb_particle_generator{
 				physx::PxVec4(0,0,0,0)
 				//Color
 			},
-			0.1f //rad
+			1.0f //rad
 		},
 		2 //lifetime
 	},

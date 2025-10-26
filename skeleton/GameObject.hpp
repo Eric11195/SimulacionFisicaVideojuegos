@@ -18,7 +18,7 @@ using Quaternion = physx::PxQuat;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
-	inline static std::map<std::string, std::shared_ptr<ForceGenerator>> force_generators_map = {};
+	inline static std::map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 };
 		physx::PxVec3 initial_speed_dir = { 0,1,0 };//, initial_accel_dir = { 0,-1,0 };
@@ -58,7 +58,7 @@ struct GameObject : public InputProcessor{
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual void handle_keyboard_button_up(unsigned char key) override;
 
-	void add_force_to_myself(std::shared_ptr<ForceGenerator>);
+	void add_force_to_myself(ForceGenerator*);
 	void add_force_to_myself(std::string);
 
 #ifdef DAMPING
@@ -73,7 +73,7 @@ protected:
 	Transform local_transform;
 	Quaternion global_to_local_rot;
 	std::list<std::unique_ptr<GameObject>> child_objects;
-	std::list<std::shared_ptr<ForceGenerator>> forces_applied_to_this_obj;
+	std::list<ForceGenerator*> forces_applied_to_this_obj;
 	physx::PxVec3 vel;
 private:
 #ifdef DAMPING

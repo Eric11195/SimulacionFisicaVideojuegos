@@ -3,8 +3,8 @@
 //#include "Particle.hpp"
 
 //-------------------------------------------------------------------------------------------------------
-TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
-	:ForceAffectedParticleGenerator(c,forces)
+TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ForceAffectedParticleGenerator(c,forces_names, forces_ptr)
 {
 }
 
@@ -50,13 +50,16 @@ ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, b
 
 //-------------------------------------------------------------------------------------------------------
 
-ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
-	:ParticleGenerator(c), force_names(forces) {}
+ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ParticleGenerator(c), force_names(forces), force_ptr(forces_ptr) {}
 
 Particle* ForceAffectedParticleGenerator::set_up_particle(Particle::config& p)
 {
 	auto particle = ParticleGenerator::set_up_particle(p);
 	for (auto& f : force_names) {
+		particle->add_force_to_myself(f);
+	}
+	for (auto f : force_ptr) {
 		particle->add_force_to_myself(f);
 	}
 	return  particle;
@@ -66,6 +69,7 @@ ParticleGenerator::ParticleGenerator(config& c)
 	: GlobalCoords_CompositeGameObject(c.go_config),
 	const_p_config(c.particle_config.spho_config.so_config.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
+	particle_start_pos(c.particle_config.spho_config.so_config.go_config.pos),
 	avrg_speed(c.particle_config.spho_config.
 		so_config.go_config.initial_speed_magnitude),
 	avrg_lifetime(c.particle_config.time_till_death),
@@ -110,7 +114,7 @@ void ParticleGenerator::generate_particles(double dt)
 	for (int i = 0; i < particles_generated_in_current_frame; ++i) {
 		p_config.spho_config.radius = avrg_size + my_particle_lambdas.size();
 		if (p_config.spho_config.radius <= 0) continue;
-		new_p_config_short.pos = global_transform.p + my_particle_lambdas.pos();
+		new_p_config_short.pos = global_transform.p + particle_start_pos + my_particle_lambdas.pos();
 		new_p_config_short.initial_rotation = global_transform.q;
 		//new_p_config_short.initial_accel_magnitude; //= 30;
 		//new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
