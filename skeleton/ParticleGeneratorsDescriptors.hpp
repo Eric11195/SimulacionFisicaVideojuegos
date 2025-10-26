@@ -4,6 +4,8 @@
 
 using namespace Distributions;
 
+extern ParticleGenerator::config testing_blackhole_particles;
+
 extern ParticleGenerator::config ball_thrower;
 
 extern ParticleGenerator::config x_wing_shoot_type;

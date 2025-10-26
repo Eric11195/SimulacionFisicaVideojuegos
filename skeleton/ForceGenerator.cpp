@@ -1,34 +1,25 @@
 #include "ForceGenerator.hpp"
+#include <iostream>
 
 
-Plain_Directional_ForceGenerator::Plain_Directional_ForceGenerator(std::string name, physx::PxVec3 force_direction, float force_magnitude)
-	:ForceGenerator(name, force_direction, force_magnitude) {}
+Directional_ForceGenerator::Directional_ForceGenerator(std::string name, physx::PxVec3 force_direction, float force_magnitude)
+	:ForceGenerator(name, force_magnitude), normalized_force_direction(force_direction.getNormalized()) {}
 
 
 //F = masa * accel
-physx::PxVec3 Plain_Directional_ForceGenerator::apply_force(GameObject const& g)
+physx::PxVec3 Directional_ForceGenerator::apply_force(GameObject const& g)
 {
-	return global_force;
+	return global_transform.q.rotate(force_magnitude*normalized_force_direction);
 }
 
-void ForceGenerator::update_position(Transform const& parent_tr)
-{
-	GameObject::update_position(parent_tr);
-	global_force = parent_tr.rotate(local_force);
-}
-
-ForceGenerator::ForceGenerator(std::string name, physx::PxVec3 force_direction, float magnitude)
-	:my_name(name)
+ForceGenerator::ForceGenerator(std::string name, float magnitude)
+	:force_magnitude(magnitude)
 {
 	auto it = GameObject::force_generators_map.find(name);
 	if (it != GameObject::force_generators_map.end()) {
 		throw "There's already a force generator with that name";
 	}
 	GameObject::force_generators_map.emplace(name, this);
-
-	auto force = force_direction.getNormalized() * magnitude;
-	local_force = force;
-	global_force = force;
 }
 
 /*
@@ -44,26 +35,27 @@ ForceGenerator::~ForceGenerator()
 }
 */
 Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v)
-	: ForceGenerator("gravity", v, 0.98f) {}
+	: Directional_ForceGenerator("gravity", v, 9.8f) {}
 
 //returns the force to give the given object
 physx::PxVec3 Gravity_ForceGenerator::apply_force(GameObject const& g)
 {
-	auto mass = g.get_inv_mass();
-	if (mass < 0.005f) return { 0,0,0 };
-	return global_force * mass;
+	auto inv_mass = g.get_inv_mass();
+	if (inv_mass < 0.005f) return { 0,0,0 };
+	return Directional_ForceGenerator::apply_force(g) / inv_mass;
 }
 
 Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
-	: ForceGenerator(s, v, magnitude), cd_p_medios(0.5*air_density*avance_resistance_aerodinamic_coef)
+	: Directional_ForceGenerator(s, v, magnitude), cd_p_medios(0.5*air_density*avance_resistance_aerodinamic_coef)
 {
 }
 
 physx::PxVec3 Wind_ForceGenerator::apply_force(GameObject const& g)
 {
 	//DIAPO 25 forma sencilla
+	auto force = Directional_ForceGenerator::apply_force(g);
 	//velocidad al cuadrado => vector velocidad por su modulo
-	return cd_p_medios * global_force * global_force.magnitude();
+	return cd_p_medios * force * force.magnitude();
 	//DIAPO 26 => No entiendo que tiene que ver la velocidad del objeto para calcular la fuerza
 	/*
 	physx::PxVec3 vel_delta = g.get_vel() - global_force;
@@ -120,4 +112,45 @@ physx::PxVec3 Torbellino_ForceGenerator::apply_force(GameObject const& g)
 bool Torbellino_ForceGenerator::inside_area_of_influence(GameObject const& g) const
 {
 	return true;
+}
+
+TorbellinoSencillo::TorbellinoSencillo(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
+	:Wind_ForceGenerator(s,v,magnitude,air_density,avance_resistance_aerodinamic_coef)
+{
+}
+
+physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
+{
+	if (!inside_area_of_influence(g))return { 0,0,0 };
+
+	physx::PxVec3 g_pos = g.get_global_tr().p;
+	physx::PxVec3 vel_torbellino = force_magnitude * physx::PxVec3{
+		0,//-(g_pos.x - global_transform.p.x),
+		0,//50 - (g_pos.y - global_transform.p.y),
+		g_pos.z - global_transform.p.z
+	};
+	std::cout << g_pos.z - global_transform.p.z << '\n';
+	return cd_p_medios * vel_torbellino * vel_torbellino.magnitude();
+}
+
+bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
+{
+	return true;
+}
+
+Variable_ForceGenerator::Variable_ForceGenerator(std::string s, float force_magnitude, 
+	std::function<physx::PxVec3(float force_mag, GameObject const& self, GameObject const& g)> force_function,
+	std::function <void(double time,double dt, float& force)> force_update_func)
+	:ForceGenerator(s,force_magnitude), force_value_func(force_function), update_force_func(force_update_func),time_since_started(0) { }
+
+physx::PxVec3 Variable_ForceGenerator::apply_force(GameObject const& g)
+{
+	return force_value_func(force_magnitude,*this, g);
+}
+
+void Variable_ForceGenerator::step(double dt)
+{
+	ForceGenerator::step(dt);
+	time_since_started += dt;
+	update_force_func(time_since_started, dt, force_magnitude);
 }

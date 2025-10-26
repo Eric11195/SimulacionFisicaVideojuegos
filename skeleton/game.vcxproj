@@ -255,6 +255,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlackHole.cpp" />
+    <ClCompile Include="BombGenerator.cpp" />
+    <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="EnemyShip.cpp" />

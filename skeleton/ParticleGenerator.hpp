@@ -5,6 +5,7 @@
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
 #include <functional>
+#include <vector>
 
 /*
 Datos random:
@@ -39,7 +40,7 @@ public:
 	};
 	struct config {
 		GlobalCoords_CompositeGameObject::config go_config;
-		uint8_t particle_generated_per_second;
+		float particle_generated_per_second;
 		Particle::config particle_config;
 		particle_calculator_functions particle_lambdas;
 	};
@@ -61,21 +62,31 @@ protected:
 	particle_calculator_functions my_particle_lambdas;
 };
 
+//STARTS WITH FORCE APPLIED => Debug purposes
+class ForceAffectedParticleGenerator : public ParticleGenerator {
+public:
+	ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces);
+	virtual void set_up_particle(Particle* p) override;
+protected:
+	std::vector<std::string> force_names;
+};
+
+
 //---------------------------------------------------------------------------------------------------------
 
-class TriggeredParticleGenerator : public ParticleGenerator {
+class TriggeredParticleGenerator : public ForceAffectedParticleGenerator {
 public:
-	TriggeredParticleGenerator(ParticleGenerator::config c);
+	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {});
 	//Generates particles as specified config
 	void trigger();
 	void step(double dt) override;
 };
 
 //---------------------------------------------------------------------------------------------------------
-
+//NOT IMPLEMENTED
 class ToggleParticleGenerator : public ParticleGenerator {
 public:
-	ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state);
+	ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state);
 	//Modify step function so that it spawns particles
 	inline void set_state(bool new_state) { state = new_state; }
 private:

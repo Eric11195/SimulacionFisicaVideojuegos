@@ -28,6 +28,8 @@
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
     <ClCompile Include="BlackHole.cpp" />
+    <ClCompile Include="BombGenerator.hpp" />
+    <ClCompile Include="BombGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />

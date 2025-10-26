@@ -17,7 +17,7 @@
 #include "GameObject.hpp"
 #include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
-//#include "ParticleGeneratorsDescriptors.hpp"
+#include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
 #include "ParticleSystem.hpp"
 #include "Ship.hpp"
@@ -90,7 +90,8 @@ void initPhysics(bool interactive)
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
 
-	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	//scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	//scene_game_object->addChild(new ForceAffectedParticleGenerator(testing_blackhole_particles, "black_hole"));
 
 	auto player = new Ship();
 	scene_game_object->addChild(player);

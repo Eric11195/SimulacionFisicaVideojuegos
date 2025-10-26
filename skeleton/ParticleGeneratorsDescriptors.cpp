@@ -1,5 +1,73 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 
+ParticleGenerator::config testing_blackhole_particles{
+	GameObject::config{
+		{0,0,0}, //Pos
+		{0,0,1}, //speed_dir
+		//{0,-1,0},//accel_dir
+		0, //Speed module
+		//0,//PhysicLib::GRAVITY,//Accel module
+		PhysicLib::NORMAL_DAMPING,//DAMPING
+		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
+	},
+	1,
+	//Particles per second
+	Particle::config{
+		{//SphO_config
+			{//SceneObject config
+				{//GameObject config
+					{0,0,0}, //Pos
+					{0,1,0}, //speed_dir
+					//{0,-1,0},//accel_dir
+					0, //Speed module
+					//PhysicLib::GRAVITY,//Accel module
+				},
+				physx::PxVec4(0,0,0,0)
+				//Color
+			},
+			0.1f //rad
+		},
+		10 //lifetime
+	},
+	ParticleGenerator::particle_calculator_functions{
+		[] {return physx::PxVec3{
+				Distributions::LinearDistribution::get() * 5,
+				Distributions::LinearDistribution::get() * 5,
+				Distributions::LinearDistribution::get() * 5
+			};
+		},//POS
+		[] {//VEL_DIR
+			return physx::PxVec3{
+				0,
+				0,
+				0
+			};
+		},
+		[] {//SPEED MOD
+			return 0;
+		},
+		[] {//Lifetime MOD
+			return 0;
+		},
+		[] {//Vector4
+			return Vector4(
+				Distributions::LinearDistribution::get(),
+				Distributions::LinearDistribution::get(),
+				Distributions::LinearDistribution::get(),
+				1//Distributions::LinearDistribution::get()
+			);
+		},
+		[] {//Size
+			return 0;
+		},
+		[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
+		//Inside radius of parent;
+		return true;
+	}
+}
+
+};
+
 ParticleGenerator::config ball_thrower{
 	GameObject::config{
 		{0,0,0}, //Pos

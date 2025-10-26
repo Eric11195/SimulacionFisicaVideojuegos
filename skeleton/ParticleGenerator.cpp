@@ -59,17 +59,17 @@ void ParticleGenerator::generate_particles(double dt)
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
 		auto new_particle = new Particle(p_config);
 		set_up_particle(new_particle);
+		addChild(new_particle);
 	}
 }
 
 void ParticleGenerator::set_up_particle(Particle* p)
 {
-	addChild(p);
 }
 
 //-------------------------------------------------------------------------------------------------------
-TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config c)
-	:ParticleGenerator(c)
+TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
+	:ForceAffectedParticleGenerator(c,forces)
 {
 }
 
@@ -105,7 +105,18 @@ void TriggeredParticleGenerator::step(double dt)
 	GameObject::step(dt);
 }
 
-ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state)
+ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state)
 	:ParticleGenerator(c), state(initial_state)
 {
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
+	:ParticleGenerator(c), force_names(forces) {}
+
+void ForceAffectedParticleGenerator::set_up_particle(Particle* p)
+{
+	for(auto& f : force_names)
+		p->add_force_to_myself(f);
 }
