@@ -4,6 +4,10 @@
 
 using namespace Distributions;
 
+extern ParticleGenerator::config bomb;
+
+extern ParticleGenerator::config bomb_particle_generator;
+
 extern ParticleGenerator::config testing_blackhole_particles;
 
 extern ParticleGenerator::config ball_thrower;

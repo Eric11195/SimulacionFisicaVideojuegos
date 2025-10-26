@@ -2,8 +2,68 @@
 #include <iostream>
 //#include "Particle.hpp"
 
+//-------------------------------------------------------------------------------------------------------
+TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
+	:ForceAffectedParticleGenerator(c,forces)
+{
+}
+
+
+void TriggeredParticleGenerator::trigger()
+{
+	generate_particles(1);
+}
+
+
+void TriggeredParticleGenerator::step(double dt)
+{
+	integrate(dt);
+	//GameObject::step(dt);
+
+	//Missing generate particles
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
+
+		GameObject* aux_ptr = (*it).get();
+		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		{
+			it = child_objects.erase(it);
+			continue;
+		}
+		auto casted_particle = static_cast<Particle*>(aux_ptr);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}
+		//(*it)->step(dt);
+		
+		++it;
+	}
+	GameObject::step(dt);
+}
+
+
+ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state)
+	:ParticleGenerator(c), state(initial_state)
+{
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
+	:ParticleGenerator(c), force_names(forces) {}
+
+Particle* ForceAffectedParticleGenerator::set_up_particle(Particle::config& p)
+{
+	auto particle = ParticleGenerator::set_up_particle(p);
+	for (auto& f : force_names) {
+		particle->add_force_to_myself(f);
+	}
+	return  particle;
+}
+
 ParticleGenerator::ParticleGenerator(config& c)
-	:GlobalCoords_CompositeGameObject(c.go_config),
+	: GlobalCoords_CompositeGameObject(c.go_config),
 	const_p_config(c.particle_config.spho_config.so_config.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
 	avrg_speed(c.particle_config.spho_config.
@@ -11,7 +71,8 @@ ParticleGenerator::ParticleGenerator(config& c)
 	avrg_lifetime(c.particle_config.time_till_death),
 	avrg_color(c.particle_config.spho_config.so_config.color),
 	avrg_size(c.particle_config.spho_config.radius),
-	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas) {}
+	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas) {
+}
 
 void ParticleGenerator::step(double dt)
 {
@@ -57,66 +118,11 @@ void ParticleGenerator::generate_particles(double dt)
 		new_p_config_short.initial_speed_dir = const_p_config.initial_speed_dir + my_particle_lambdas.dir();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
-		auto new_particle = new Particle(p_config);
-		set_up_particle(new_particle);
-		addChild(new_particle);
+		addChild(set_up_particle(p_config));
 	}
 }
 
-void ParticleGenerator::set_up_particle(Particle* p)
+Particle* ParticleGenerator::set_up_particle(Particle::config& p)
 {
-}
-
-//-------------------------------------------------------------------------------------------------------
-TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
-	:ForceAffectedParticleGenerator(c,forces)
-{
-}
-
-void TriggeredParticleGenerator::trigger()
-{
-	generate_particles(1);
-}
-
-void TriggeredParticleGenerator::step(double dt)
-{
-	integrate(dt);
-	//GameObject::step(dt);
-
-	//Missing generate particles
-	auto it = child_objects.begin();
-	while (it != child_objects.end()) {
-
-		GameObject* aux_ptr = (*it).get();
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-		{
-			it = child_objects.erase(it);
-			continue;
-		}
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
-		}
-		//(*it)->step(dt);
-		
-		++it;
-	}
-	GameObject::step(dt);
-}
-
-ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state)
-	:ParticleGenerator(c), state(initial_state)
-{
-}
-
-//-------------------------------------------------------------------------------------------------------
-
-ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces)
-	:ParticleGenerator(c), force_names(forces) {}
-
-void ForceAffectedParticleGenerator::set_up_particle(Particle* p)
-{
-	for(auto& f : force_names)
-		p->add_force_to_myself(f);
+	return new Particle(p);
 }

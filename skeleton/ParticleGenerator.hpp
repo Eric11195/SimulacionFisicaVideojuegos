@@ -7,6 +7,7 @@
 #include <functional>
 #include <vector>
 
+
 /*
 Datos random:
 	pos inicial
@@ -25,6 +26,7 @@ Eliminar particulas cuando:
 	salen zona de interes
 	n� max
 */
+
 
 class ParticleGenerator : public GlobalCoords_CompositeGameObject {
 public:
@@ -56,17 +58,18 @@ protected:
 	const GameObject::config const_p_config;
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
-	virtual void generate_particles(double dt);
-	virtual void set_up_particle(Particle*);
+	virtual void ParticleGenerator::generate_particles(double dt);
+	virtual Particle* set_up_particle(Particle::config&);
 	std::function<void(Particle::config&)> next_particle_config_calculator;
 	particle_calculator_functions my_particle_lambdas;
 };
 
 //STARTS WITH FORCE APPLIED => Debug purposes
+
 class ForceAffectedParticleGenerator : public ParticleGenerator {
 public:
 	ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces);
-	virtual void set_up_particle(Particle* p) override;
+	virtual Particle* set_up_particle(Particle::config& p) override;
 protected:
 	std::vector<std::string> force_names;
 };
@@ -84,6 +87,7 @@ public:
 
 //---------------------------------------------------------------------------------------------------------
 //NOT IMPLEMENTED
+
 class ToggleParticleGenerator : public ParticleGenerator {
 public:
 	ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state);

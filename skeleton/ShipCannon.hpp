@@ -10,12 +10,14 @@ public:
 	void start_fire();
 	void stop_fire();
 	void fire_missile();
+	void fire_bomb();
 protected:
 	bool active = false;
 	virtual void normal_shoot();
 	virtual void step_fire(double dt);
 	std::list<std::unique_ptr<GameObject>>::iterator cannon_it;
 	std::list<std::unique_ptr<GameObject>>::iterator missile_cannon;
+	std::list<std::unique_ptr<GameObject>>::iterator bomb_cannon;
 	int n_cannon = 0;
 	float time_acumulated = 0;
 	float time_between_shots = 0.15;

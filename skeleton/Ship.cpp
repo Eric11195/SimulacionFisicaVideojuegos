@@ -110,6 +110,10 @@ void Ship::handle_mouse_button_down(uint8_t but)
 	switch (but) {
 	case mouse_button_id::m1:
 		static_cast<ShipCannon*>(child_objects.front().get())->start_fire();
+		break;
+	case mouse_button_id::m2:
+		static_cast<ShipCannon*>(child_objects.front().get())->fire_bomb();
+		break;
 	}
 }
 

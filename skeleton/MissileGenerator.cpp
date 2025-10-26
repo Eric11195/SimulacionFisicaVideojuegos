@@ -15,9 +15,9 @@ MissileGenerator::MissileGenerator()
 {
 }
 
-void MissileGenerator::set_up_particle(Particle* p)
+Particle* MissileGenerator::set_up_particle(Particle::config& p)
 {
-	TriggeredParticleGenerator::set_up_particle(p);
-	auto c = new ParticleGenerator(missile_particle_system);
-	p->addChild(c);
+	auto part = TriggeredParticleGenerator::set_up_particle(p);
+	part->addChild(new ParticleGenerator(missile_particle_system));
+	return part;
 }

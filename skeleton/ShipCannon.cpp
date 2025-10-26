@@ -2,7 +2,7 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 #include <iostream>
 #include "MissileGenerator.hpp"
-
+#include "BombGenerator.hpp"
 
 ShipCannon::ShipCannon(Transform const& parent_tr)
 	: ParticleSystem(parent_tr)
@@ -19,6 +19,8 @@ ShipCannon::ShipCannon(Transform const& parent_tr)
 	GameObject* pg = new MissileGenerator();
 	pg->translate_to({ 0,-1,0 });
 	missile_cannon = addChild(pg);
+
+	//bomb_cannon = addChild(new Bomb(GameObject::config(), 5, 0.5));
 }
 
 void ShipCannon::step(double dt)
@@ -46,6 +48,11 @@ void ShipCannon::fire_missile()
 	GameObject* aux_ptr = (*missile_cannon).get();
 	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
 	casted_trigger->trigger();
+}
+
+void ShipCannon::fire_bomb()
+{
+	//new Bomb();
 }
 
 /*

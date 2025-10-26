@@ -12,5 +12,5 @@ class MissileGenerator : public TriggeredParticleGenerator {
 public:
 	MissileGenerator();
 protected:
-	virtual void set_up_particle(Particle* p) override;
+	virtual Particle* set_up_particle(Particle::config& p) override;
 };
