@@ -23,7 +23,6 @@ Ship::Ship()
 	addChild(brakes);
 }
 
-constexpr int max_speed = 3;
 void Ship::step(double dt)
 {
 	GameObject::step(dt);
@@ -40,16 +39,6 @@ void Ship::step(double dt)
 	//SPEED DELIMITER
 	auto speed_mag = vel.normalize();
 	vel *= min(max(speed_mag, 0), max_speed);
-
-	// 
-	//advance
-	/*
-	if (current_state != constante) {
-		float desired_speed = min(1, max(0, int(current_state)));
-		speed += dt * (desired_speed - speed);
-		set_vel({ 0,0,max_speed * speed });
-	}
-	*/
 
 }
 
