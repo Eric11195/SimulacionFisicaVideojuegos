@@ -5,12 +5,22 @@
 #include "utils.hpp"
 #include "ScreenSizeConstants.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
+#include "ForceGenerator.hpp"
+
+constexpr float max_speed = 30;
 
 Ship::Ship()
 	:GameObject()
 {
 	addChild(new ShipCannon(global_transform));
-	//add_force_to_myself("black_hole");
+
+	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5, false);
+	add_force_to_myself(propulsors);
+	addChild(propulsors);
+
+	brakes = new ToggleDirectional_ForceGenerator({ 0,0,-1 }, 3, false);
+	add_force_to_myself(brakes);
+	addChild(brakes);
 }
 
 constexpr int max_speed = 3;
@@ -26,12 +36,20 @@ void Ship::step(double dt)
 	float virar_radians_vel = -virar_radians_per_second * dt * (virar_buttons[0] - virar_buttons[1]);
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 	
+
+	//SPEED DELIMITER
+	auto speed_mag = vel.normalize();
+	vel *= min(max(speed_mag, 0), max_speed);
+
+	// 
 	//advance
+	/*
 	if (current_state != constante) {
 		float desired_speed = min(1, max(0, int(current_state)));
 		speed += dt * (desired_speed - speed);
 		set_vel({ 0,0,max_speed * speed });
 	}
+	*/
 
 }
 
@@ -53,10 +71,12 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 		virar_buttons[1] = 1;
 		break;
 	case'w':
-		current_state = state(current_state+1);
+		propulsors->set_state(true);
+		//current_state = state(current_state+1);
 		break;
 	case 's':
-		current_state = state(current_state - 1);
+		brakes->set_state(true);
+		//current_state = state(current_state - 1);
 		break;
 	}
 
@@ -77,10 +97,12 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 		virar_buttons[1] = 0;
 		break;
 	case'w':
-		current_state = state(current_state - 1);
+		propulsors->set_state(false);
+		//current_state = state(current_state - 1);
 		break;
 	case 's':
-		current_state = state(current_state + 1);
+		brakes->set_state(false);
+		//current_state = state(current_state + 1);
 		break;
 	}
 

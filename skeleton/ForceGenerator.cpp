@@ -195,3 +195,20 @@ void Variable_ForceGenerator::step(double dt)
 	time_since_started += dt;
 	update_force_func(time_since_started, dt, force_magnitude);
 }
+
+ToggleDirectional_ForceGenerator::ToggleDirectional_ForceGenerator(physx::PxVec3 force_dir, float force_mag, bool start_state)
+	:Directional_ForceGenerator(force_dir, force_mag), active(start_state)
+{
+}
+
+physx::PxVec3 ToggleDirectional_ForceGenerator::apply_force(GameObject const& g)
+{
+	if (active) return Directional_ForceGenerator::apply_force(g);
+
+	return physx::PxVec3(0,0,0);
+}
+
+void ToggleDirectional_ForceGenerator::set_state(bool state)
+{
+	active = state;
+}

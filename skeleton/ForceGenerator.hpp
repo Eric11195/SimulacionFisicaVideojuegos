@@ -24,6 +24,15 @@ protected:
 	physx::PxVec3 normalized_force_direction;
 };
 
+class ToggleDirectional_ForceGenerator : public Directional_ForceGenerator {
+public:
+	ToggleDirectional_ForceGenerator(physx::PxVec3 force_dir, float force_mag, bool start_state);
+	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	void set_state(bool state);
+protected:
+	bool active;
+};
+
 class Gravity_ForceGenerator : public Directional_ForceGenerator {
 public:
 	Gravity_ForceGenerator(physx::PxVec3 force_dir);
