@@ -6,6 +6,7 @@
 #include "RenderUtils.hpp"
 #include "ScreenSizeConstants.hpp";
 #include <iostream>
+#include "stb_image.h"
 
 
 using namespace physx;
@@ -22,6 +23,8 @@ extern PxPhysics* gPhysics;
 extern PxMaterial* gMaterial;
 
 std::vector<const RenderItem*> gRenderItems;
+std::vector<GLuint> textures;
+GLuint hud_text;
 
 double PCFreq = 0.0;
 __int64 CounterStart = 0;
@@ -93,6 +96,41 @@ void idleCallback()
 float stepTime = 0.0f;
 //#define FIXED_STEP
 
+GLuint loadTexture(const char* path) {
+	int width, height, numColCh;
+	unsigned char* bytes = stbi_load(path, &width, &height, &numColCh, 0);
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	textures.push_back(texture);
+	//glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, width, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
+	//glGenerateMipMap(GL_TEXTURE_2D);
+
+	stbi_image_free(bytes);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return texture;
+}
+
+void renderHUD() {
+	if (hud_text == 0)
+		hud_text = loadTexture("cabina.png");
+	glBindTexture(GL_TEXTURE_2D, hud_text);
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0);	glVertex2f(0.05, 0.05);
+	glTexCoord2f(1.0, 1.0);	glVertex2f(0.3, 0.05);
+	glTexCoord2f(1.0, 0.0); glVertex2f(0.3, 0.15);
+	glTexCoord2f(0.0, 0.0); glVertex2f(0.05, 0.15);
+	glEnd();
+}
+
 void renderCallback()
 {
 	update(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
@@ -115,7 +153,7 @@ void renderCallback()
 #else
 	stepPhysics(true, t);
 #endif
-
+	//RENDER 3D
 	startRender(sCamera->getEye(), sCamera->getDir(), sCamera->getUp());
 
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
@@ -134,6 +172,8 @@ void renderCallback()
 		}
 		renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
 	}
+	//RENDER 2D
+	renderHUD();
 
 	//PxScene* scene;
 	//PxGetPhysics().getScenes(&scene, 1);
@@ -151,6 +191,9 @@ void renderCallback()
 void exitCallback(void)
 {
 	delete sCamera;
+	for (auto text : textures) {
+		glDeleteTextures(1, &text);
+	}
 	cleanupPhysics(true);
 }
 }
