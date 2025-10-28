@@ -35,8 +35,8 @@ protected:
 
 class Gravity_ForceGenerator : public Directional_ForceGenerator {
 public:
-	Gravity_ForceGenerator(physx::PxVec3 force_dir);
-	Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction);
+	Gravity_ForceGenerator(physx::PxVec3 force_dir, float mag = 9.8f);
+	Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction, float mag = 9.8f);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 };
 
@@ -99,8 +99,8 @@ public:
 		free_z = 04,
 		all = 00
 	};
-	Torbellino_ForceGenerator(physx::PxVec3, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l);
-	Torbellino_ForceGenerator(std::string s, physx::PxVec3, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l);
+	Torbellino_ForceGenerator(physx::PxVec3 pos, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l);
+	Torbellino_ForceGenerator(std::string s, physx::PxVec3 pos, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	axis_lock my_axis_locked;

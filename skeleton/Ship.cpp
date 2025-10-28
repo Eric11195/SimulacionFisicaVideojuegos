@@ -21,6 +21,8 @@ Ship::Ship()
 	brakes = new ToggleDirectional_ForceGenerator({ 0,0,-1 }, 3, false);
 	add_force_to_myself(brakes);
 	addChild(brakes);
+
+	//add_force_to_myself("black_hole");
 }
 
 void Ship::step(double dt)

@@ -1,30 +1,22 @@
 #include "Projectile.hpp"
 #include <iostream>
 
-void Projectile::step(double dt)
-{
-	Particle::step(dt);
-}
-
 Projectile::Projectile(projectile_config& c)
-	: Particle(c.particle_config),
-	m_real(c.m_real), s_real(c.s_real), g_real(c.m_gravity),
-	s_simulated(c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
+	: Particle(c.particle_config)//,
+	//m_real(c.particle_config.spho_config.so_config.go_config.mass.mass), s_real(c.s_real), g_real(9.8f),
+	//s_simulated(c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
 {
-	update_s_mass();
-	update_s_gravity();
 //	set_accel({0,-g_simulated, 0});
 }
 
-void Projectile::update_s_gravity()
+float Projectile::get_s_gravity(float real_speed, float sim_speed)
 {
-	float vel_proportion = (s_simulated * s_simulated)/(s_real * s_real);
-	g_simulated = g_real * vel_proportion;
+	float vel_proportion = (sim_speed * sim_speed)/ (real_speed * real_speed);
+	return 9.8f * vel_proportion;
 }
 
-void Projectile::update_s_mass()
+float Projectile::get_s_mass(float mass, float real_speed, float sim_speed)
 {
-
-	float vel_proportion = (s_simulated*s_simulated)/ (s_real * s_real);
-	m_simulated = m_real * vel_proportion;
+	float vel_proportion = (real_speed * real_speed) / (sim_speed * sim_speed);
+	return mass * vel_proportion;
 }

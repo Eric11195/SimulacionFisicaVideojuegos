@@ -82,15 +82,15 @@ void initPhysics(bool interactive)
 	scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 
-		{ ParticleDescriptor::regular_ball,
-		30,//SPEED REAL
-		0.5f, //MASS REAL
+		{ ParticleDescriptor::regular_ball//,
+		//30,//SPEED REAL
 		};
 
 	scene_game_object->addChild(new CameraProjectileShooter(c));
 
 
-	//scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	scene_game_object->addChild(new ForceAffectedParticleGenerator(testing_blackhole_particles, {"black_hole"}));
 	//scene_game_object->addChild(new ForceAffectedParticleGenerator(testing_blackhole_particles, "black_hole"));
 
 	auto player = new Ship();

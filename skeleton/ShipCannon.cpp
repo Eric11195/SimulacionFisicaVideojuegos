@@ -3,13 +3,14 @@
 #include <iostream>
 #include "MissileGenerator.hpp"
 #include "BombGenerator.hpp"
+#include "ShipRegularProjectileCannon.hpp"
 
 ShipCannon::ShipCannon(Transform const& parent_tr)
 	: ParticleSystem(parent_tr)
 {
 	for (int i = -1; i < 2; i = i + 2) {
 		for (int j = -1; j < 2; j = j + 2) {
-			GameObject* pg = new TriggeredParticleGenerator(x_wing_shoot_type);
+			GameObject* pg = new ShipRegularProjectileCannon();//new TriggeredParticleGenerator(x_wing_shoot_type);
 			pg->translate_to({ j * 1.5f,i * 1.0f,0 });
 			addChild(pg);
 		}

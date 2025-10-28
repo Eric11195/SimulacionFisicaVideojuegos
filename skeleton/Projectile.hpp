@@ -26,19 +26,19 @@ class Projectile : public Particle {
 public:
 	struct projectile_config {
 		Particle::config particle_config;
-		speed s_real;
-		PhysicLib::mass m_real;
-		gravity m_gravity = PhysicLib::GRAVITY;
+		//speed s_real;
 	};
-	virtual void step(double dt) override;
 	Projectile(projectile_config& c);
+	static float get_s_gravity(float real_speed, float sim_speed);
+	static float get_s_mass(float mass, float real_speed, float sim_speed);
 protected:
+	/*
 	PhysicLib::mass m_real;
 	PhysicLib::mass m_simulated;
 	speed s_real;
 	speed s_simulated;
 	gravity g_simulated;
 	gravity g_real;
-	void update_s_gravity();
-	void update_s_mass();
+	*/
+
 };

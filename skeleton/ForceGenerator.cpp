@@ -55,11 +55,11 @@ ForceGenerator::~ForceGenerator()
 	
 }
 */
-Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v)
-	: Directional_ForceGenerator(v, 9.8f) {}
+Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v, float mag)
+	: Directional_ForceGenerator(v, mag) {}
 
-Gravity_ForceGenerator::Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction)
-	: Directional_ForceGenerator(name, force_direction, 9.8f)
+Gravity_ForceGenerator::Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction, float mag)
+	: Directional_ForceGenerator(name, force_direction, mag)
 {
 }
 
@@ -95,13 +95,17 @@ physx::PxVec3 Wind_ForceGenerator::apply_force(GameObject const& g)
 	*/
 }
 
-Torbellino_ForceGenerator::Torbellino_ForceGenerator(physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l)
-	: Wind_ForceGenerator(v, magnitude, air_density, avance_resistance_aerodinamic_coef), my_axis_locked(l)
+Torbellino_ForceGenerator::Torbellino_ForceGenerator(physx::PxVec3 pos, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l)
+	: Wind_ForceGenerator(physx::PxVec3(0,0,0), magnitude, air_density, avance_resistance_aerodinamic_coef), my_axis_locked(l)
 {
+	set_local_pos(pos);
 }
 
-Torbellino_ForceGenerator::Torbellino_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l)
-	:Wind_ForceGenerator(s,v,magnitude, air_density, avance_resistance_aerodinamic_coef), my_axis_locked(l){ }
+Torbellino_ForceGenerator::Torbellino_ForceGenerator(std::string s, physx::PxVec3 pos, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l)
+	:Wind_ForceGenerator(s,Vector3(0,0,1), magnitude, air_density, avance_resistance_aerodinamic_coef), my_axis_locked(l) 
+{
+	set_local_pos(pos);
+}
 
 physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) {
 	physx::PxQuat q;
@@ -121,9 +125,8 @@ physx::PxVec3 Torbellino_ForceGenerator::apply_force(GameObject const& g)
 
 	//Make the rotation and thingies
 	Transform const& player_tr = g.get_global_tr();
-	physx::PxVec3 global_vector_to_player = player_tr.p - global_transform.p;
+	physx::PxVec3 global_vector_to_player = (player_tr.p - global_transform.p).getNormalized();
 	//Lo normaliza y cojemos el modulo
-	float distance_to_object = global_vector_to_player.normalize();
 	
 	physx::PxVec3 local_direction = global_transform.q.rotate({1,0,0});
 	physx::PxQuat rotation = get_rotation_to(global_vector_to_player,local_direction).getNormalized();
@@ -140,7 +143,8 @@ physx::PxVec3 Torbellino_ForceGenerator::apply_force(GameObject const& g)
 	force_applied.z *= min(1, my_axis_locked & axis_lock::free_z);
 
 	//Normalizar para que sea la misma fuerza la aplicada aún con el axis lock
-	force_applied = force_applied.getNormalized() * distance_to_object;
+	force_applied = force_applied.getNormalized();// * distance_to_object;
+	//std::cout << force_applied.x << ' ' << force_applied.y << ' ' << force_applied.z << '\n';
 
 	return force_applied;
 }
@@ -159,14 +163,18 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 {
 	if (!inside_area_of_influence(g))return { 0,0,0 };
 
-	physx::PxVec3 g_pos = g.get_global_tr().p;
+	physx::PxVec3& g_pos = g.get_global_tr().p;
 	physx::PxVec3 vel_torbellino = force_magnitude * physx::PxVec3{
-		0,//-(g_pos.x - global_transform.p.x),
+		-(g_pos.x - global_transform.p.x),
 		0,//50 - (g_pos.y - global_transform.p.y),
 		g_pos.z - global_transform.p.z
 	};
-	std::cout << g_pos.z - global_transform.p.z << '\n';
-	return cd_p_medios * vel_torbellino * vel_torbellino.magnitude();
+	vel_torbellino = cd_p_medios * vel_torbellino * vel_torbellino.magnitude();
+	vel_torbellino.normalize();
+	//std::cout << g_pos.z - global_transform.p.z << '\n';
+	//std::cout << vel_torbellino.x << ' '<< vel_torbellino.y << ' '<<vel_torbellino.z << '\n';
+
+	return vel_torbellino;
 }
 
 bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
