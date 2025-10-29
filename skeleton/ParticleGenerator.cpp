@@ -117,7 +117,7 @@ void ParticleGenerator::generate_particles(double dt)
 		//new_p_config_short.initial_accel_magnitude; //= 30;
 		//new_p_config_short.initial_accel_dir = const_p_config.initial_accel_dir;
 		new_p_config_short.initial_speed_magnitude = avrg_speed + my_particle_lambdas.vel();
-		new_p_config_short.initial_speed_dir = const_p_config.initial_speed_dir + my_particle_lambdas.dir();
+		new_p_config_short.initial_speed_dir = global_transform.q.rotate(const_p_config.initial_speed_dir + my_particle_lambdas.dir());
 		new_p_config_short.mass = avrg_mass + my_particle_lambdas.mass();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
