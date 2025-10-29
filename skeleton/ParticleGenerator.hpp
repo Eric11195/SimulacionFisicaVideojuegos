@@ -2,7 +2,6 @@
 #include "GameObject.hpp"
 #include <list>
 #include <cstdint>
-#include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
 #include <functional>
 #include <vector>
@@ -29,7 +28,7 @@ Eliminar particulas cuando:
 */
 
 
-class ParticleGenerator : public GlobalCoords_CompositeGameObject {
+class ParticleGenerator : public GameObject{
 public:
 	struct particle_calculator_functions {
 		std::function<physx::PxVec3()> pos = [] { return physx::PxVec3{ 0,0,0 }; };
@@ -43,7 +42,6 @@ public:
 		std::function<Mass()> mass = [] {return Mass(0); };
 	};
 	struct config {
-		GlobalCoords_CompositeGameObject::config go_config;
 		float particle_generated_per_second;
 		Particle::config particle_config;
 		particle_calculator_functions particle_lambdas;
@@ -64,7 +62,6 @@ protected:
 	//called when particles would be generated
 	virtual void ParticleGenerator::generate_particles(double dt);
 	virtual Particle* set_up_particle(Particle::config&);
-	std::function<void(Particle::config&)> next_particle_config_calculator;
 	particle_calculator_functions my_particle_lambdas;
 };
 

@@ -1,12 +1,10 @@
 #pragma once
-#include "PassThrough_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
 #include <list>
-#include "GlobalCoords_CompositeGameObject.hpp"
 
 
 
-class ParticleSystem : public PassThrough_CompositeGameObject {
+class ParticleSystem : public GameObject {
 public:
 	ParticleSystem(const ParticleSystem&) = delete;
 	ParticleSystem& operator =(const ParticleSystem&) = delete;

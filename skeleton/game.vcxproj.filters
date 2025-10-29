@@ -17,13 +17,11 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
     <ClCompile Include="ShipCannon.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="ScreenSizeConstants.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
-    <ClCompile Include="PassThrough_CompositeGameObject.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
@@ -51,7 +49,6 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
-    <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
@@ -61,7 +58,6 @@
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="MissileGenerator.hpp" />
-    <ClInclude Include="PassThrough_CompositeGameObject.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
     <ClInclude Include="inverse_mass.hpp" />

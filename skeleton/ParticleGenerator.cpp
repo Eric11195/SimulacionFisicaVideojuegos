@@ -17,8 +17,6 @@ void TriggeredParticleGenerator::trigger()
 
 void TriggeredParticleGenerator::step(double dt)
 {
-	integrate(dt);
-	//GameObject::step(dt);
 
 	//Missing generate particles
 	auto it = child_objects.begin();
@@ -66,7 +64,7 @@ Particle* ForceAffectedParticleGenerator::set_up_particle(Particle::config& p)
 }
 
 ParticleGenerator::ParticleGenerator(config& c)
-	: GlobalCoords_CompositeGameObject(c.go_config),
+	:
 	const_p_config(c.particle_config.spho_config.so_config.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
 	particle_start_pos(c.particle_config.spho_config.so_config.go_config.pos),
@@ -83,7 +81,6 @@ void ParticleGenerator::step(double dt)
 {
 	generate_particles(dt);
 	//GameObject::step(dt);
-	integrate(dt);
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {

@@ -8,13 +8,13 @@ public:
 	Ship();
 	//virtual void process_input(unsigned char c) override;
 	virtual void step(double dt) override;
-	virtual void update_position(Transform const& tr) override;
 	virtual void handle_keyboard_button_down(unsigned char c) override;
 	virtual void handle_keyboard_button_up(unsigned char c) override;
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_down(uint8_t) override;
 	virtual void handle_mouse_button_up(uint8_t) override;
 protected:
+	void update_child_transform();
 	struct angular_velocity {
 		float angle;
 		physx::PxVec3 rotation_axis;

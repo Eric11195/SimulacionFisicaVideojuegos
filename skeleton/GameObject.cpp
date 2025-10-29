@@ -3,8 +3,7 @@
 #include <iostream>
 
 GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
-	: local_transform(Transform(c.pos,c.initial_rotation)),
-	global_transform(Transform(c.pos,c.initial_rotation)),
+	: global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
 	damping_mult(c.damping_mult), m(c.mass)
 {
@@ -18,10 +17,14 @@ GameObject::~GameObject()
 	child_objects.clear();
 }
 
+void GameObject::setTransform(Transform& tr)
+{
+	global_transform = tr;
+}
+
 std::list<std::unique_ptr<GameObject>>::iterator GameObject::addChild(GameObject* go)
 {
 	auto aux_it = child_objects.insert(child_objects.end(), std::unique_ptr<GameObject>(go));
-	(*aux_it)->link_to_parent(global_transform);
 	return aux_it;
 }
 
@@ -45,42 +48,32 @@ void GameObject::step(double dt)
 }
 void GameObject::translate(physx::PxVec3 t)
 {
-	local_transform.p = local_transform.q.rotate(t) + local_transform.p;//, q* src.q
-	//local_transform.transform(t);
-	//translate_to(local_transform.p + t);
+	global_transform.p += t;
+	//local_transform.p = local_transform.q.rotate(t) + local_transform.p;//, q* src.q
 }
 
 void GameObject::translate_to(physx::PxVec3 t)
 {
-	local_transform.p = local_transform.q.rotate(t);
-	//local_transform.p = t;
+	global_transform.p = t;
+	//local_transform.p = local_transform.q.rotate(t);
 }
 
 void GameObject::rotate(physx::PxQuat q)
 {
-	local_transform.q *= q;
+	global_transform.q *= q;
+	//local_transform.q *= q;
 }
 
 void GameObject::set_velocity(physx::PxVec3 v)
 {
 	vel = v;
 }
-
-void GameObject::set_vel(physx::PxVec3 new_vel)
-{
-	vel = new_vel;
-}
-
 #ifdef DAMPING
 void GameObject::set_dumping(float f)
 {
 	damping_mult = f;
 }
 #endif
-void GameObject::calculate_global_to_local_rot()
-{
-	global_to_local_rot = global_transform.q.getConjugate();
-}
 void GameObject::integrate(double dt)
 {
 #if defined EULER_SEMI_EXPLICIT_INTEGRATION
@@ -89,7 +82,7 @@ void GameObject::integrate(double dt)
 	for (auto& force : forces_applied_to_this_obj) {
 		//Get matrix transformation only on rotation, to pass from global to local
 		auto new_accel = force->apply_force(*this);
-		new_accel = global_to_local_rot.rotate(new_accel);
+		//new_accel = global_to_local_rot.rotate(new_accel);
 		accel += new_accel;
 	}
 	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
@@ -107,20 +100,6 @@ void GameObject::integrate(double dt)
 #endif
 
 }
-void GameObject::link_to_parent(Transform const& parent_tr)
-{
-	update_position(parent_tr);
-}
-void GameObject::update_position(Transform const& parent_tr)
-{
-	global_transform = parent_tr.transform(local_transform);
-
-	calculate_global_to_local_rot();
-
-	for (auto& child : child_objects)
-		child->update_position(global_transform);
-}
-
 
 void GameObject::handle_mouse_pos(float x, float y)
 {

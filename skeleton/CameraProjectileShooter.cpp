@@ -3,7 +3,7 @@
 
 CameraProjectileShooter::CameraProjectileShooter
 	(Projectile::projectile_config& pc)
-	: pr_spawned(pc), GlobalCoords_CompositeGameObject()
+	: pr_spawned(pc), GameObject()
 {
 }
 

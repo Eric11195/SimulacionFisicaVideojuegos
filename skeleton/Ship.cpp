@@ -13,7 +13,7 @@ Ship::Ship()
 	:GameObject()
 {
 	addChild(new ShipCannon(global_transform));
-	add_force_to_myself("black_hole");
+	//add_force_to_myself("black_hole");
 
 	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5, false);
 	add_force_to_myself(propulsors);
@@ -38,18 +38,13 @@ void Ship::step(double dt)
 	//Virar
 	float virar_radians_vel = -virar_radians_per_second * dt * (virar_buttons[0] - virar_buttons[1]);
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
-	
+
+	update_child_transform();
 
 	//SPEED DELIMITER
 	//auto speed_mag = vel.normalize();
 	//vel *= min(max(speed_mag, 0), max_speed);
 
-}
-
-void Ship::update_position(Transform const& tr)
-{
-	GameObject::update_position(tr);
-	GetCamera()->setTransform(global_transform);
 }
 
 void Ship::handle_keyboard_button_down(unsigned char c)
@@ -139,4 +134,11 @@ void Ship::handle_mouse_button_up(uint8_t but)
 	case mouse_button_id::m1:
 		static_cast<ShipCannon*>(child_objects.front().get())->stop_fire();
 	}
+}
+
+void Ship::update_child_transform()
+{
+	GetCamera()->setTransform(global_transform);
+	for (auto& c : child_objects)
+		c->setTransform(global_transform);
 }

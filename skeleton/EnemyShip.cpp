@@ -30,7 +30,7 @@ EnemyShip::EnemyShip(GameObject* player)
 		(Distributions::LinearDistribution::get() * 100) - 50,
 		(Distributions::LinearDistribution::get() * 100) - 50
 	});
-	set_vel({ 0,0,15});
+	//set_velocity({ 0,0,15 });
 
 	addChild(new ParticleGenerator(missile_particle_system));
 
@@ -43,11 +43,6 @@ void EnemyShip::step(double dt)
 	GameObject::step(dt);
 }
 
-void EnemyShip::update_position(physx::PxTransform const& parent_tr)
-{
-	parent_to_child_tr = parent_tr;
-	GameObject::update_position(parent_tr);
-}
 /*
 physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) {
 	physx::PxQuat q;
@@ -67,12 +62,12 @@ void EnemyShip::think_step(double dt)
 	//Aim for the player ship
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_vector_to_player = player_tr.p - global_transform.p;
-	PxVec3 local_direction_to_player = global_to_local_rot.rotate(global_vector_to_player);
-	float distance_to_player = (local_direction_to_player - vel).magnitude();
+	float distance_to_player = (global_vector_to_player - vel).magnitude();
 	float rotation_to_apply_in_radians;
 
 	PxVec3 local_ship_direction = { 0,0,1 };
 
+	/*
 	//Si está mirando en dirección hacia el player
 	if ((local_direction_to_player + local_ship_direction).z > 0) {
 		//rota más rápido para apuntarte mejor y cosas de gameplay y tal
@@ -97,4 +92,5 @@ void EnemyShip::think_step(double dt)
 		);
 		rotate(rot_quat);
 	}
+	*/
 }

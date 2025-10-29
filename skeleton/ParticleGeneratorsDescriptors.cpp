@@ -2,15 +2,6 @@
 
 
 ParticleGenerator::config bomb{
-	GameObject::config{
-		{0,0,0}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		0, //Speed module
-		//0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	1,
 	//Particles per second
 	Particle::config{
@@ -70,15 +61,6 @@ ParticleGenerator::config bomb{
 
 
 ParticleGenerator::config bomb_particle_generator{
-	GameObject::config{
-		{0,0,1}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		0, //Speed module
-		//0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	100,
 	//Particles per second
 	Particle::config{
@@ -145,15 +127,6 @@ ParticleGenerator::config bomb_particle_generator{
 
 
 ParticleGenerator::config testing_blackhole_particles{
-	GameObject::config{
-		{5,5,5}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		0, //Speed module
-		//0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	1,
 	//Particles per second
 	Particle::config{
@@ -213,15 +186,6 @@ ParticleGenerator::config testing_blackhole_particles{
 };
 
 ParticleGenerator::config ball_thrower{
-	GameObject::config{
-		{0,0,0}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		5, //Speed module
-		//0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	20,
 	//Particles per second
 	Particle::config{
@@ -282,15 +246,6 @@ ParticleGenerator::config ball_thrower{
 };
 
 ParticleGenerator::config x_wing_shoot_type{
-	GameObject::config{
-		{0,0,0}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		0, //Speed module
-		//0,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	1,//Particles per second
 	Particle::config{
 		{//SphO_config
@@ -347,15 +302,6 @@ ParticleGenerator::particle_calculator_functions{
 }
 };
 ParticleGenerator::config missile{
-	GameObject::config{
-		{0,0,0}, //Pos
-		{0,0,1}, //speed_dir
-		//{0,-1,0},//accel_dir
-		0, //Speed module
-		0,//PhysicLib::GRAVITY,//Accel module
-		//PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-},
 1,//Particles per second
 Particle::config{
 	{//SphO_config
@@ -405,15 +351,6 @@ Particle::config{
 }
 };
 ParticleGenerator::config missile_particle_system{
-	GameObject::config{
-		{0,0,0}, //Pos
-		{0,0,-1}, //speed_dir
-		//{0,0,1},//accel_dir
-		0,//5, //Speed module
-		//0,//2.5,//PhysicLib::GRAVITY,//Accel module
-		PhysicLib::NORMAL_DAMPING,//DAMPING
-		//physx::PxQuat(1.0f, 0.0f,0.0f,0.0f)
-	},
 	50,
 	//Particles per second
 	Particle::config{

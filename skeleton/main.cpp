@@ -15,7 +15,6 @@
 #include "Projectile.hpp"
 #include "CameraProjectileShooter.hpp"
 #include "GameObject.hpp"
-#include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
@@ -45,7 +44,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-GlobalCoords_CompositeGameObject* scene_game_object = nullptr;
+GameObject* scene_game_object = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -72,7 +71,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	//INSTANTIATE SCENE NODE
-	scene_game_object = new GlobalCoords_CompositeGameObject();
+	scene_game_object = new GameObject();
 	//CREATE ALL FORCE GENERATORS:
 	scene_game_object->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
 		//(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
@@ -110,7 +109,6 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 	scene_game_object->step(t);
-	scene_game_object->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }

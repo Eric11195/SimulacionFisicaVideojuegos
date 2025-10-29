@@ -32,24 +32,21 @@ struct GameObject : public InputProcessor{
 	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
+	void setTransform(Transform& tr);
+	
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
-	void set_local_pos(physx::PxVec3 new_local_p) { local_transform.p = new_local_p; }
 	virtual Vector3 get_pos();
 	virtual Vector3 get_vel() const;
 	virtual void step(double dt);
-	virtual void init() {};
-	//virtual void process_input(unsigned char key) {}
-	virtual void link_to_parent(Transform const& parent_tr);
-	virtual void update_position(Transform const& parent_tr);
+
 	void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
 	virtual void rotate(Quaternion);
 
 	void set_velocity(physx::PxVec3);
-	void set_vel(physx::PxVec3 vel);
+
 	float get_inv_mass() const { return m.inv_mass; }
-	Transform get_global_tr_inverse() { return global_transform.getInverse(); }
 	Transform get_global_tr()const { return global_transform; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
@@ -65,13 +62,10 @@ struct GameObject : public InputProcessor{
 	void set_dumping(float f);
 #endif
 protected:
-	void calculate_global_to_local_rot();
 	void integrate(double t);
 	InvMass m;
 	Transform global_transform;
 	//Use only in calculations;
-	Transform local_transform;
-	Quaternion global_to_local_rot;
 	std::list<std::unique_ptr<GameObject>> child_objects;
 	std::list<ForceGenerator*> forces_applied_to_this_obj;
 	physx::PxVec3 vel;
