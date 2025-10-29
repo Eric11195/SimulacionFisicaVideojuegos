@@ -146,7 +146,7 @@ ParticleGenerator::config bomb_particle_generator{
 
 ParticleGenerator::config testing_blackhole_particles{
 	GameObject::config{
-		{0,0,0}, //Pos
+		{5,5,5}, //Pos
 		{0,0,1}, //speed_dir
 		//{0,-1,0},//accel_dir
 		0, //Speed module

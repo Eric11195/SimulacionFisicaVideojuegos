@@ -13,6 +13,7 @@ Ship::Ship()
 	:GameObject()
 {
 	addChild(new ShipCannon(global_transform));
+	add_force_to_myself("black_hole");
 
 	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5, false);
 	add_force_to_myself(propulsors);
@@ -26,9 +27,10 @@ Ship::Ship()
 }
 
 void Ship::step(double dt)
-{
+{	
+	std::cout << "force: ";
 	GameObject::step(dt);
-
+	std::cout << "          vel: " << vel.x << ' ' << vel.y << ' ' << vel.z << '\n';
 	//Girar
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
 		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
@@ -39,8 +41,8 @@ void Ship::step(double dt)
 	
 
 	//SPEED DELIMITER
-	auto speed_mag = vel.normalize();
-	vel *= min(max(speed_mag, 0), max_speed);
+	//auto speed_mag = vel.normalize();
+	//vel *= min(max(speed_mag, 0), max_speed);
 
 }
 
@@ -106,7 +108,7 @@ float max_rot_val = 0.75;
 void Ship::handle_mouse_pos(float x, float y)
 {
 	//ESTO SOLO TIENE EN CUENTA PARA CUANDO X > 0.5
-
+	
 	float x_m1_1_val = 2*(x-0.5);
 	x_m1_1_val = (x_m1_1_val < 0 ? -1 : 1) * min(1, abs(x_m1_1_val / max_rot_val));
 	float y_m1_1_val = 2 * (y - 0.5);
@@ -116,6 +118,7 @@ void Ship::handle_mouse_pos(float x, float y)
 	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
 	const float magnitude = normalized_rot_direction.normalize();
 	current_angular_velocity = { 3.14f * min(magnitude,1) , normalized_rot_direction };
+	
 }
 
 void Ship::handle_mouse_button_down(uint8_t but)
