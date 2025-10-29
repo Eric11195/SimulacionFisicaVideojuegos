@@ -8,7 +8,7 @@ ParticleGenerator::config bomb{
 		{//SphO_config
 			SceneObject::config{//SceneObject config
 				GameObject::config{//GameObject config
-					{0,0,10}, //Pos
+					{0,0,20}, //Pos
 					{0,1,0}, //speed_dir
 					//{0,-1,0},//accel_dir
 					0, //Speed module

@@ -22,11 +22,13 @@ Particle* BombGenerator::set_up_particle(Particle::config& p_config)
 			force_mag += force_added_per_second * dt;
 		}
 	);
+	force_raw_ptr->setTransform(p->get_global_tr());
 
 	//std::shared_ptr<ForceGenerator> force_ptr = std::shared_ptr<ForceGenerator>(force_raw_ptr);
 	p->addChild(force_raw_ptr);
 	auto generator = new TriggeredParticleGenerator(bomb_particle_generator, {}, {force_raw_ptr});// , { force_ptr });
 	p->addChild(generator);
+	generator->setTransform(p->get_global_tr());
 	generator->trigger();
 	return p;
 }

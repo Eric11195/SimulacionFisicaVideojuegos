@@ -40,6 +40,9 @@ void ShipCannon::stop_fire()
 void ShipCannon::fire_missile()
 {
 	GameObject* aux_ptr = (*missile_cannon).get();
+	Transform tr = global_transform;
+	tr.p += global_transform.q.rotate({0,-0.5,0});
+	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
 	casted_trigger->trigger();
 }
@@ -48,7 +51,10 @@ void ShipCannon::fire_bomb()
 {
 	//new Bomb();
 	GameObject* aux_ptr = (*bomb_cannon).get();
-	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
+	Transform tr = global_transform;
+	tr.p += global_transform.q.rotate({ 0,0,0 });
+	aux_ptr->setTransform(tr);
+	auto casted_trigger = static_cast<BombGenerator*>(aux_ptr);
 	casted_trigger->trigger();
 }
 
