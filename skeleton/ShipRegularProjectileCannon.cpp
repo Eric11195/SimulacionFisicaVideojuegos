@@ -10,8 +10,8 @@ ShipRegularProjectileCannon::ShipRegularProjectileCannon()
 	float sim_speed = 10;
 	avrg_speed = sim_speed;
 	avrg_mass = Mass(Projectile::get_s_mass(avrg_mass.mass, real_speed,sim_speed));
-	my_mod_gravity = new Directional_ForceGenerator({0,-1,0}, Projectile::get_s_gravity(real_speed,sim_speed));
-	addChild(my_mod_gravity);
+	//my_mod_gravity = new Directional_ForceGenerator({0,-1,0}, Projectile::get_s_gravity(real_speed,sim_speed));
+	//addChild(my_mod_gravity);
 	//force_ptr.push_back(my_mod_gravity);
 }
 

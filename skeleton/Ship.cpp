@@ -12,6 +12,7 @@ constexpr float max_speed = 30;
 Ship::Ship()
 	:GameObject()
 {
+	set_dumping(0.8);
 	addChild(new ShipCannon(global_transform));
 	//add_force_to_myself("black_hole");
 
@@ -19,9 +20,9 @@ Ship::Ship()
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
 
-	brakes = new ToggleDirectional_ForceGenerator({ 0,0,-1 }, 3, false);
-	add_force_to_myself(brakes);
-	addChild(brakes);
+	//brakes = new ToggleDirectional_ForceGenerator({ 0,0,-1 }, 3, false);
+	//add_force_to_myself(brakes);
+	//addChild(brakes);
 
 	//add_force_to_myself("black_hole");
 }
@@ -63,7 +64,7 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 		//current_state = state(current_state+1);
 		break;
 	case 's':
-		brakes->set_state(true);
+		//brakes->set_state(true);
 		//current_state = state(current_state - 1);
 		break;
 	}
@@ -89,7 +90,7 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 		//current_state = state(current_state - 1);
 		break;
 	case 's':
-		brakes->set_state(false);
+		//brakes->set_state(false);
 		//current_state = state(current_state + 1);
 		break;
 	}
