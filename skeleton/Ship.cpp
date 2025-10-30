@@ -29,9 +29,7 @@ Ship::Ship()
 
 void Ship::step(double dt)
 {	
-	//std::cout << "force: ";
 	GameObject::step(dt);
-	//std::cout << "          vel: " << vel.x << ' ' << vel.y << ' ' << vel.z << '\n';
 	//Girar
 	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
 		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));

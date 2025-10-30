@@ -17,7 +17,28 @@ MissileGenerator::MissileGenerator()
 
 Particle* MissileGenerator::set_up_particle(Particle::config& p)
 {
-	auto part = TriggeredParticleGenerator::set_up_particle(p);
-	part->addChild(new ParticleGenerator(missile_particle_system));
+	auto part = new Missile(p);
+	for (auto& f : force_names) {
+		part->add_force_to_myself(f);
+	}
+	for (auto f : force_ptr) {
+		part->add_force_to_myself(f);
+	}
 	return part;
+}
+
+Missile::Missile(Particle::config& c) 
+	:Particle(c)
+{
+	addChild(new ParticleGenerator(missile_particle_system));
+}
+
+void Missile::step(double dt)
+{
+	integrate(dt);
+
+	for (auto& child : child_objects) {
+		child->setTransform(global_transform);
+		child->step(dt);
+	}
 }

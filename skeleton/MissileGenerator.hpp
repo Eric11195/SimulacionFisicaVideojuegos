@@ -14,3 +14,9 @@ public:
 protected:
 	virtual Particle* set_up_particle(Particle::config& p) override;
 };
+
+class Missile : public Particle {
+public:
+	Missile(Particle::config&);
+	void step(double dt);
+};
