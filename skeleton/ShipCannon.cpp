@@ -14,7 +14,7 @@ ShipCannon::ShipCannon(Transform const& parent_tr)
 
 	missile_cannon = addChild(new MissileGenerator());
 
-	bomb_cannon = addChild(new BombGenerator(60,-90));
+	bomb_cannon = addChild(new BombGenerator(60,50,1));
 }
 
 void ShipCannon::step(double dt)

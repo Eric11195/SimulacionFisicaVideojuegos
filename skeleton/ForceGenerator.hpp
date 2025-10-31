@@ -64,18 +64,16 @@ protected:
 class Variable_ForceGenerator : public ForceGenerator {
 public:
 	Variable_ForceGenerator(float force_magnitude,
-		std::function<physx::PxVec3(float force, GameObject const& self, GameObject const& g)> force_function,
-		std::function <void(double time, double dt, float& force)> = std::function<void(double time, double dt, float& force)>([=](double a, double c, float& b) {})
+		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
 	);
 	Variable_ForceGenerator(std::string s, float force_magnitude, 
-		std::function<physx::PxVec3(float force, GameObject const& self, GameObject const& g)> force_function,
-		std::function <void(double time,double dt, float& force)> = std::function<void(double time,double dt, float& force)>([=](double a,double c, float& b) { })
+		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
 	);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 	virtual void step(double dt) override;
 protected:
-	std::function<physx::PxVec3(float force,GameObject const& self, GameObject const& g)> force_value_func;
-	std::function <void(double time,double dt, float& force)> update_force_func;
+	std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_value_func;
+
 	double time_since_started;
 };
 

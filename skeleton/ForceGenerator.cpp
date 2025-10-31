@@ -188,25 +188,22 @@ bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
 }
 
 Variable_ForceGenerator::Variable_ForceGenerator(float force_magnitude,
-	std::function<physx::PxVec3(float force, GameObject const& self, GameObject const& g)> force_function,
-	std::function<void(double time, double dt, float& force)> force_update_func)
-	: ForceGenerator(force_magnitude), force_value_func(force_function), update_force_func(force_update_func), time_since_started(0) { }
+	std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function)
+	: ForceGenerator(force_magnitude), force_value_func(force_function), time_since_started(0) { }
 
 Variable_ForceGenerator::Variable_ForceGenerator(std::string s, float force_magnitude,
-	std::function<physx::PxVec3(float force_mag, GameObject const& self, GameObject const& g)> force_function,
-	std::function <void(double time,double dt, float& force)> force_update_func)
-	: ForceGenerator(s,force_magnitude), force_value_func(force_function), update_force_func(force_update_func),time_since_started(0) { }
+	std::function<physx::PxVec3(float force_mag, float time, GameObject const& self, GameObject const& g)> force_function)
+	: ForceGenerator(s,force_magnitude), force_value_func(force_function), time_since_started(0) { }
 
 physx::PxVec3 Variable_ForceGenerator::apply_force(GameObject const& g)
 {
-	return force_value_func(force_magnitude,*this, g);
+	return force_value_func(force_magnitude,time_since_started, *this, g);
 }
 
 void Variable_ForceGenerator::step(double dt)
 {
 	ForceGenerator::step(dt);
 	time_since_started += dt;
-	update_force_func(time_since_started, dt, force_magnitude);
 }
 
 ToggleDirectional_ForceGenerator::ToggleDirectional_ForceGenerator(physx::PxVec3 force_dir, float force_mag, bool start_state)
