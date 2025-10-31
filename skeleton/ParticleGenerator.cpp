@@ -1,10 +1,11 @@
 #include "ParticleGenerator.hpp"
 #include <iostream>
+#include "ForceGenerator.hpp"
 //#include "Particle.hpp"
 
 //-------------------------------------------------------------------------------------------------------
 TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ForceAffectedParticleGenerator(c,forces_names, forces_ptr)
+	:ForceAffected_ParticleGenerator(c,forces_names, forces_ptr)
 {
 }
 
@@ -48,10 +49,10 @@ ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, b
 
 //-------------------------------------------------------------------------------------------------------
 
-ForceAffectedParticleGenerator::ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
 	:ParticleGenerator(c), force_names(forces), force_ptr(forces_ptr) {}
 
-Particle* ForceAffectedParticleGenerator::set_up_particle(Particle::config& p)
+Particle* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
 {
 	auto particle = ParticleGenerator::set_up_particle(p);
 	for (auto& f : force_names) {
@@ -61,6 +62,14 @@ Particle* ForceAffectedParticleGenerator::set_up_particle(Particle::config& p)
 		particle->add_force_to_myself(f);
 	}
 	return  particle;
+}
+
+void ForceAffected_ParticleGenerator::step(double dt)
+{
+	ParticleGenerator::step(dt);
+	for (auto f : force_ptr) {
+		f->setTransform(global_transform);
+	}
 }
 
 ParticleGenerator::ParticleGenerator(config& c)

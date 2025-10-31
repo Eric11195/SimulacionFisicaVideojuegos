@@ -67,19 +67,21 @@ protected:
 
 //STARTS WITH FORCE APPLIED => Debug purposes
 
-class ForceAffectedParticleGenerator : public ParticleGenerator {
+class ForceAffected_ParticleGenerator : public ParticleGenerator {
 public:
-	ForceAffectedParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	virtual Particle* set_up_particle(Particle::config& p) override;
+	virtual void step(double dt) override;
 protected:
 	std::vector<std::string> force_names;
+	//You own this ones
 	std::vector<ForceGenerator*> force_ptr;
 };
 
 
 //---------------------------------------------------------------------------------------------------------
 
-class TriggeredParticleGenerator : public ForceAffectedParticleGenerator {
+class TriggeredParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
 	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	//Generates particles as specified config

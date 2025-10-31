@@ -1,6 +1,7 @@
 #include "MissileGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include <iostream>
+#include "ForceGenerator.hpp"
 
 /*
 MissileCannon::MissileCannon() {
@@ -30,7 +31,10 @@ Particle* MissileGenerator::set_up_particle(Particle::config& p)
 Missile::Missile(Particle::config& c) 
 	:Particle(c)
 {
-	addChild(new ParticleGenerator(missile_particle_system));
+	addChild(
+		new ForceAffected_ParticleGenerator(missile_particle_system, {},
+			{ new Wind_ForceGenerator({0,0,-1}, 5) })
+	);
 }
 
 void Missile::step(double dt)

@@ -89,8 +89,8 @@ void initPhysics(bool interactive)
 
 
 	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
-	scene_game_object->addChild(new ForceAffectedParticleGenerator(testing_blackhole_particles, {"black_hole"}));
-	//scene_game_object->addChild(new ForceAffectedParticleGenerator(testing_blackhole_particles, "black_hole"));
+	scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole"}));
+	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
 	auto player = new Ship();
 	scene_game_object->addChild(player);
