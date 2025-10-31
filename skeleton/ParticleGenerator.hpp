@@ -49,11 +49,8 @@ public:
 	ParticleGenerator(config& c);
 	virtual void step(double dt) override;
 protected:
-	float avrg_speed;
 	float avrg_lifetime;
 	float avrg_size;
-	Mass avrg_mass;
-	physx::PxVec3 particle_start_pos;
 	Vector4 avrg_color;
 	float particle_generated_per_second;
 	Particle::config p_config;
@@ -88,25 +85,3 @@ public:
 	void trigger();
 	void step(double dt) override;
 };
-
-//---------------------------------------------------------------------------------------------------------
-//NOT IMPLEMENTED
-
-class ToggleParticleGenerator : public ParticleGenerator {
-public:
-	ToggleParticleGenerator(ParticleGenerator::config& c, bool initial_state);
-	//Modify step function so that it spawns particles
-	inline void set_state(bool new_state) { state = new_state; }
-private:
-	bool state;
-};
-
-//---------------------------------------------------------------------------------------------------------
-
-//Can be adjusted with a multiplier
-/*
-class AdjustableParticleGenerator : public ToggleParticleGenerator {
-private:
-float ratio;
-};
-*/
