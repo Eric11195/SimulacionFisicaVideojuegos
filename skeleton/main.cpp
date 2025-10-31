@@ -81,7 +81,7 @@ void initPhysics(bool interactive)
 	scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 
-		{ ParticleDescriptor::regular_ball//,
+		{ regular_ball()//,
 		//30,//SPEED REAL
 		};
 

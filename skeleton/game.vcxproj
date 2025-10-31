@@ -263,6 +263,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
+    <ClCompile Include="ParticleDescriptor.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />

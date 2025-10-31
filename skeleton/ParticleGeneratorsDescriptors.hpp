@@ -1,6 +1,7 @@
 #pragma once
 #include "ParticleGenerator.hpp"
 #include "Distributions.hpp"
+#include "ParticleDescriptor.hpp"
 
 using namespace Distributions;
 

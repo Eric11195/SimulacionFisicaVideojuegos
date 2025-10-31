@@ -11,7 +11,7 @@
 #include "SceneObject.hpp"
 #include "PhysicLib.hpp"
 
-#define EULER_SEMI_EXPLICIT_INTEGRATION
+#define EULER_SEMI_IMPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
 #define DAMPING
 

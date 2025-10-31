@@ -4,24 +4,7 @@
 ParticleGenerator::config bomb{
 	1,
 	//Particles per second
-	Particle::config{
-		{//SphO_config
-			SceneObject::config{//SceneObject config
-				GameObject::config{//GameObject config
-					{0,0,20}, //Pos
-					{0,1,0}, //speed_dir
-					//{0,-1,0},//accel_dir
-					0, //Speed module
-					Mass(100) //mass
-					//PhysicLib::GRAVITY,//Accel module
-				},
-				physx::PxVec4(0,0,0,1)
-				//Color
-			},
-			0.0001 //rad
-		},
-		1.5f //lifetime
-	},
+	bomb_init_particle(),
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
 				0,0,0
@@ -63,24 +46,7 @@ ParticleGenerator::config bomb{
 ParticleGenerator::config bomb_particle_generator{
 	100,
 	//Particles per second
-	Particle::config{
-		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
-					{0,0,0}, //Pos
-					{0,1,0}, //speed_dir
-					//{0,-1,0},//accel_dir
-					0, //Speed module
-					Mass(0.1)//mass
-					//PhysicLib::GRAVITY,//Accel module
-				},
-				physx::PxVec4(0,0,0,0)
-				//Color
-			},
-			0.1f //rad
-		},
-		10 //lifetime
-	},
+	bomb_created_particles(),
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
 				Distributions::LinearDistribution::get() * 1 -0.5f,
@@ -129,23 +95,7 @@ ParticleGenerator::config bomb_particle_generator{
 ParticleGenerator::config testing_blackhole_particles{
 	100,
 	//Particles per second
-	Particle::config{
-		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
-					{0,0,0}, //Pos
-					{0,1,0}, //speed_dir
-					//{0,-1,0},//accel_dir
-					0, //Speed module
-					//PhysicLib::GRAVITY,//Accel module
-				},
-				physx::PxVec4(0,0,0,0)
-				//Color
-			},
-			1 //rad
-		},
-		3 //lifetime
-	},
+	black_hole_particles(),
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
 				Distributions::LinearDistribution::get()*10,
@@ -188,23 +138,7 @@ ParticleGenerator::config testing_blackhole_particles{
 ParticleGenerator::config ball_thrower{
 	20,
 	//Particles per second
-	Particle::config{
-		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
-					{0,0,0}, //Pos
-					{0,1,0}, //speed_dir
-					//{0,-1,0},//accel_dir
-					20, //Speed module
-					//PhysicLib::GRAVITY,//Accel module
-				},
-				physx::PxVec4(0,0,0,0)
-				//Color
-			},
-			1 //rad
-		},
-		2 //lifetime
-	},
+	regular_ball(),
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
 			Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get() * 5,
@@ -247,24 +181,8 @@ ParticleGenerator::config ball_thrower{
 
 ParticleGenerator::config x_wing_shoot_type{
 	1,//Particles per second
-	Particle::config{
-		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
-					{0,0,0}, //Pos
-					{0,0,1}, //speed_dir
-					//{0,-1,0},//accel_dir
-					40, //Speed module
-					//0//PhysicLib::GRAVITY,//Accel module
-				},
-				physx::PxVec4(1,0,0,1)
-	//Color
-},
-0.25 //rad
-},
-5 //lifetime
-},
-ParticleGenerator::particle_calculator_functions{
+	laser_shot(),
+	ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{0,0,0
 		/*
 			5*Distributions::NormalDistribution::get(NormalDistribution::d_10) * Distributions::RandomSignDistribution::get(), //0,0,0
@@ -302,23 +220,8 @@ ParticleGenerator::particle_calculator_functions{
 }
 };
 ParticleGenerator::config missile{
-1,//Particles per second
-Particle::config{
-	{//SphO_config
-		{//SceneObject config
-			{//GameObject config
-				{0,0,0}, //Pos
-				{0,0,1}, //speed_dir
-				//{0,-1,0},//accel_dir
-				20,//10, //Speed module
-				//0//PhysicLib::GRAVITY,//Accel module
-			},
-			physx::PxVec4(1,1,1,1)//Color
-},
-0.2 //rad
-},
-7 //lifetime
-	},
+		1,//Particles per second
+		missile_particle(),
 		ParticleGenerator::particle_calculator_functions{
 			[] {return physx::PxVec3{ 0,0,0};
 			},//POS
@@ -353,24 +256,7 @@ Particle::config{
 ParticleGenerator::config missile_particle_system{
 	50,
 	//Particles per second
-	Particle::config{
-		{//SphO_config
-			{//SceneObject config
-				{//GameObject config
-					{0,0,0}, //Pos
-					{0,0,0}, //speed_dir
-					//{0,0,-1},//accel_dir
-					5,//5, //Speed module
-					//0,//ACCEL
-					PhysicLib::NORMAL_DAMPING//2.5//DUMPING
-				},
-				physx::PxVec4(1,0,0,1)
-	//Color
-},
-0.05 //rad
-},
-0.5 //lifetime
-},
+	missile_generated_particle(),
 ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),

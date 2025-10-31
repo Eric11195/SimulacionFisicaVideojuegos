@@ -32,7 +32,7 @@ float Projectile::get_s_mass(float mass, float real_speed, float sim_speed)
 
 void Projectile::integrate(double dt)
 {
-#if defined EULER_SEMI_EXPLICIT_INTEGRATION
+#if defined EULER_SEMI_IMPLICIT_INTEGRATION
 	//In theory this does not exist
 	physx::PxVec3 accel = { 0,0,0 };
 	auto force_it = forces_applied_to_this_obj.begin();

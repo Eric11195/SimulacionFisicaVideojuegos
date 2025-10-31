@@ -81,7 +81,7 @@ void GameObject::set_dumping(float f)
 #endif
 void GameObject::integrate(double dt)
 {
-#if defined EULER_SEMI_EXPLICIT_INTEGRATION
+#if defined(EULER_SEMI_IMPLICIT_INTEGRATION) || (!defined(EULER_SEMI_IMPLICIT_INTEGRATION) && !defined(EULER_INTEGRATION))
 	//In theory this does not exist
 	physx::PxVec3 accel = {0,0,0};
 	for (auto& force : forces_applied_to_this_obj) {
@@ -96,7 +96,16 @@ void GameObject::integrate(double dt)
 	vel += accel * dt;
 	translate(dt * vel);
 #elif defined EULER_INTEGRATION
-	tr.p += dt * vel.turn();
+	translate(dt * vel);
+	physx::PxVec3 accel = { 0,0,0 };
+	for (auto& force : forces_applied_to_this_obj) {
+		//Get matrix transformation only on rotation, to pass from global to local
+		auto new_accel = force->apply_force(*this);
+		//new_accel = global_to_local_rot.rotate(new_accel);
+		accel += new_accel;
+	}
+	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	accel *= mass.inv_mass;
 	vel += accel * dt;
 #endif
 
