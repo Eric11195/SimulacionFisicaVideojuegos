@@ -164,12 +164,12 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 	if (!inside_area_of_influence(g)) return { 0,0,0 };
 
 	physx::PxVec3& g_pos = g.get_global_tr().p;
-	physx::PxVec3 vel_torbellino =  physx::PxVec3{
-		-(g_pos.x - global_transform.p.x),
-		50 - (g_pos.y - global_transform.p.y),
-		(g_pos.z - global_transform.p.z)
+	physx::PxVec3 vel_torbellino =  10 * physx::PxVec3{
+				-(g_pos.z - global_transform.p.z),
+		 50 - (g_pos.y - global_transform.p.y),
+				(g_pos.x - global_transform.p.x)
 	};
-	std::cout << vel_torbellino.x << ' '<< vel_torbellino.y << ' '<<vel_torbellino.z << '\n';
+	//std::cout << g_pos.x << " " << (50-g_pos.y) << " " << g_pos.z << " - " << global_transform.p.x << " " << global_transform.p.y << ' ' << global_transform.p.z << " --> " << vel_torbellino.x << ' ' << vel_torbellino.y << ' ' << vel_torbellino.z << '\n';
 
 	return vel_torbellino;
 }

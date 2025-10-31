@@ -19,7 +19,8 @@ GameObject::~GameObject()
 
 void GameObject::setTransform(Transform& tr)
 {
-	global_transform = tr;
+	global_transform.q = tr.q;
+	global_transform.p = tr.p;
 }
 
 std::list<std::unique_ptr<GameObject>>::iterator GameObject::addChild(GameObject* go)

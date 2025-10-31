@@ -127,7 +127,7 @@ ParticleGenerator::config bomb_particle_generator{
 
 
 ParticleGenerator::config testing_blackhole_particles{
-	1,
+	100,
 	//Particles per second
 	Particle::config{
 		{//SphO_config
@@ -142,15 +142,15 @@ ParticleGenerator::config testing_blackhole_particles{
 				physx::PxVec4(0,0,0,0)
 				//Color
 			},
-			0.1f //rad
+			1 //rad
 		},
-		10 //lifetime
+		3 //lifetime
 	},
 	ParticleGenerator::particle_calculator_functions{
 		[] {return physx::PxVec3{
-				Distributions::LinearDistribution::get() * 5,
-				Distributions::LinearDistribution::get() * 5,
-				Distributions::LinearDistribution::get() * 5
+				Distributions::LinearDistribution::get()*10,
+				Distributions::LinearDistribution::get()*10,
+				Distributions::LinearDistribution::get()*10
 			};
 		},//POS
 		[] {//VEL_DIR

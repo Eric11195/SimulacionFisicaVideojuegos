@@ -45,7 +45,7 @@ EnemyShip::EnemyShip(GameObject* player)
 void EnemyShip::step(double dt)
 {
 	think_step(dt);
-	integrate(dt);
+	//integrate(dt);
 
 	int i = 0;
 	float x_wing_offset = 1.2f;
@@ -111,7 +111,7 @@ void EnemyShip::think_step(double dt)
 	if ((global_vector_to_player + global_ship_dir).magnitudeSquared() < global_vector_to_player.magnitudeSquared()) {
 		interpolation_value = 0.01f;
 	}
-	std::cout << interpolation_value << '\n';
+	//std::cout << interpolation_value << '\n';
 
 	Quaternion q;
 	PxVec3 a = global_vector_to_player.cross(global_ship_dir);
@@ -125,30 +125,4 @@ void EnemyShip::think_step(double dt)
 	global_transform.q.w = lerp(global_transform.q.w, q.w, interpolation_value * dt);
 	global_transform.q.normalize();
 
-	/*
-	//Si está mirando en dirección hacia el player
-	if ((local_direction_to_player + local_ship_direction).z > 0) {
-		//rota más rápido para apuntarte mejor y cosas de gameplay y tal
-		rotation_to_apply_in_radians = 1*dt;
-	}
-	else {
-		//Rotan más lento para que se alejen más del player al hacer una batida. Y así le vuelve a dar tiempo a apuntarte
-		rotation_to_apply_in_radians = 0.33 * dt;
-	}
-
-	if (distance_to_player < near_threshold_to_flee) {
-		//Si estan muy cerca huyen
-		local_direction_to_player *= -1;
-	}
-
-	PxVec3 v_orthogonal_to_rotation = local_direction_to_player.cross(local_ship_direction).getNormalized();
-
-	if (PxAbs(1.0f - v_orthogonal_to_rotation.magnitude()) < 1e-3f){
-		PxQuat rot_quat = PxQuat(
-			-rotation_to_apply_in_radians,
-			v_orthogonal_to_rotation.getNormalized()
-		);
-		rotate(rot_quat);
-	}
-	*/
 }
