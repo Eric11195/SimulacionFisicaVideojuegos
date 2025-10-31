@@ -30,20 +30,9 @@ public:
 	};
 	//modifies its own mass, and mutiplies force_applied to gravity
 	Projectile(projectile_config& c, float real_speed, float simulated_speed);
-	float get_s_gravity(float real_speed, float sim_speed);
 	float get_gravity_proportion(float real_speed, float sim_speed);
 	float get_s_mass(float mass, float real_speed, float sim_speed);
-	//virtual void step(double dt) override;
 	virtual void integrate(double dt) override;
 protected:
 	float gravity_multiplier;
-	/*
-	PhysicLib::mass m_real;
-	PhysicLib::mass m_simulated;
-	speed s_real;
-	speed s_simulated;
-	gravity g_simulated;
-	gravity g_real;
-	*/
-
 };

@@ -28,7 +28,7 @@ struct InvMass {
 	float inv_mass;
 	InvMass(float inv_mass)
 		:inv_mass(inv_mass) {
-		if (inv_mass < 0) throw "La masa no puede ser negativa";
+		if (inv_mass <= 0) throw "La masa no puede ser negativa ni igual a cero";
 	}
 	//Masa muy alta es un millon por el momento
 	InvMass(zero_mass)

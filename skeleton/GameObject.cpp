@@ -83,15 +83,15 @@ void GameObject::integrate(double dt)
 {
 #if defined(EULER_SEMI_IMPLICIT_INTEGRATION) || (!defined(EULER_SEMI_IMPLICIT_INTEGRATION) && !defined(EULER_INTEGRATION))
 	//In theory this does not exist
-	physx::PxVec3 accel = {0,0,0};
+	physx::PxVec3 force_in_newtons = {0,0,0};
 	for (auto& force : forces_applied_to_this_obj) {
 		//Get matrix transformation only on rotation, to pass from global to local
 		auto new_accel = force->apply_force(*this);
 		//new_accel = global_to_local_rot.rotate(new_accel);
-		accel += new_accel;
+		force_in_newtons += new_accel;
 	}
-	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
-	accel *= mass.inv_mass;
+	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	auto accel = force_in_newtons * mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
 	vel += accel * dt;
 	translate(dt * vel);

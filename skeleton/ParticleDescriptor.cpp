@@ -67,6 +67,7 @@ Particle::config& bomb_created_particles()
 	};
 	return p;
 }
+
 Particle::config& black_hole_particles()
 {
 	static Particle::config p{
@@ -77,12 +78,12 @@ Particle::config& black_hole_particles()
 				{0,1,0}, //speed_dir
 				//{0,-1,0},//accel_dir
 				0, //Speed module
-				//PhysicLib::GRAVITY,//Accel module
+				Mass(3)//PhysicLib::GRAVITY,//Accel module
 			},
 			physx::PxVec4(0,0,0,0)
 			//Color
 		},
-		1 //rad
+		0.6 //rad
 	},
 	3 //lifetime
 	};
@@ -143,7 +144,8 @@ Particle::config& missile_generated_particle()
 						//{0,0,-1},//accel_dir
 						5,//5, //Speed module
 						//0,//ACCEL
-						PhysicLib::NORMAL_DAMPING//2.5//DUMPING
+						10//MASS
+						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
 					},
 					physx::PxVec4(1,0,0,1)
 		//Color

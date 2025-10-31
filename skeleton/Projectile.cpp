@@ -14,11 +14,6 @@ Projectile::Projectile(projectile_config& c, float real_speed, float simulated_s
 	add_force_to_myself("gravity");
 }
 
-float Projectile::get_s_gravity(float real_speed, float sim_speed)
-{
-	return 9.8f * get_gravity_proportion(real_speed,sim_speed);
-}
-
 float Projectile::get_gravity_proportion(float real_speed, float sim_speed)
 {
 	return (sim_speed * sim_speed) / (real_speed * real_speed);
