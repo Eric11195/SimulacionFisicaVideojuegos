@@ -286,7 +286,7 @@ ParticleGenerator::particle_calculator_functions{
 	);
 },
 [] {//Size
-	return 0.01*Distributions::NormalDistribution::get(NormalDistribution::d_025);
+	return 0.03*Distributions::NormalDistribution::get(NormalDistribution::d_025);
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		/*
