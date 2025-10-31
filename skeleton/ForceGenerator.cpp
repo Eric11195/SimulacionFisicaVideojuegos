@@ -95,6 +95,13 @@ physx::PxVec3 Wind_ForceGenerator::apply_force(GameObject const& g)
 	*/
 }
 
+constexpr float k1 = 1, k2 = 0;
+physx::PxVec3 Wind_ForceGenerator::calculate_force(physx::PxVec3 wind_speed, physx::PxVec3 obj_speed)
+{
+	physx::PxVec3 diff_vec = wind_speed - obj_speed;
+	return k1 * diff_vec + k2 * diff_vec.magnitude()*diff_vec;
+}
+
 Torbellino_ForceGenerator::Torbellino_ForceGenerator(physx::PxVec3 pos, float magnitude, float air_density, float avance_resistance_aerodinamic_coef, axis_lock l)
 	: Wind_ForceGenerator(physx::PxVec3(0,0,0), magnitude, air_density, avance_resistance_aerodinamic_coef), my_axis_locked(l)
 {
@@ -169,9 +176,10 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 		 50 - (g_pos.y - global_transform.p.y),
 				(g_pos.x - global_transform.p.x)
 	};
+	auto wind_force = calculate_force(vel_torbellino, g.get_vel());
 	//std::cout << g_pos.x << " " << (50-g_pos.y) << " " << g_pos.z << " - " << global_transform.p.x << " " << global_transform.p.y << ' ' << global_transform.p.z << " --> " << vel_torbellino.x << ' ' << vel_torbellino.y << ' ' << vel_torbellino.z << '\n';
 
-	return vel_torbellino;
+	return wind_force;
 }
 
 bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
