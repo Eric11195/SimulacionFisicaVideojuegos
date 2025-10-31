@@ -13,7 +13,7 @@
 #include "CoordinateAxis.hpp"
 #include "Particle.hpp"
 #include "Projectile.hpp"
-#include "CameraProjectileShooter.hpp"
+
 #include "GameObject.hpp"
 #include "ParticleGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
@@ -84,9 +84,6 @@ void initPhysics(bool interactive)
 		{ ParticleDescriptor::regular_ball//,
 		//30,//SPEED REAL
 		};
-
-	scene_game_object->addChild(new CameraProjectileShooter(c));
-
 
 	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
 	scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole"}));

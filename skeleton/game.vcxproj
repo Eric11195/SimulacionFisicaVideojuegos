@@ -258,7 +258,6 @@
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="CameraProjectileShooter.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -282,7 +281,6 @@
   <ItemGroup>
     <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="callbacks.hpp" />
-    <ClInclude Include="CameraProjectileShooter.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />

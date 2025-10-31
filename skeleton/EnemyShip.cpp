@@ -45,7 +45,7 @@ EnemyShip::EnemyShip(GameObject* player)
 void EnemyShip::step(double dt)
 {
 	think_step(dt);
-	//integrate(dt);
+	integrate(dt);
 
 	int i = 0;
 	float x_wing_offset = 1.2f;

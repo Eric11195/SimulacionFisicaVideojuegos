@@ -5,7 +5,7 @@
 GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
 	: global_transform(Transform(c.pos,c.initial_rotation)),
 	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
-	damping_mult(c.damping_mult), m(c.mass)
+	damping_mult(c.damping_mult), mass(c.mass)
 {
 	for (auto go : go_s) {
 		addChild(go);
@@ -69,6 +69,10 @@ void GameObject::set_velocity(physx::PxVec3 v)
 {
 	vel = v;
 }
+void GameObject::set_velocity_magnitude(float m)
+{
+	vel = m * vel.getNormalized();
+}
 #ifdef DAMPING
 void GameObject::set_dumping(float f)
 {
@@ -87,7 +91,7 @@ void GameObject::integrate(double dt)
 		accel += new_accel;
 	}
 	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
-	accel *= m.inv_mass;
+	accel *= mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
 	vel += accel * dt;
 	translate(dt * vel);

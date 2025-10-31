@@ -310,7 +310,7 @@ Particle::config{
 				{0,0,0}, //Pos
 				{0,0,1}, //speed_dir
 				//{0,-1,0},//accel_dir
-				6,//10, //Speed module
+				20,//10, //Speed module
 				//0//PhysicLib::GRAVITY,//Accel module
 			},
 			physx::PxVec4(1,1,1,1)//Color

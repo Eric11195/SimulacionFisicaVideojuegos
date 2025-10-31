@@ -45,8 +45,9 @@ struct GameObject : public InputProcessor{
 	virtual void rotate(Quaternion);
 
 	void set_velocity(physx::PxVec3);
+	void set_velocity_magnitude(float m);
 
-	float get_inv_mass() const { return m.inv_mass; }
+	float get_inv_mass() const { return mass.inv_mass; }
 	Transform get_global_tr()const { return global_transform; }
 
 	virtual void handle_mouse_pos(float x, float y) override;
@@ -62,14 +63,14 @@ struct GameObject : public InputProcessor{
 	void set_dumping(float f);
 #endif
 protected:
-	void integrate(double t);
-	InvMass m;
+	virtual void integrate(double t);
+	InvMass mass;
 	Transform global_transform;
 	//Use only in calculations;
 	std::list<std::unique_ptr<GameObject>> child_objects;
 	std::list<ForceGenerator*> forces_applied_to_this_obj;
 	physx::PxVec3 vel;
-private:
+//private:
 #ifdef DAMPING
 	float damping_mult;
 #endif

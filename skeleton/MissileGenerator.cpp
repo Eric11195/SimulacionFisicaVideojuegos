@@ -12,13 +12,13 @@ MissileCannon::MissileCannon() {
 */
 
 MissileGenerator::MissileGenerator()
-	:TriggeredParticleGenerator(missile, { "gravity" })
+	:TriggeredParticleGenerator(missile)
 {
 }
 
 Particle* MissileGenerator::set_up_particle(Particle::config& p)
 {
-	auto part = new Missile(p);
+	auto part = new Missile(Projectile::projectile_config{ p });
 	for (auto& f : force_names) {
 		part->add_force_to_myself(f);
 	}
@@ -28,8 +28,8 @@ Particle* MissileGenerator::set_up_particle(Particle::config& p)
 	return part;
 }
 
-Missile::Missile(Particle::config& c) 
-	:Particle(c)
+Missile::Missile(Projectile::projectile_config& c) 
+	:Projectile(c, 3000.0f, c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
 {
 	addChild(
 		new ForceAffected_ParticleGenerator(missile_particle_system, {},

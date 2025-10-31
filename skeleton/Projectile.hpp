@@ -28,10 +28,15 @@ public:
 		Particle::config particle_config;
 		//speed s_real;
 	};
-	Projectile(projectile_config& c);
-	static float get_s_gravity(float real_speed, float sim_speed);
-	static float get_s_mass(float mass, float real_speed, float sim_speed);
+	//modifies its own mass, and mutiplies force_applied to gravity
+	Projectile(projectile_config& c, float real_speed, float simulated_speed);
+	float get_s_gravity(float real_speed, float sim_speed);
+	float get_gravity_proportion(float real_speed, float sim_speed);
+	float get_s_mass(float mass, float real_speed, float sim_speed);
+	//virtual void step(double dt) override;
+	virtual void integrate(double dt) override;
 protected:
+	float gravity_multiplier;
 	/*
 	PhysicLib::mass m_real;
 	PhysicLib::mass m_simulated;
