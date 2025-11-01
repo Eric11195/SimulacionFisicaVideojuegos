@@ -106,8 +106,8 @@ physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) 
 	return q;
 }
 
-TorbellinoSencillo::TorbellinoSencillo(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
-	:Wind_ForceGenerator(s,v,magnitude,air_density,avance_resistance_aerodinamic_coef)
+TorbellinoSencillo::TorbellinoSencillo(std::string s, physx::PxVec3 v, float magnitude,float height, float air_density, float avance_resistance_aerodinamic_coef)
+	:Wind_ForceGenerator(s,v,magnitude,air_density,avance_resistance_aerodinamic_coef), height(height)
 {
 }
 
@@ -118,7 +118,7 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 	physx::PxVec3& g_pos = g.get_global_tr().p;
 	physx::PxVec3 vel_torbellino =  force_magnitude * physx::PxVec3{
 				-(g_pos.z - global_transform.p.z),
-		 50 - (g_pos.y - global_transform.p.y),
+		 height - (g_pos.y - global_transform.p.y),
 				(g_pos.x - global_transform.p.x)
 	};
 	auto wind_force = calculate_force(vel_torbellino, g.get_vel());

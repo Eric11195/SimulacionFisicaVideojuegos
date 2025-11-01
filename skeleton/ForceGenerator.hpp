@@ -54,10 +54,11 @@ protected:
 
 class TorbellinoSencillo : public Wind_ForceGenerator {
 public:
-	TorbellinoSencillo(std::string s, physx::PxVec3, float magnitude, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
+	TorbellinoSencillo(std::string s, physx::PxVec3, float magnitude, float height = 50.0f, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	virtual bool inside_area_of_influence(GameObject const& g) const;
+	float height;
 };
 
 //This type of generator always owns the particles or objects it manages. For the case in which it erases itself, so no references are left
