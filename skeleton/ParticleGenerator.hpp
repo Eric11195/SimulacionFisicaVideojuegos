@@ -85,3 +85,14 @@ public:
 	void trigger();
 	void step(double dt) override;
 };
+
+//---------------------------------------------------------------------------------------------------------
+
+class ToggleParticleGenerator : public ForceAffected_ParticleGenerator {
+public:
+	ToggleParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	void set_toggle(bool state);
+	void step(double dt) override;
+protected:
+	bool active;
+};
