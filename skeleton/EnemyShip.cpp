@@ -13,6 +13,7 @@ constexpr float near_threshold_to_flee = 12;
 EnemyShip::EnemyShip(GameObject* player)
 	: GameObject(), player_go(player)
 {
+	mass = InvMass(Mass(700));
 	set_dumping(0.8);
 	addChild(new SphereObject({ SceneObject::config(), 1 }));
 	for (auto i = -1; i < 2; i = i + 2) {
@@ -37,10 +38,10 @@ EnemyShip::EnemyShip(GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator({0,0,1}, 5);
+	propulsors = new Directional_ForceGenerator({0,0,1}, 5/mass.inv_mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
-	//add_force_to_myself("black_hole");
+	add_force_to_myself("black_hole");
 }
 
 void EnemyShip::step(double dt)

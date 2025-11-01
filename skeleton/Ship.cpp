@@ -12,11 +12,12 @@ constexpr float max_speed = 30;
 Ship::Ship()
 	:GameObject()
 {
+	mass = InvMass(Mass(500));
 	set_dumping(0.8);
 	addChild(new ShipCannon(global_transform));
 	//add_force_to_myself("black_hole");
 
-	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5, false);
+	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5/mass.inv_mass, false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
 
@@ -24,7 +25,7 @@ Ship::Ship()
 	//add_force_to_myself(brakes);
 	//addChild(brakes);
 
-	//add_force_to_myself("black_hole");
+	add_force_to_myself("black_hole");
 }
 
 void Ship::step(double dt)

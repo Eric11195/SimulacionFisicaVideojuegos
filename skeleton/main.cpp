@@ -78,7 +78,7 @@ void initPhysics(bool interactive)
 
 	//------------------------------
 
-	scene_game_object->addChild(new CoordinateAxis());
+	//scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 
 		{ regular_ball()//,
