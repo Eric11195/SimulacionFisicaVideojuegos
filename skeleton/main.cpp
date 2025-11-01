@@ -13,14 +13,16 @@
 #include "CoordinateAxis.hpp"
 #include "Particle.hpp"
 #include "Projectile.hpp"
-#include "CameraProjectileShooter.hpp"
-#include "CompositeGameObject.hpp"
+
 #include "GameObject.hpp"
-#include "GlobalCoords_CompositeGameObject.hpp"
 #include "ParticleGenerator.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleDescriptor.hpp"
 #include "ParticleSystem.hpp"
+#include "Ship.hpp"
+#include "ForceGenerator.hpp"
+#include "EnemyShip.hpp"
+#include "BlackHole.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -42,7 +44,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-GlobalCoords_CompositeGameObject* scene_game_object = nullptr;
+GameObject* scene_game_object = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -68,18 +70,31 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	scene_game_object = new GlobalCoords_CompositeGameObject();
+	//INSTANTIATE SCENE NODE
+	scene_game_object = new GameObject();
+	//CREATE ALL FORCE GENERATORS:
+	scene_game_object->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
+		//(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
+
+	//------------------------------
+
 	scene_game_object->addChild(new CoordinateAxis());
 	
 	Projectile::projectile_config c = 
-		{ ParticleDescriptor::regular_ball,
-		30,//SPEED REAL
-		0.5f, //MASS REAL
+		{ regular_ball()//,
+		//30,//SPEED REAL
 		};
 
-	scene_game_object->addChild(new CameraProjectileShooter(c));
+	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole"}));
+	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
-	scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
+	auto player = new Ship();
+	scene_game_object->addChild(player);
+	for (int i = 0; i < 3; ++i) {
+		scene_game_object->addChild(new EnemyShip(player));
+	}
+	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
 	//new Projectile(c);
 }
 
@@ -113,22 +128,23 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 }
 
-// Function called when a key is pressed
-void keyPress(unsigned char key, const PxTransform& camera)
+void keyPress(unsigned char key)
 {
-	PX_UNUSED(camera);
-	//std::cout << key<<'\n';
+	scene_game_object->handle_keyboard_button_down(key);
+}
 
-	scene_game_object->process_input(key);
-	switch(toupper(key))
-	{
-	case ' ':
-	{
-		break;
-	}
-	default:
-		break;
-	}
+void keyRelease(unsigned char key)
+{
+	scene_game_object->handle_keyboard_button_up(key);
+}
+void mouseReleased(uint8_t button) {
+	scene_game_object->handle_mouse_button_up(button);
+}
+void mousePressed(uint8_t button) {
+	scene_game_object->handle_mouse_button_down(button);
+}
+void mousePosUpdated(float x, float y) {
+	scene_game_object->handle_mouse_pos(x,y);
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

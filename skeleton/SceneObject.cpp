@@ -20,3 +20,6 @@ SphereObject::SphereObject(config c)
 SphereObject::SphereObject(SceneObject::config c, PxShape* shape)
 	:SceneObject(c, shape) {}
 */
+
+CubeObject::CubeObject(config c) 
+	:SceneObject(c.so_config, CreateShape(PxBoxGeometry(c.half_extents))) {}

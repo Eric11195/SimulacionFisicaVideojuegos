@@ -254,12 +254,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlackHole.cpp" />
+    <ClCompile Include="BombGenerator.cpp" />
+    <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="CameraProjectileShooter.cpp" />
-    <ClCompile Include="CompositeGameObject.cpp" />
+    <ClCompile Include="EnemyShip.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GlobalCoords_CompositeGameObject.cpp" />
+    <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="MissileGenerator.cpp" />
+    <ClCompile Include="ParticleDescriptor.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
@@ -268,15 +274,22 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="ScreenSizeConstants.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="ShipCannon.cpp" />
+    <ClCompile Include="ShipRegularProjectileCannon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="callbacks.hpp" />
-    <ClInclude Include="CameraProjectileShooter.hpp" />
-    <ClInclude Include="CompositeGameObject.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />
-    <ClInclude Include="GlobalCoords_CompositeGameObject.hpp" />
+    <ClInclude Include="EnemyShip.hpp" />
+    <ClInclude Include="ForceGenerator.hpp" />
+    <ClInclude Include="InputProcessor.hpp" />
+    <ClInclude Include="inverse_mass.hpp" />
+    <ClInclude Include="MissileGenerator.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
@@ -289,7 +302,11 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
-    <ClInclude Include="My_Vector3.hpp" />
+    <ClInclude Include="ScreenSizeConstants.hpp" />
+    <ClInclude Include="Ship.hpp" />
+    <ClInclude Include="ShipCannon.hpp" />
+    <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

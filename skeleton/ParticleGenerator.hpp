@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.hpp"
 #include <list>
-#include "My_Vector3.hpp"
 #include <cstdint>
-#include "GlobalCoords_CompositeGameObject.hpp"
 #include "Particle.hpp"
 #include <functional>
+#include <vector>
+#include "inverse_mass.hpp"
+
 
 /*
 Datos random:
@@ -13,87 +14,85 @@ Datos random:
 	vel inicial
 	lifetime
 	color
-	tamaño
-	(aceleración)
+	tamaï¿½o
+	(aceleraciï¿½n)
 	(damping)
 */
 
 /*
 Eliminar particulas cuando:
 	lifetime
-	posición (lluvia llega al suelo)
+	posiciï¿½n (lluvia llega al suelo)
 	salen zona de interes
-	nº max
+	nï¿½ max
 */
 
-class ParticleGenerator : public GlobalCoords_CompositeGameObject {
+
+class ParticleGenerator : public GameObject{
 public:
 	struct particle_calculator_functions {
-		std::function<My_Vector3()> pos = [] { return My_Vector3{ 0,0,0 }; };
-		std::function<My_Vector3()> dir = [] { return My_Vector3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> pos = [] { return physx::PxVec3{ 0,0,0 }; };
+		std::function<physx::PxVec3()> dir = [] { return physx::PxVec3{ 0,0,0 }; };
 		std::function<float()> vel = [] { return 0; };
 		std::function<float()> lifetime = [] { return 0; };
 		std::function<Vector4()> color = [] { return Vector4( 0,0,0,0 ); };
 		std::function<float()> size = [] { return 0; };
-		std::function<bool(Vector3 pos_particle, Vector3 pos_generator)> inside_area_of_interest 
-			= [](Vector3 pos_particle, Vector3 pos_generator) {return true; };
+		std::function<bool(PxVec3 pos_particle, PxVec3 pos_generator)> inside_area_of_interest
+			= [](PxVec3 pos_particle, PxVec3 pos_generator) {return true; };
+		std::function<Mass()> mass = [] {return Mass(0); };
 	};
 	struct config {
-		GlobalCoords_CompositeGameObject::config go_config;
-		uint8_t particle_generated_per_second;
+		float particle_generated_per_second;
 		Particle::config particle_config;
 		particle_calculator_functions particle_lambdas;
 	};
 	ParticleGenerator(config& c);
 	virtual void step(double dt) override;
 protected:
-	float avrg_speed;
 	float avrg_lifetime;
 	float avrg_size;
 	Vector4 avrg_color;
-	uint8_t particle_generated_per_second;
+	float particle_generated_per_second;
 	Particle::config p_config;
 	const GameObject::config const_p_config;
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
-	virtual void generate_particles(double dt);
-	std::function<void(Particle::config&)> next_particle_config_calculator;
+	virtual void ParticleGenerator::generate_particles(double dt);
+	virtual Particle* set_up_particle(Particle::config&);
 	particle_calculator_functions my_particle_lambdas;
 };
 
+//STARTS WITH FORCE APPLIED => Debug purposes
+
+class ForceAffected_ParticleGenerator : public ParticleGenerator {
+public:
+	ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	virtual Particle* set_up_particle(Particle::config& p) override;
+	virtual void step(double dt) override;
+protected:
+	std::vector<std::string> force_names;
+	//You own this ones
+	std::vector<ForceGenerator*> force_ptr;
+};
+
+
 //---------------------------------------------------------------------------------------------------------
 
-class TriggeredParticleGenerator : public ParticleGenerator {
+class TriggeredParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
-	TriggeredParticleGenerator(ParticleGenerator::config c);
+	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	//Generates particles as specified config
-	void Trigger();
+	void trigger();
+	void step(double dt) override;
 };
 
 //---------------------------------------------------------------------------------------------------------
 
-class ToggleParticleGenerator : public ParticleGenerator {
+class ToggleParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
-	ToggleParticleGenerator(ParticleGenerator::config c, bool initial_state);
-	//Modify step function so that it spawns particles
-	inline void set_state(bool new_state) { state = new_state; }
-private:
-	bool state;
+	ToggleParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	void set_toggle(bool state);
+	void step(double dt) override;
+protected:
+	bool active;
 };
-
-//---------------------------------------------------------------------------------------------------------
-
-//Can be adjusted with a multiplier
-/*
-class AdjustableParticleGenerator : public ToggleParticleGenerator {
-private:
-float ratio;
-};
-*/
-
-
-
-//IMP
-/*
-Cada sistema almacena 2 lambdas, una para cuando las particulas se generan, y otra para cuando se destruyen
-*/

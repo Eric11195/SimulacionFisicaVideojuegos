@@ -1,7 +1,6 @@
 #pragma once
 #include "Particle.hpp"
 #include "PhysicLib.hpp"
-#include "My_Vector3.hpp"
 
 using namespace PhysicLib;
 
@@ -27,19 +26,13 @@ class Projectile : public Particle {
 public:
 	struct projectile_config {
 		Particle::config particle_config;
-		speed s_real;
-		mass m_real;
-		gravity m_gravity = PhysicLib::GRAVITY;
+		//speed s_real;
 	};
-	virtual void step(double dt) override;
-	Projectile(projectile_config& c);
+	//modifies its own mass, and mutiplies force_applied to gravity
+	Projectile(projectile_config& c, float real_speed, float simulated_speed);
+	float get_gravity_proportion(float real_speed, float sim_speed);
+	float get_s_mass(float mass, float real_speed, float sim_speed);
+	virtual void integrate(double dt) override;
 protected:
-	mass m_real;
-	mass m_simulated;
-	speed s_real;
-	speed s_simulated;
-	gravity g_simulated;
-	gravity g_real;
-	void update_s_gravity();
-	void update_s_mass();
+	float gravity_multiplier;
 };

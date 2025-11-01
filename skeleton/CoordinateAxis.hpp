@@ -1,12 +1,11 @@
 #pragma once
 #include "SceneObject.hpp"
-#include "GlobalCoords_CompositeGameObject.hpp"
 #include "PhysicLib.hpp"
 
-class CoordinateAxis : public GlobalCoords_CompositeGameObject{
+class CoordinateAxis : public GameObject{
 public:
 	CoordinateAxis() 
-		: GlobalCoords_CompositeGameObject(GameObject::config()){
+		: GameObject(GameObject::config()){
 		//NEUTRAL WHITE BALL
 		addChild(new SphereObject(SphereObject::config()));
 		//RED X RIGHT

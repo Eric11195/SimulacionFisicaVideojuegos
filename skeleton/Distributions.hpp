@@ -3,7 +3,8 @@
 
 namespace Distributions {
 
-	inline static std::default_random_engine generator;
+	inline static std::random_device rd;
+	inline static std::mt19937 generator(rd());
 
 	class LinearDistribution {
 	public:

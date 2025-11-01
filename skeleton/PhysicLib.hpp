@@ -1,5 +1,6 @@
 #pragma once 
 #include "PxPhysicsAPI.h"
+#include "core.hpp"
 
 namespace PhysicLib {
 	using mass = float;
