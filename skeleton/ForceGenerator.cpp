@@ -129,7 +129,8 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 
 bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
 {
-	return true;
+	//If distance is greater than 200, it does not affect
+	return (global_transform.p - g.get_global_tr().p).magnitudeSquared() < 40000;
 }
 
 Variable_ForceGenerator::Variable_ForceGenerator(float force_magnitude,

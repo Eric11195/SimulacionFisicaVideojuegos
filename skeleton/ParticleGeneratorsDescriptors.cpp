@@ -130,7 +130,14 @@ ParticleGenerator::config testing_blackhole_particles{
 		[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent;
 		return true;
-	}
+		},
+		[] {
+			if (RandomSignDistribution::get() > 0) {
+				return Mass(8);
+			}
+			else return Mass(0.1);
+			//return Mass(LinearDistribution::get() * 2);
+		}
 }
 
 };
