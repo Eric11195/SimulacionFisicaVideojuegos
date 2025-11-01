@@ -33,7 +33,7 @@ EnemyShip::EnemyShip(GameObject* player)
 		(Distributions::LinearDistribution::get() * 100) - 50
 	});
 	//set_velocity({ 0,0,15 });
-	auto estela_motor = new ToggleParticleGenerator(missile_particle_system);
+	auto estela_motor = new ToggleParticleGenerator(propulsores_enemy_ship);
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 

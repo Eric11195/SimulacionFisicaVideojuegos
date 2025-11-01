@@ -132,7 +132,7 @@ Particle::config& missile_particle()
 	};
 	return p;
 }
-Particle::config& missile_generated_particle()
+Particle::config& missile_generated_particles()
 {
 	static
 		Particle::config p{
@@ -155,4 +155,28 @@ Particle::config& missile_generated_particle()
 0.5 //lifetime
 	};
 	return p;
-};
+}
+Particle::config& propulsores_enemy_ship_particles()
+{
+	static
+		Particle::config p{
+			{//SphO_config
+				{//SceneObject config
+					{//GameObject config
+						{0,0,-1}, //Pos
+						{0,0,-1}, //speed_dir
+						10,//5, //Speed module
+						//0,//ACCEL
+						Mass(0.1)//MASS
+						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
+					},
+					physx::PxVec4(1,0,0,1)
+		//Color
+	},
+	0.4 //rad
+},
+0.5 //lifetime
+	};
+	return p;
+}
+;
