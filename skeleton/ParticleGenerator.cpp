@@ -34,7 +34,6 @@ void TriggeredParticleGenerator::step(double dt)
 			it = child_objects.erase(it);
 			continue;
 		}
-		//(*it)->step(dt);
 		
 		++it;
 	}
