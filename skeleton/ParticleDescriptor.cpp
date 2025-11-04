@@ -128,7 +128,7 @@ Particle::config& missile_particle()
 	},
 	0.2 //rad
 },
-7 //lifetime
+5 //lifetime
 	};
 	return p;
 }
