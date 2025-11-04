@@ -331,12 +331,12 @@ ParticleGenerator::particle_calculator_functions{
 [] {//Lifetime MOD
 	return 0.25 * Distributions::NormalDistribution::get(NormalDistribution::d_05) * Distributions::RandomSignDistribution::get();
 },
-[] {//Vector4
-	return Vector4(0,Distributions::LinearDistribution::get(),0,0
-		//Distributions::LinearDistribution::get(),
-		//Distributions::LinearDistribution::get(),
-		//Distributions::LinearDistribution::get(),
-		//1//Distributions::LinearDistribution::get()
+[] {//Color
+	return Vector4(
+		Distributions::LinearDistribution::get() * 0.4,
+		Distributions::LinearDistribution::get() * 0.3,
+		Distributions::LinearDistribution::get() * 0.6,
+		0
 	);
 },
 [] {//Size

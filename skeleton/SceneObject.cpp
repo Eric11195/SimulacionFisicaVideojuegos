@@ -1,6 +1,11 @@
 #include "SceneObject.hpp"
 
 
+void SceneObject::set_color(Color c)
+{
+	render_item->color = c;
+}
+
 SceneObject::SceneObject(config c, PxShape* shape)
 	:GameObject(c.go_config)
 {
@@ -15,7 +20,7 @@ SceneObject::~SceneObject()
 
 
 SphereObject::SphereObject(config c)
-	:SceneObject(c.so_config, CreateShape(PxSphereGeometry(c.radius))) {}
+	: SceneObject(c.so_config, CreateShape(PxSphereGeometry(c.radius))) {}
 /*
 SphereObject::SphereObject(SceneObject::config c, PxShape* shape)
 	:SceneObject(c, shape) {}

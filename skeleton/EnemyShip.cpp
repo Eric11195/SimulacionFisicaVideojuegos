@@ -15,15 +15,19 @@ EnemyShip::EnemyShip(GameObject* player)
 {
 	mass = InvMass(Mass(700));
 	set_dumping(0.8);
-	addChild(new SphereObject({ SceneObject::config(), 1 }));
+	auto n = new SphereObject({ SceneObject::config(), 1 });
+	n->set_color({ 1, 0.682, 0, 1});
+	addChild(n);
 	for (auto i = -1; i < 2; i = i + 2) {
 		auto cube = new CubeObject({ SceneObject::config(), {0.1, 1.5, 1.5} });
 		cube->translate({ i * 1.2f,0,0 });
+		cube->set_color({ 1, 0.682, 0, 1 });
 		addChild(cube);
 	}
 	SceneObject::config c{};
 	c.color = {1,0,0,1};
 	auto cube = new CubeObject({ c, {0.1, 0.1, 1} });
+	cube->set_color({0.11f, 0.333f, 1, 1});
 	cube->translate({ 0,0,0.5 });
 	addChild(cube);
 	

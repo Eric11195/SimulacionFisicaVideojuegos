@@ -102,7 +102,7 @@ Particle::config& laser_shot()
 							40, //Speed module
 							//0//PhysicLib::GRAVITY,//Accel module
 						},
-						physx::PxVec4(1,0,0,1)
+						physx::PxVec4(0.937,1,0,1)
 						//Color
 					},
 					0.25 //rad
@@ -170,7 +170,7 @@ Particle::config& propulsores_enemy_ship_particles()
 						Mass(0.1)//MASS
 						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
 					},
-					physx::PxVec4(1,0,0,1)
+					physx::PxVec4(0.11f,0.333,1,1)
 		//Color
 	},
 	0.4 //rad
