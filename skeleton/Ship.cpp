@@ -12,11 +12,12 @@ constexpr float max_speed = 30;
 Ship::Ship()
 	:GameObject()
 {
+	mass = InvMass(Mass(500));
 	set_dumping(0.8);
 	addChild(new ShipCannon(global_transform));
 	//add_force_to_myself("black_hole");
 
-	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5, false);
+	propulsors = new ToggleDirectional_ForceGenerator({0,0,1}, 5/mass.inv_mass, false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
 
@@ -24,7 +25,7 @@ Ship::Ship()
 	//add_force_to_myself(brakes);
 	//addChild(brakes);
 
-	//add_force_to_myself("black_hole");
+	add_force_to_myself("black_hole");
 }
 
 void Ship::step(double dt)
@@ -51,13 +52,16 @@ void Ship::handle_keyboard_button_down(unsigned char c)
 	switch (c) {
 	case ' ':
 		break;
+	case 'A':
 	case 'a':
 		virar_buttons[0] = 1;
 		break;
+	case 'D':
 	case 'd':
 		virar_buttons[1] = 1;
 		break;
 	case'w':
+	case 'W':
 		propulsors->set_state(true);
 		//current_state = state(current_state+1);
 		break;
@@ -78,12 +82,15 @@ void Ship::handle_keyboard_button_up(unsigned char c)
 		//static_cast<Missile*>((*(++child_objects.begin())).get())->trigger();
 		break;
 	case 'a':
+	case 'A':
 		virar_buttons[0] = 0;
 		break;
 	case 'd':
+	case 'D':
 		virar_buttons[1] = 0;
 		break;
 	case'w':
+	case 'W':
 		propulsors->set_state(false);
 		//current_state = state(current_state - 1);
 		break;

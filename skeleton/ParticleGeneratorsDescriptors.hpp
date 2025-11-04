@@ -18,3 +18,5 @@ extern ParticleGenerator::config x_wing_shoot_type;
 extern ParticleGenerator::config missile_particle_system;
 
 extern ParticleGenerator::config missile;
+
+extern ParticleGenerator::config propulsores_enemy_ship;

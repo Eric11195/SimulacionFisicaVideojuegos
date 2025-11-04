@@ -5,7 +5,7 @@
 #include "core.hpp"
 #include "InputProcessor.hpp"
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include "inverse_mass.hpp"
 
@@ -18,7 +18,7 @@ using Quaternion = physx::PxQuat;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
-	inline static std::map<std::string, ForceGenerator*> force_generators_map = {};
+	inline static std::unordered_map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 };
 		physx::PxVec3 initial_speed_dir = { 0,1,0 };//, initial_accel_dir = { 0,-1,0 };

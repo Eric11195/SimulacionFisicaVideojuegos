@@ -16,4 +16,6 @@ Particle::config& laser_shot();
 
 Particle::config& missile_particle();
 
-Particle::config& missile_generated_particle();
+Particle::config& missile_generated_particles();
+
+Particle::config& propulsores_enemy_ship_particles();

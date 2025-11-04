@@ -130,7 +130,14 @@ ParticleGenerator::config testing_blackhole_particles{
 		[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent;
 		return true;
-	}
+		},
+		[] {
+			if (RandomSignDistribution::get() > 0) {
+				return Mass(8);
+			}
+			else return Mass(0.1);
+			//return Mass(LinearDistribution::get() * 2);
+		}
 }
 
 };
@@ -256,7 +263,7 @@ ParticleGenerator::config missile{
 ParticleGenerator::config missile_particle_system{
 	50,
 	//Particles per second
-	missile_generated_particle(),
+	missile_generated_particles(),
 ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
@@ -287,6 +294,53 @@ ParticleGenerator::particle_calculator_functions{
 },
 [] {//Size
 	return 0.03*Distributions::NormalDistribution::get(NormalDistribution::d_025);
+},
+[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
+		/*
+		//Inside radius of parent
+		auto vector_from_particle_to_generator = pos_generator - pos_particle;
+		auto module = vector_from_particle_to_generator.magnitude();
+		return module < 1000;
+		*/
+		return true;
+	}
+}
+};
+
+ParticleGenerator::config propulsores_enemy_ship{
+	50,
+	//Particles per second
+	propulsores_enemy_ship_particles(),
+ParticleGenerator::particle_calculator_functions{
+	[] {return physx::PxVec3{
+	1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+	1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	};
+},//POS
+[] {//VEL_DIR
+	return physx::PxVec3{
+		0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+		0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+		-1,
+	};
+},
+[] {//SPEED MOD
+	return Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_05);
+},
+[] {//Lifetime MOD
+	return 0.25 * Distributions::NormalDistribution::get(NormalDistribution::d_05) * Distributions::RandomSignDistribution::get();
+},
+[] {//Color
+	return Vector4(
+		Distributions::LinearDistribution::get() * 0.4,
+		Distributions::LinearDistribution::get() * 0.3,
+		Distributions::LinearDistribution::get() * 0.6,
+		0
+	);
+},
+[] {//Size
+	return 0.03 * Distributions::NormalDistribution::get(NormalDistribution::d_025);
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		/*

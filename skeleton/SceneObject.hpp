@@ -9,9 +9,9 @@ using namespace physx;
 
 class SceneObject : public GameObject{
 protected:
-	Color cl;
 	std::unique_ptr<RenderItem> render_item;
 public:
+	void set_color(Color c);
 	struct config {
 		GameObject::config go_config;
 		Color color = Color(1, 1, 1, 1);
