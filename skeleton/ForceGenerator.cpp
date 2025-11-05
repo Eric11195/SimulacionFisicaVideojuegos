@@ -66,7 +66,7 @@ Gravity_ForceGenerator::Gravity_ForceGenerator(std::string name, physx::PxVec3 f
 
 void Gravity_ForceGenerator::handle_keyboard_button_down(unsigned char key)
 {
-	if (key == 'g') {
+	if (key == 'g' || key=='G') {
 		toggle();
 	}
 }
@@ -139,7 +139,7 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject const& g)
 
 void TorbellinoSencillo::handle_keyboard_button_down(unsigned char key)
 {
-	if (key == 't') {
+	if (key == 't'||key=='T') {
 		toggle();
 	}
 }

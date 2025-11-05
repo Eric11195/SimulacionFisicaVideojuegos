@@ -86,7 +86,7 @@ void EnemyShip::step(double dt)
 
 void EnemyShip::handle_keyboard_button_down(unsigned char c)
 {
-	if (c == 'e')
+	if (c == 'e' || c=='E')
 		propulsors->toggle();
 }
 
