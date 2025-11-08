@@ -33,7 +33,7 @@ Missile::Missile(Projectile::projectile_config& c)
 {
 	addChild(
 		new ForceAffected_ParticleGenerator(missile_particle_system, {},
-			{ new Wind_ForceGenerator({0,0,-1}, 5) })
+			{ new Wind_ForceGenerator({0,0,-1}, 100) })
 	);
 }
 
