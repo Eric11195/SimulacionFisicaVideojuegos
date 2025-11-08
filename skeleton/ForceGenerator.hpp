@@ -75,3 +75,58 @@ protected:
 
 	double time_since_started;
 };
+
+class Spring_ForceGenerator : public ForceGenerator {
+public:
+	struct config {
+		float elastic_const;
+		float repose_long;
+	};
+	virtual void handle_keyboard_button_down(unsigned char key) override;
+protected:
+	Spring_ForceGenerator(config);
+	physx::PxVec3 calculate_force(physx::PxVec3 from_1_to_2);
+	//Elastic const is force_magnitude
+	float repose_long;
+};
+
+class OBJ_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
+public:
+	OBJ_OBJ_Spring_ForceGenerator(config c, physx::PxVec3* obj1, physx::PxVec3* obj2);
+	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+protected:
+	physx::PxVec3* obj1;
+	physx::PxVec3* obj2;
+};
+
+//The point is its transform position
+class PT_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
+public:
+	PT_OBJ_Spring_ForceGenerator(config c);
+	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+};
+
+class Floating_ForceGenerator : public ForceGenerator {
+public:
+	Floating_ForceGenerator(config c, float height, float density);
+	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+protected:
+	//Force magnitude == density
+	float height;
+};
+
+/*
+struct Plane {
+	physx::PxVec3 perpendicular_vec;
+	float perpendicular_offset;
+	Plane(physx::PxVec3 v, float o)
+		:perpendicular_vec(v.getNormalized()), perpendicular_offset(o){ }
+	float dist_to_plane(physx::PxVec3 pt) {
+		physx::PxVec3 plane_perpendicular_pt = pt+
+	}
+};
+
+class PLANE_OBJ_Spring_ForceGenerator : public ForceGenerator {
+	PLANE_OBJ_Spring_ForceGenerator(config c, physx::PxVec3 perpendicular_vector);
+};
+*/

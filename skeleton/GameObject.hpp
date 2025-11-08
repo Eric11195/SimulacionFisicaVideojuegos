@@ -50,6 +50,10 @@ struct GameObject : public InputProcessor{
 	float get_inv_mass() const { return mass.inv_mass; }
 	Transform get_global_tr()const { return global_transform; }
 
+	const physx::PxVec3* get_pos_ptr() const {
+		return &(global_transform.p);
+	}
+
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
 	virtual void handle_mouse_button_down(uint8_t mb_id) override;

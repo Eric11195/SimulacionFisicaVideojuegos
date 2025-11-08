@@ -1,5 +1,6 @@
 #include "ForceGenerator.hpp"
 #include <iostream>
+#include <cassert>
 
 
 Directional_ForceGenerator::Directional_ForceGenerator(physx::PxVec3 force_direction, float force_magnitude)
@@ -168,4 +169,64 @@ void Variable_ForceGenerator::step(double dt)
 {
 	ForceGenerator::step(dt);
 	time_since_started += dt;
+}
+
+OBJ_OBJ_Spring_ForceGenerator::OBJ_OBJ_Spring_ForceGenerator(config c, physx::PxVec3* _obj1, physx::PxVec3* _obj2)
+	:Spring_ForceGenerator(c), obj1(_obj1), obj2(_obj2)
+{
+	assert(obj1 != nullptr);
+	assert(obj2 != nullptr);
+}
+
+physx::PxVec3 OBJ_OBJ_Spring_ForceGenerator::apply_force(GameObject const& g)
+{
+	physx::PxVec3 from_1_to_2;
+	if (g.get_pos_ptr() == obj1) {
+		from_1_to_2 = (*obj1) - (*obj2);
+	}
+	else {
+		from_1_to_2 = (*obj2) - (*obj2);
+	}
+	return calculate_force(from_1_to_2);
+}
+
+void Spring_ForceGenerator::handle_keyboard_button_down(unsigned char key)
+{
+	if (key == 'm' || key == 'M') toggle();
+}
+
+Spring_ForceGenerator::Spring_ForceGenerator(config c)
+	: ForceGenerator(c.elastic_const), repose_long(c.repose_long)
+{
+}
+
+physx::PxVec3 Spring_ForceGenerator::calculate_force(physx::PxVec3 from_1_to_2)
+{
+	if (!active) return { 0,0,0 };
+
+	float current_long = from_1_to_2.normalize();
+	return - force_magnitude * (current_long - repose_long) * from_1_to_2;
+}
+
+PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(config c)
+	:Spring_ForceGenerator(c)
+{
+}
+
+physx::PxVec3 PT_OBJ_Spring_ForceGenerator::apply_force(GameObject const& g)
+{
+	return calculate_force(global_transform.p - g.get_global_tr().p);
+}
+
+Floating_ForceGenerator::Floating_ForceGenerator(config c, float height, float density)
+	: ForceGenerator(density), height(height)
+{
+}
+
+constexpr float volume = 1;
+physx::PxVec3 Floating_ForceGenerator::apply_force(GameObject const& g)
+{
+	float immersed = (height - g.get_global_tr().p.y) / height * 0.5f;
+	immersed = min(1.0f, max(0.0f, immersed));
+	return physx::PxVec3({0,force_magnitude*volume*immersed*9.8f,0});
 }
