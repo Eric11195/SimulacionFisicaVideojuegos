@@ -200,6 +200,11 @@ Spring_ForceGenerator::Spring_ForceGenerator(config c)
 {
 }
 
+Spring_ForceGenerator::Spring_ForceGenerator(std::string s, config c)
+	: ForceGenerator(s, c.elastic_const), repose_long(c.repose_long)
+{
+}
+
 physx::PxVec3 Spring_ForceGenerator::calculate_force(physx::PxVec3 from_1_to_2)
 {
 	if (!active) return { 0,0,0 };
@@ -213,9 +218,17 @@ PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(config c)
 {
 }
 
+PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(std::string s, config c)
+	:Spring_ForceGenerator(s, c)
+{
+}
+
 physx::PxVec3 PT_OBJ_Spring_ForceGenerator::apply_force(GameObject const& g)
 {
-	return calculate_force(global_transform.p - g.get_global_tr().p);
+	auto f = calculate_force(g.get_global_tr().p - global_transform.p);
+	//std::cout << f.x << " " << f.y << " " << f.z << '\n';
+	
+	return f;
 }
 
 Floating_ForceGenerator::Floating_ForceGenerator(config c, float height, float density)

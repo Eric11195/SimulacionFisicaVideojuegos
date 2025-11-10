@@ -29,6 +29,8 @@
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
     <ClCompile Include="ParticleDescriptor.cpp" />
+    <ClCompile Include="PointSpring.hpp" />
+    <ClCompile Include="PointSpring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />

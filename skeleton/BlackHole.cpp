@@ -6,7 +6,8 @@ BlackHole::BlackHole(physx::PxVec3 pos_relative_to_parent, float force_module)
 	:GameObject()
 {
 	global_transform.p = pos_relative_to_parent;
-	auto s = new SphereObject({ {GameObject::config(), {0,0,0,1}},0.5 });
+	SphereObject::config sphere_c = { {GameObject::config(), {0,0,0,1}},0.5 };
+	auto s = new SphereObject(sphere_c);
 	s->setTransform(global_transform);
 	addChild(s);
 	auto f = new TorbellinoSencillo("black_hole", { 0,0,0 }, 10, 20);

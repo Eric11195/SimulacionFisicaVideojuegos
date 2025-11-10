@@ -85,6 +85,7 @@ public:
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
 	Spring_ForceGenerator(config);
+	Spring_ForceGenerator(std::string, config);
 	physx::PxVec3 calculate_force(physx::PxVec3 from_1_to_2);
 	//Elastic const is force_magnitude
 	float repose_long;
@@ -103,6 +104,8 @@ protected:
 class PT_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
 public:
 	PT_OBJ_Spring_ForceGenerator(config c);
+
+	PT_OBJ_Spring_ForceGenerator(std::string, config c);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 };
 

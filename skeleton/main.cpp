@@ -23,6 +23,7 @@
 #include "ForceGenerator.hpp"
 #include "EnemyShip.hpp"
 #include "BlackHole.hpp"
+#include "PointSpring.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -74,19 +75,13 @@ void initPhysics(bool interactive)
 	scene_game_object = new GameObject();
 	//CREATE ALL FORCE GENERATORS:
 	scene_game_object->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
-		//(new Directional_ForceGenerator("gravity", { 0,-1,0 }, 0.98f));
 
 	//------------------------------
 
-	//scene_game_object->addChild(new CoordinateAxis());
-	
-	Projectile::projectile_config c = 
-		{ regular_ball()//,
-		//30,//SPEED REAL
-		};
+	scene_game_object->addChild(new CoordinateAxis());
 
 	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
-	scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
+	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
 	auto player = new Ship();
@@ -94,8 +89,15 @@ void initPhysics(bool interactive)
 	for (int i = 0; i < 10; ++i) {
 		scene_game_object->addChild(new EnemyShip(player));
 	}
-	//scene_game_object->addChild(new ParticleSystem({ new ParticleGenerator(ParticleGeneratorsDescriptors::ball_thrower) }));
-	//new Projectile(c);
+
+	//Muelles----------------------------------------------
+	auto spring_force = new PointSpring({0,0,0}, { 1, 0.01 }, "spring");//new PT_OBJ_Spring_ForceGenerator("spring", {1000, 10});
+	scene_game_object->addChild(spring_force);
+
+	auto p_gen = new ForceAffected_ParticleGenerator(missile_particle_system, {  "spring" });
+	//p_gen->translate_to({ 0,0,0 });
+	scene_game_object->addChild(p_gen);
+	//-----------------------------------------------------
 }
 
 

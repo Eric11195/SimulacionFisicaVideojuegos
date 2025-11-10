@@ -6,25 +6,31 @@ void SceneObject::set_color(Color c)
 	render_item->color = c;
 }
 
-SceneObject::SceneObject(config c, PxShape* shape)
+SceneObject::SceneObject(config& c, PxShape* shape)
 	:GameObject(c.go_config)
 {
 	render_item = std::make_unique<RenderItem>(shape,&global_transform, c.color);
 	//RegisterRenderItem(render_item.get());
 }
 
+SceneObject::SceneObject(config& c)
+	: GameObject(c.go_config), render_item(nullptr)
+{
+}
+
 SceneObject::~SceneObject()
 {
-	(*render_item).release();
+	if((render_item)!=nullptr)
+		render_item->release();
 }
 
 
-SphereObject::SphereObject(config c)
+SphereObject::SphereObject(config& c)
 	: SceneObject(c.so_config, CreateShape(PxSphereGeometry(c.radius))) {}
 /*
 SphereObject::SphereObject(SceneObject::config c, PxShape* shape)
 	:SceneObject(c, shape) {}
 */
 
-CubeObject::CubeObject(config c) 
+CubeObject::CubeObject(config& c) 
 	:SceneObject(c.so_config, CreateShape(PxBoxGeometry(c.half_extents))) {}

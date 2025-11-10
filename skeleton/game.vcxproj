@@ -267,6 +267,8 @@
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PointSpring.cpp" />
+    <ClCompile Include="PointSpring.hpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />

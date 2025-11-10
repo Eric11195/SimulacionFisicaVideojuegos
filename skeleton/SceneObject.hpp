@@ -17,7 +17,8 @@ public:
 		Color color = Color(1, 1, 1, 1);
 	};
 	//FOR DRAGON USE PxShape = Triangle Meshes
-	SceneObject(config c, PxShape* shape);
+	SceneObject(config& c, PxShape* shape);
+	SceneObject(config& c);
 	~SceneObject() override;
 };
 
@@ -27,7 +28,7 @@ struct SphereObject : public SceneObject{
 		SceneObject::config so_config;
 		float radius = 1;
 	};
-	SphereObject(config c);
+	SphereObject(config& c);
 	//SphereObject(SceneObject::config c, PxShape* shape);
 };
 struct CubeObject : public SceneObject {
@@ -35,7 +36,7 @@ struct CubeObject : public SceneObject {
 		SceneObject::config so_config;
 		PxVec3 half_extents;
 	};
-	CubeObject(config c);
+	CubeObject(config& c);
 	//CubeObject(SceneObject::config c, PxShape* shape);
 };
 //TO DO:
