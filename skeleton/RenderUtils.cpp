@@ -56,7 +56,7 @@ namespace
 void motionCallback(int x, int y)
 {
 	//From 0 to 1
-	float x_float = float(x)/WINDOW_LENGTH;
+	float x_float = float(x)/WINDOW_WIDTH;
 	float y_float = float(y)/WINDOW_HEIGHT;
 	x_float = max(0.0f, min(1, x_float));
 	y_float = max(0.0f, min(1, y_float));
@@ -145,6 +145,8 @@ void renderCallback()
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
 
+	renderHUD();
+
 	finishRender();
 }
 
@@ -160,7 +162,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_LENGTH, WINDOW_HEIGHT);
+	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_WIDTH, WINDOW_HEIGHT);
 	setupDefaultRenderState();
 
 	initPhysics(true);
