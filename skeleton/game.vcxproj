@@ -269,6 +269,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PointSpring.cpp" />
     <ClCompile Include="PointSpring.hpp" />
+    <ClCompile Include="Render\hud_elem.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -282,6 +283,8 @@
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\Common\Print.h" />
+    <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
@@ -296,6 +299,7 @@
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="Render\hud_elem.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />
@@ -308,6 +312,7 @@
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="ShipCannon.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

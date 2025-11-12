@@ -30,6 +30,14 @@
 #include "Render.h"
 #include <assert.h>
 #include "../ScreenSizeConstants.hpp";
+#include <stdexcept>
+
+/*
+#include "Texture.h"
+#include "Entity.h"
+*/
+#include "hud_elem.hpp"
+
 
 using namespace physx;
 
@@ -383,8 +391,13 @@ void finishRender()
 	glutSwapBuffers();
 }
 
+unsigned int ship_hud_tex = 0;
+
+hud_elem* casco_nave = nullptr;
+
 void renderHUD()
 {
+
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -396,13 +409,8 @@ void renderHUD()
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	glBegin(GL_QUADS);
-	glColor3f(1.0f, 0.0f, 0.0);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(10.0, 0.0);
-	glVertex2f(10.0, 10.0);
-	glVertex2f(0.0, 10.0);
-	glEnd();
+	if(!casco_nave) casco_nave = new hud_elem("casco_nave.png");
+	casco_nave->render();
 
 	// Making sure we can render 3d again
 	glMatrixMode(GL_PROJECTION);

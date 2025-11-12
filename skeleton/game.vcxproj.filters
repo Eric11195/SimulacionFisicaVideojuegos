@@ -31,6 +31,7 @@
     <ClCompile Include="ParticleDescriptor.cpp" />
     <ClCompile Include="PointSpring.hpp" />
     <ClCompile Include="PointSpring.cpp" />
+    <ClCompile Include="Render\hud_elem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -64,6 +65,10 @@
     <ClInclude Include="inverse_mass.hpp" />
     <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="..\common\Common\Print.h" />
+    <ClInclude Include="..\common\Common\PVD.h" />
+    <ClInclude Include="stb_image.hpp" />
+    <ClInclude Include="Render\hud_elem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
