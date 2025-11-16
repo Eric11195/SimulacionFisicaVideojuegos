@@ -6,8 +6,7 @@
 #include "RenderUtils.hpp"
 #include "ScreenSizeConstants.hpp";
 #include <iostream>
-
-class GameObject;
+#include "GameObject.hpp"
 
 using namespace physx;
 
@@ -117,6 +116,7 @@ void renderCallback()
 #else
 	stepPhysics(true, t);
 #endif
+	hud_rendering_obj = get_rendering_obj();
 
 	startRender(sCamera->getEye(), sCamera->getDir(), sCamera->getUp());
 
@@ -146,7 +146,6 @@ void renderCallback()
 	//	scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
-	hud_rendering_obj = get_rendering_obj();
 	renderHUD();
 
 	finishRender();

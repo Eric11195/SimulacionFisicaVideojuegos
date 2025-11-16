@@ -291,6 +291,7 @@
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
+    <ClInclude Include="EventsSystem.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="inverse_mass.hpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="ShipCannon.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>

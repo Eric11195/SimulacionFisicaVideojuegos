@@ -291,14 +291,13 @@ void setupDefaultRenderState()
 	glEnable(GL_LIGHT0);
 }
 
-
 void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, const physx::PxVec3& cameraUp, PxReal clipNear, PxReal clipFar)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Display text
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
-	drawText(display_text, 0, 0);
+	//drawText(display_text, 0, 0);
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);
@@ -394,7 +393,7 @@ void finishRender()
 
 unsigned int ship_hud_tex = 0;
 
-hud_elem* casco_nave = nullptr;
+//hud_elem* casco_nave = nullptr;
 
 GameObject* hud_rendering_obj;
 

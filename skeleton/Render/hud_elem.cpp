@@ -125,3 +125,43 @@ void hud_elem::generate_quad(physx::PxVec2 start_point, physx::PxVec2 width_heig
 		start_point + physx::PxVec2(0,width_height.y)
 	};
 }
+
+text_hud_elem::text_hud_elem(std::string text, physx::PxVec2 start_pos)
+	: my_text(text), my_start_pos(start_pos)
+{
+}
+
+void text_hud_elem::render2D()
+{
+	draw_text();
+	GameObject::render2D();
+}
+
+void text_hud_elem::change_text(const std::string&& s)
+{
+	my_text = s;
+}
+
+void text_hud_elem::draw_text()
+{
+	glMatrixMode(GL_PROJECTION);
+	double* matrix = new double[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
+	glLoadIdentity();
+	glOrtho(0, 512, 0, 512, -5, 5);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	//glLoadIdentity();
+	glRasterPos2i(my_start_pos.x*WINDOW_WIDTH, my_start_pos.y*WINDOW_HEIGHT);
+
+	int length = my_text.length();
+
+	for (int i = 0; i < length; i++) {
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)my_text[i]);
+	}
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixd(matrix);
+	glMatrixMode(GL_MODELVIEW);
+}

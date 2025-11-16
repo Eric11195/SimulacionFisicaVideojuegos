@@ -10,5 +10,5 @@ PointSpring::PointSpring(physx::PxVec3 v, config c, std::string name)
 		{0.5,0.5,0.5}
 	};
 	cube_c.so_config.go_config.pos = v;
-	new CubeObject(cube_c);
+	addChild(new CubeObject(cube_c));
 }

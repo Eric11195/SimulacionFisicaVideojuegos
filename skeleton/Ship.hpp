@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.hpp"
 
+class text_hud_elem;
+
 class Directional_ForceGenerator;
 
 class Ship : public GameObject {
@@ -23,6 +25,9 @@ protected:
 	//ToggleDirectional_ForceGenerator* brakes;
 	angular_velocity current_angular_velocity = { 0,{0,0,1} };
 	physx::PxVec2 virar_buttons = {0,0};
+
+	text_hud_elem* my_speed_hud;
+
 	//from 0 to 1
 	//float speed = 0;
 	float angular_speed_radians_per_second = 1;

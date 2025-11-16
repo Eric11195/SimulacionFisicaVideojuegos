@@ -24,6 +24,7 @@
 #include "EnemyShip.hpp"
 #include "BlackHole.hpp"
 #include "PointSpring.hpp"
+#include "Render/hud_elem.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -102,6 +103,8 @@ void initPhysics(bool interactive)
 	//p_gen->translate_to({ 0,0,0 });
 	scene_game_object->addChild(p_gen);
 	//-----------------------------------------------------
+
+	scene_game_object->addChild(new hud_elem("casco_nave.png"));
 }
 
 

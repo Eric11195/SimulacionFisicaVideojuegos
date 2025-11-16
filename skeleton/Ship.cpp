@@ -6,6 +6,7 @@
 #include "ScreenSizeConstants.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ForceGenerator.hpp"
+#include "Render/hud_elem.hpp"
 
 constexpr float max_speed = 30;
 
@@ -22,6 +23,9 @@ Ship::Ship()
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
 
+	my_speed_hud = new text_hud_elem(std::to_string(0), physx::PxVec2(0.1, 0.25));
+	addChild(my_speed_hud);
+
 	add_force_to_myself("black_hole");
 }
 
@@ -37,6 +41,8 @@ void Ship::step(double dt)
 	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 
 	update_child_transform();
+
+	my_speed_hud->change_text(std::to_string(vel.magnitude()));
 
 	//SPEED DELIMITER
 	//auto speed_mag = vel.normalize();
