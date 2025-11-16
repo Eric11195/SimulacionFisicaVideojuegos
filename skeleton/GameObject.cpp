@@ -17,6 +17,13 @@ GameObject::~GameObject()
 	child_objects.clear();
 }
 
+void GameObject::render2D()
+{
+	for (auto& c : child_objects) {
+		c->render2D();
+	}
+}
+
 void GameObject::setTransform(Transform& tr)
 {
 	global_transform.q = tr.q;

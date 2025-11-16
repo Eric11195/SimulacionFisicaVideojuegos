@@ -8,13 +8,13 @@
 
 #include "../../skeleton/ScreenSizeConstants.hpp"
 
-hud_elem::hud_elem(const std::string& file_name)
-	: texture(load_texture(file_name))	
+hud_elem::hud_elem(const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 width_height)
+	: GameObject(), texture(load_texture(file_name))
 {
-	generate_quad(texCoords);
+	generate_quad(start_pos,width_height, texCoords);
 }
 
-void hud_elem::render()
+void hud_elem::render2D()
 {
 	if (!texture) return;
 
@@ -22,45 +22,28 @@ void hud_elem::render()
 	glDisable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	/*
-	glTexImage2D(GL_TEXTURE_2D,
-		0,
-		GL_RGBA,
-		width,
-		height,
-		0,
-		GL_RGBA,
-		GL_UNSIGNED_BYTE,
-		texture_data);
-	*/
-
-	//glUseProgram(0);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 
 	//GENERATE RECT
 	glBegin(GL_QUADS);
 		//
-		
 		//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		glTexCoord2d(0.0, 0.0);  glVertex2f(0.0, 0.0);
+		glTexCoord2d(0.0, 0.0);  glVertex2f(WINDOW_WIDTH * texCoords[0].x, WINDOW_HEIGHT* texCoords[0].y);
 
 
-		glTexCoord2d(1.0, 0.0); glVertex2f(WINDOW_WIDTH, 0.0);
+		glTexCoord2d(1.0, 0.0); glVertex2f(WINDOW_WIDTH * texCoords[1].x, WINDOW_HEIGHT * texCoords[1].y);
 		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 		
 
-		glTexCoord2d(1.0, 1.0); glVertex2f(WINDOW_WIDTH, WINDOW_HEIGHT);
+		glTexCoord2d(1.0, 1.0); glVertex2f(WINDOW_WIDTH * texCoords[2].x, WINDOW_HEIGHT * texCoords[2].y);
 		//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		
 
-		glTexCoord2d(0.0, 1.0); glVertex2f(0.0, WINDOW_HEIGHT);
+		glTexCoord2d(0.0, 1.0); glVertex2f(WINDOW_WIDTH * texCoords[3].x, WINDOW_HEIGHT * texCoords[3].y);
 		//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glEnd();
@@ -72,6 +55,8 @@ void hud_elem::render()
 	glEnable(GL_LIGHTING);
 
 	//glPopMatrix();
+
+	GameObject::render2D();
 }
 
 unsigned int hud_elem::load_texture(const std::string& filename)
@@ -131,12 +116,12 @@ unsigned int hud_elem::load_texture(const std::string& filename)
 	return texture;
 }
 
-void hud_elem::generate_quad(std::vector<float>& v)
+void hud_elem::generate_quad(physx::PxVec2 start_point, physx::PxVec2 width_height, std::vector<physx::PxVec2>& v)
 {
 	v = {
-		0.0f, 0.0f,
-		(float)WINDOW_WIDTH, 0.0f,
-		(float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
-		0.0f, (float)WINDOW_HEIGHT
+		start_point,
+		start_point + physx::PxVec2(width_height.x, 0),
+		start_point + width_height,
+		start_point + physx::PxVec2(0,width_height.y)
 	};
 }

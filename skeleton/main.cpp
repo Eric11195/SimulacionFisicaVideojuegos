@@ -47,6 +47,10 @@ ContactReportCallback gContactReportCallback;
 
 GameObject* scene_game_object = nullptr;
 
+GameObject* get_rendering_obj() {
+	return scene_game_object;
+}
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {

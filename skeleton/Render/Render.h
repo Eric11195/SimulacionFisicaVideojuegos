@@ -47,12 +47,16 @@
 #endif
 #include <string>
 
+class GameObject;
+
 extern std::string display_text;
 
 namespace Snippets
 {
 void setupDefaultWindow(const char* name, int,int);
 void setupDefaultRenderState();
+
+extern GameObject* hud_rendering_obj;
 
 void startRender(const physx::PxVec3& cameraEye, const physx::PxVec3& cameraDir, const physx::PxVec3& cameraUp, physx::PxReal nearClip = 1.f, physx::PxReal farClip = 10000.f);
 void renderShape(const physx::PxShape& shape, const physx::PxTransform& transform, const physx::PxVec4& color);

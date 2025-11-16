@@ -7,9 +7,11 @@
 #include "ScreenSizeConstants.hpp";
 #include <iostream>
 
+class GameObject;
 
 using namespace physx;
 
+extern GameObject* get_rendering_obj();
 extern void initPhysics(bool interactive);
 extern void stepPhysics(bool interactive, double t);	
 extern void cleanupPhysics(bool interactive);
@@ -144,7 +146,7 @@ void renderCallback()
 	//	scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
-
+	hud_rendering_obj = get_rendering_obj();
 	renderHUD();
 
 	finishRender();

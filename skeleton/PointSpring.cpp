@@ -1,4 +1,5 @@
 #include "PointSpring.hpp"
+#include "SceneObject.hpp"
 
 PointSpring::PointSpring(physx::PxVec3 v, config c, std::string name)
 	: PT_OBJ_Spring_ForceGenerator(name, c)

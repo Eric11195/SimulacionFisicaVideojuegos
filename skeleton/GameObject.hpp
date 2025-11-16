@@ -32,6 +32,8 @@ struct GameObject : public InputProcessor{
 	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
+	virtual void render2D();
+
 	void setTransform(Transform& tr);
 	
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);

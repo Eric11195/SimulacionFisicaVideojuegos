@@ -31,6 +31,7 @@
 #include <assert.h>
 #include "../ScreenSizeConstants.hpp";
 #include <stdexcept>
+#include "../GameObject.hpp"
 
 /*
 #include "Texture.h"
@@ -395,6 +396,8 @@ unsigned int ship_hud_tex = 0;
 
 hud_elem* casco_nave = nullptr;
 
+GameObject* hud_rendering_obj;
+
 void renderHUD()
 {
 
@@ -409,8 +412,12 @@ void renderHUD()
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
+	hud_rendering_obj->render2D();
+
+	/*
 	if(!casco_nave) casco_nave = new hud_elem("casco_nave.png");
 	casco_nave->render();
+	*/
 
 	// Making sure we can render 3d again
 	glMatrixMode(GL_PROJECTION);
