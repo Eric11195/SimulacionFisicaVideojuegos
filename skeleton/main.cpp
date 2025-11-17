@@ -124,9 +124,9 @@ void initPhysics(bool interactive)
 	auto start_but = new button([&] {
 		current_scene = scenes_vec[gamescene];
 		},
-		"start_game_button.png", { 0.33,0.4 }, {0.33,0.20});
+		"start_game_button.png", { 0.33,0.65 }, {0.33,0.20});
 	scenes_vec[mainmenu]->addChild(start_but);
-
+	scenes_vec[mainmenu]->addChild(new hud_elem("logo_juego.png", { 0.25, 0.1 }, {0.5,0.5}));
 	scenes_vec[mainmenu]->addChild(new text_hud_elem("Creado por Izan de Vega", {0.01,0.01}));
 
 	for (int i = 0; i < 20; ++i) {
