@@ -18,6 +18,10 @@ using Quaternion = physx::PxQuat;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
+	inline std::list<std::unique_ptr<GameObject>>& get_child_list() {
+		return child_objects;
+	};
+
 	inline static std::unordered_map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 };
@@ -33,6 +37,7 @@ struct GameObject : public InputProcessor{
 	virtual ~GameObject();
 
 	virtual void render2D();
+	virtual void render3D();
 
 	void setTransform(Transform& tr);
 	

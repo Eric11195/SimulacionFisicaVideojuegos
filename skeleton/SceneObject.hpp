@@ -20,6 +20,10 @@ public:
 	SceneObject(config& c, PxShape* shape);
 	SceneObject(config& c);
 	~SceneObject() override;
+	virtual void render3D() override;
+private:
+	void render_shape(const PxShape& shape, const PxTransform& transform, const PxVec4& color);
+	void render_geometry(const PxGeometryHolder& h, bool wireframe = false);
 };
 
 

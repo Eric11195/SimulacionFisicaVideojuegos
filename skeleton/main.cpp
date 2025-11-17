@@ -106,12 +106,13 @@ void initPhysics(bool interactive)
 	}
 
 	//Muelles----------------------------------------------
-	auto spring_force = new PointSpring({0,0,0}, { 1, 0.01 }, "spring");//new PT_OBJ_Spring_ForceGenerator("spring", {1000, 10});
-	scenes_vec[gamescene]->addChild(spring_force);
+	//const std::string spring_name = "my_first_spring";
+	//auto spring_force = new PointSpring(physx::PxVec3(0,0,0), Spring_ForceGenerator::config{ 1, 0.01 }, spring_name);//new PT_OBJ_Spring_ForceGenerator("spring", {1000, 10});
+	//scenes_vec[gamescene]->addChild(spring_force);
 
-	auto p_gen = new ForceAffected_ParticleGenerator(missile_particle_system, {  "spring" });
+	//auto p_gen = new ForceAffected_ParticleGenerator(missile_particle_system, {  "spring" });
 	//p_gen->translate_to({ 0,0,0 });
-	scenes_vec[gamescene]->addChild(p_gen);
+	//scenes_vec[gamescene]->addChild(p_gen);
 	//-----------------------------------------------------
 
 	scenes_vec[gamescene]->addChild(new hud_elem("casco_nave.png"));
@@ -126,7 +127,7 @@ void initPhysics(bool interactive)
 		"start_game_button.png", { 0.33,0.4 }, {0.33,0.20});
 	scenes_vec[mainmenu]->addChild(start_but);
 
-
+	scenes_vec[mainmenu]->addChild(new text_hud_elem("Creado por Izan de Vega", {0.01,0.01}));
 
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

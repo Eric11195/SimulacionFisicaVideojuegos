@@ -156,12 +156,15 @@ void text_hud_elem::draw_text()
 	glPushMatrix();
 	//glLoadIdentity();
 	glRasterPos2i(my_start_pos.x*WINDOW_WIDTH, my_start_pos.y*WINDOW_HEIGHT);
-
+	glColor3f(0, 0, 0);
 	int length = my_text.length();
 
+	glDisable(GL_LIGHTING);
 	for (int i = 0; i < length; i++) {
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)my_text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, (int)my_text[i]);
 	}
+	glEnable(GL_LIGHTING);
+
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(matrix);
