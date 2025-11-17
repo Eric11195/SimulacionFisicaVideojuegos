@@ -257,12 +257,14 @@
     <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
+    <ClCompile Include="buttons.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
+    <ClCompile Include="mouse_pos.cpp" />
     <ClCompile Include="ParticleDescriptor.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
@@ -286,6 +288,7 @@
     <ClInclude Include="..\common\Common\Print.h" />
     <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="BlackHole.hpp" />
+    <ClInclude Include="buttons.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
@@ -296,6 +299,7 @@
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="inverse_mass.hpp" />
     <ClInclude Include="MissileGenerator.hpp" />
+    <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />

@@ -8,6 +8,8 @@
 #include <iostream>
 #include "GameObject.hpp"
 
+#include "mouse_pos.hpp"
+
 using namespace physx;
 
 extern GameObject* get_rendering_obj();
@@ -61,6 +63,8 @@ void motionCallback(int x, int y)
 	float y_float = float(y)/WINDOW_HEIGHT;
 	x_float = max(0.0f, min(1, x_float));
 	y_float = max(0.0f, min(1, y_float));
+	mouse_pos_x = x_float;
+	mouse_pos_y = y_float;
 	mousePosUpdated(x_float, y_float);
 }
 
@@ -78,6 +82,10 @@ void keyboardUpCallback(unsigned char key, int x, int y) {
 void mouseCallback(int button, int state, int x, int y)
 {
 	//sCamera->handleMouse(button, state, x, y);
+	float x_float = float(x) / WINDOW_WIDTH;
+	float y_float = float(y) / WINDOW_HEIGHT;
+	x_float = max(0.0f, min(1, x_float));
+	y_float = max(0.0f, min(1, y_float));
 	if (state == GLUT_UP) {
 		mouseReleased(button);
 	}

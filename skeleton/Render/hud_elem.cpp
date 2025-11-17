@@ -8,6 +8,8 @@
 
 #include "../../skeleton/ScreenSizeConstants.hpp"
 
+#include "../mouse_pos.hpp"
+
 hud_elem::hud_elem(const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 width_height)
 	: GameObject(), texture(load_texture(file_name))
 {

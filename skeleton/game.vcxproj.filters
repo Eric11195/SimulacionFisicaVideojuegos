@@ -32,6 +32,8 @@
     <ClCompile Include="PointSpring.hpp" />
     <ClCompile Include="PointSpring.cpp" />
     <ClCompile Include="Render\hud_elem.cpp" />
+    <ClCompile Include="mouse_pos.cpp" />
+    <ClCompile Include="buttons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -69,6 +71,10 @@
     <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="Render\hud_elem.hpp" />
+    <ClInclude Include="EventsSystem.hpp" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="mouse_pos.hpp" />
+    <ClInclude Include="buttons.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

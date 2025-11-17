@@ -25,6 +25,7 @@
 #include "BlackHole.hpp"
 #include "PointSpring.hpp"
 #include "Render/hud_elem.hpp"
+#include "buttons.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -46,10 +47,19 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-GameObject* scene_game_object = nullptr;
+GameObject* current_scene = nullptr;
+enum scenes {
+	gamescene,
+	mainmenu,
+	max_number
+};
+
+scenes starting_scene = mainmenu;
+GameObject* scenes_vec[scenes::max_number];
+
 
 GameObject* get_rendering_obj() {
-	return scene_game_object;
+	return current_scene;
 }
 
 // Initialize physics engine
@@ -77,34 +87,50 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	//INSTANTIATE SCENE NODE
-	scene_game_object = new GameObject();
+	scenes_vec[gamescene] = new GameObject();
 	//CREATE ALL FORCE GENERATORS:
-	scene_game_object->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
+	scenes_vec[gamescene]->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
 
 	//------------------------------
 
-	scene_game_object->addChild(new CoordinateAxis());
+	scenes_vec[gamescene]->addChild(new CoordinateAxis());
 
-	scene_game_object->addChild(new BlackHole({ 5,5,5 }, 1));
+	scenes_vec[gamescene]->addChild(new BlackHole({ 5,5,5 }, 1));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
 	auto player = new Ship();
-	scene_game_object->addChild(player);
+	scenes_vec[gamescene]->addChild(player);
 	for (int i = 0; i < 10; ++i) {
-		scene_game_object->addChild(new EnemyShip(player));
+		scenes_vec[gamescene]->addChild(new EnemyShip(player));
 	}
 
 	//Muelles----------------------------------------------
 	auto spring_force = new PointSpring({0,0,0}, { 1, 0.01 }, "spring");//new PT_OBJ_Spring_ForceGenerator("spring", {1000, 10});
-	scene_game_object->addChild(spring_force);
+	scenes_vec[gamescene]->addChild(spring_force);
 
 	auto p_gen = new ForceAffected_ParticleGenerator(missile_particle_system, {  "spring" });
 	//p_gen->translate_to({ 0,0,0 });
-	scene_game_object->addChild(p_gen);
+	scenes_vec[gamescene]->addChild(p_gen);
 	//-----------------------------------------------------
 
-	scene_game_object->addChild(new hud_elem("casco_nave.png"));
+	scenes_vec[gamescene]->addChild(new hud_elem("casco_nave.png"));
+
+	//MAIN MENU SCENE
+
+	scenes_vec[mainmenu] = new GameObject();
+
+	auto start_but = new button([&] {
+		current_scene = scenes_vec[gamescene];
+		},
+		"start_game_button.png");
+	scenes_vec[mainmenu]->addChild(start_but);
+
+
+
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	current_scene = scenes_vec[starting_scene];
 }
 
 
@@ -114,7 +140,7 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	scene_game_object->step(t);
+	current_scene->step(t);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -139,21 +165,21 @@ void cleanupPhysics(bool interactive)
 
 void keyPress(unsigned char key)
 {
-	scene_game_object->handle_keyboard_button_down(key);
+	current_scene->handle_keyboard_button_down(key);
 }
 
 void keyRelease(unsigned char key)
 {
-	scene_game_object->handle_keyboard_button_up(key);
+	current_scene->handle_keyboard_button_up(key);
 }
 void mouseReleased(uint8_t button) {
-	scene_game_object->handle_mouse_button_up(button);
+	current_scene->handle_mouse_button_up(button);
 }
 void mousePressed(uint8_t button) {
-	scene_game_object->handle_mouse_button_down(button);
+	current_scene->handle_mouse_button_down(button);
 }
 void mousePosUpdated(float x, float y) {
-	scene_game_object->handle_mouse_pos(x,y);
+	current_scene->handle_mouse_pos(x,y);
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

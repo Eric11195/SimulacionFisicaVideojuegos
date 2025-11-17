@@ -37,7 +37,7 @@
 #include "Texture.h"
 #include "Entity.h"
 */
-#include "hud_elem.hpp"
+//#include "hud_elem.hpp"
 
 
 using namespace physx;
