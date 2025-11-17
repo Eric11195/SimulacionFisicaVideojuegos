@@ -123,7 +123,7 @@ void initPhysics(bool interactive)
 	auto start_but = new button([&] {
 		current_scene = scenes_vec[gamescene];
 		},
-		"start_game_button.png");
+		"start_game_button.png", { 0.33,0.4 }, {0.33,0.20});
 	scenes_vec[mainmenu]->addChild(start_but);
 
 
