@@ -146,6 +146,8 @@ void text_hud_elem::change_text(const std::string&& s)
 
 void text_hud_elem::draw_text()
 {
+	glColor4f(0, 1.0, 0, 1);
+
 	glMatrixMode(GL_PROJECTION);
 	double* matrix = new double[16];
 	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
@@ -156,7 +158,7 @@ void text_hud_elem::draw_text()
 	glPushMatrix();
 	//glLoadIdentity();
 	glRasterPos2i(my_start_pos.x*WINDOW_WIDTH, my_start_pos.y*WINDOW_HEIGHT);
-	glColor3f(0, 0, 0);
+
 	int length = my_text.length();
 
 	glDisable(GL_LIGHTING);

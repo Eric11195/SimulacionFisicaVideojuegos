@@ -35,11 +35,11 @@ void SceneObject::render3D()
 		auto actor = render_item->actor;
 		if (actor)
 		{
-			renderShape(*render_item->shape, actor->getGlobalPose(), render_item->color);
+			render_shape(*render_item->shape, actor->getGlobalPose(), render_item->color);
 			return;
 		}
 	}
-	renderShape(*render_item->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), render_item->color);
+	render_shape(*render_item->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), render_item->color);
 }
 
 void SceneObject::render_shape(const PxShape& shape, const PxTransform& transform, const PxVec4& color)

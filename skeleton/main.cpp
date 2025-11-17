@@ -129,6 +129,11 @@ void initPhysics(bool interactive)
 
 	scenes_vec[mainmenu]->addChild(new text_hud_elem("Creado por Izan de Vega", {0.01,0.01}));
 
+	for (int i = 0; i < 20; ++i) {
+		scenes_vec[mainmenu]->addChild(new EnemyShip(scenes_vec[mainmenu]));
+	}
+	GetCamera()->setTransform(scenes_vec[mainmenu]->get_global_tr());
+
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];
