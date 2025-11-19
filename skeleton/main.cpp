@@ -26,6 +26,7 @@
 #include "PointSpring.hpp"
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
+#include "RigidbodyObject.hpp"
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -107,6 +108,19 @@ void initPhysics(bool interactive)
 	for (int i = 0; i < 10; ++i) {
 		scenes_vec[gamescene]->addChild(new EnemyShip(physx_scene_vec[gamescene],player));
 	}
+
+	//TESTING SOLIDO RIGIDO
+
+	scenes_vec[gamescene]->addChild(new StaticRigid_CubeObject(physx_scene_vec[gamescene], 
+		StaticRigid_CubeObject::config{ StaticRigidbody_Object::config(), physx::PxVec3(100,0.01,100)} ));
+
+	auto cube = scenes_vec[gamescene]->addChild(new Rigid_CubeObject(physx_scene_vec[gamescene],
+		Rigid_CubeObject::config{ Rigidbody_Object::config{{SceneObject::config{GameObject::config(), Color(1,0,0,1)}}}, physx::PxVec3(1,1,1)}));
+	(*cube)->set_pos({ 0,0,11 });
+	(*cube)->set_velocity({ 0,30,0 });
+
+	//---------------------
+
 
 	//Muelles----------------------------------------------
 	//const std::string spring_name = "my_first_spring";

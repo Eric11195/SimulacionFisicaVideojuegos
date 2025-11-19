@@ -26,7 +26,7 @@ Ship::Ship(physx::PxScene* s)
 	my_speed_hud = new text_hud_elem(s,std::to_string(0), physx::PxVec2(0.1, 0.25));
 	addChild(my_speed_hud);
 
-	add_force_to_myself("black_hole");
+	//add_force_to_myself("black_hole");
 }
 
 void Ship::step(double dt)

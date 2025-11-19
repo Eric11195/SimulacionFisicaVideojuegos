@@ -55,7 +55,8 @@ struct GameObject : public InputProcessor{
 	virtual void translate_to(physx::PxVec3);
 	virtual void rotate(Quaternion);
 
-	void set_velocity(physx::PxVec3);
+	virtual void set_pos(physx::PxVec3);
+	virtual void set_velocity(physx::PxVec3);
 	void set_velocity_magnitude(float m);
 
 	float get_inv_mass() const { return mass.inv_mass; }

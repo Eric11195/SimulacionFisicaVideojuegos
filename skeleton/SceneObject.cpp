@@ -8,15 +8,21 @@ void SceneObject::set_color(Color c)
 }
 
 SceneObject::SceneObject(physx::PxScene* s, PxShape* shape, config& c)
-	:GameObject(s,c.go_config)
+	:GameObject(s,c.go_config), render_item(std::make_unique<RenderItem>(shape, &global_transform, c.color))
 {
-	render_item = std::make_unique<RenderItem>(shape,&global_transform, c.color);
+	//render_item = std::make_unique<RenderItem>(shape,&global_transform, c.color);
 	//RegisterRenderItem(render_item.get());
 }
 
 SceneObject::SceneObject(physx::PxScene* s, config& c)
 	: GameObject(s,c.go_config), render_item(nullptr)
 {
+}
+
+SceneObject::SceneObject(physx::PxScene* s, PxShape* shape, PxRigidActor* actor, config& c)
+	: GameObject(s, c.go_config), render_item(std::make_unique<RenderItem>(shape, actor, c.color))
+{
+	assert(actor);
 }
 
 SceneObject::~SceneObject()

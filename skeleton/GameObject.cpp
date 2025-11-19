@@ -5,10 +5,11 @@
 
 GameObject::GameObject(physx::PxScene* scene, config& c, std::initializer_list<GameObject*> go_s)
 	: global_transform(Transform(c.pos, c.initial_rotation)),
-	vel(c.initial_speed_dir.getNormalized()* c.initial_speed_magnitude),
 	damping_mult(c.damping_mult), mass(c.mass), my_scene(scene)
 {
-	//assert(my_scene);
+	assert(my_scene);
+
+	set_velocity(c.initial_speed_dir.getNormalized() * c.initial_speed_magnitude);
 
 	for (auto go : go_s) {
 		addChild(go);
@@ -80,6 +81,11 @@ void GameObject::rotate(physx::PxQuat q)
 {
 	global_transform.q *= q;
 	//local_transform.q *= q;
+}
+
+void GameObject::set_pos(physx::PxVec3 p)
+{
+	global_transform.p = p;
 }
 
 void GameObject::set_velocity(physx::PxVec3 v)

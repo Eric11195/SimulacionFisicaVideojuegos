@@ -19,6 +19,7 @@ public:
 	//FOR DRAGON USE PxShape = Triangle Meshes
 	SceneObject(physx::PxScene* s, PxShape* shape, config& c=config());
 	SceneObject(physx::PxScene* s, config& c);
+	SceneObject(physx::PxScene* s, PxShape* shape, PxRigidActor* actor, config& c);
 	~SceneObject() override;
 	virtual void render3D() override;
 private:

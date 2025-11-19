@@ -10,6 +10,7 @@
 //	Semiexplicito
 #include "SceneObject.hpp"
 #include "PhysicLib.hpp"
+#include "RigidbodyObject.hpp"
 
 #define EULER_SEMI_IMPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -35,6 +36,21 @@ public:
 		return time_till_death > 0;
 	};
 	
+	virtual void step(double dt) override;
+private:
+	float time_till_death;
+};
+
+class RigidParticle : public Rigid_SphereObject {
+	struct config {
+		Rigid_SphereObject::config rb_spho_config;
+		//THIS PARAMETER SHOULD BE INSIDE A PARTICLE GENERATOR INSTEAD
+		float time_till_death = std::numeric_limits<float>::infinity();
+	};
+	RigidParticle(physx::PxScene*, config& c);
+	inline bool alive() const {
+		return time_till_death > 0;
+	}
 	virtual void step(double dt) override;
 private:
 	float time_till_death;
