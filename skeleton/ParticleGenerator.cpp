@@ -4,8 +4,8 @@
 //#include "Particle.hpp"
 
 //-------------------------------------------------------------------------------------------------------
-TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ForceAffected_ParticleGenerator(c,forces_names, forces_ptr)
+TriggeredParticleGenerator::TriggeredParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ForceAffected_ParticleGenerator(s,c,forces_names, forces_ptr)
 {
 }
 
@@ -43,8 +43,8 @@ void TriggeredParticleGenerator::step(double dt)
 
 //-------------------------------------------------------------------------------------------------------
 
-ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ParticleGenerator(c), force_names(forces), force_ptr(forces_ptr) {}
+ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ParticleGenerator(s,c), force_names(forces), force_ptr(forces_ptr) {}
 
 Particle* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
 {
@@ -66,14 +66,14 @@ void ForceAffected_ParticleGenerator::step(double dt)
 	}
 }
 
-ParticleGenerator::ParticleGenerator(config& c)
+ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
 	:
 	const_p_config(c.particle_config.spho_config.so_config.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
 	avrg_lifetime(c.particle_config.time_till_death),
 	avrg_color(c.particle_config.spho_config.so_config.color),
 	avrg_size(c.particle_config.spho_config.radius),
-	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas) {
+	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas), GameObject(s){
 }
 
 void ParticleGenerator::step(double dt)
@@ -126,11 +126,11 @@ void ParticleGenerator::generate_particles(double dt)
 
 Particle* ParticleGenerator::set_up_particle(Particle::config& p)
 {
-	return new Particle(p);
+	return new Particle(my_scene, p);
 }
 
-ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ForceAffected_ParticleGenerator(c,forces,forces_ptr), active(true)
+ToggleParticleGenerator::ToggleParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ForceAffected_ParticleGenerator(s,c,forces,forces_ptr), active(true)
 {
 }
 

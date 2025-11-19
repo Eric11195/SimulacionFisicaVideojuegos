@@ -34,6 +34,7 @@
     <ClCompile Include="Render\hud_elem.cpp" />
     <ClCompile Include="mouse_pos.cpp" />
     <ClCompile Include="buttons.cpp" />
+    <ClCompile Include="RigidbodyObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="buttons.hpp" />
+    <ClInclude Include="RigidbodyObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

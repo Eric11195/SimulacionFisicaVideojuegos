@@ -3,8 +3,8 @@
 #include <cassert>
 #include "ForceGenerator.hpp"
 
-Projectile::Projectile(projectile_config& c, float real_speed, float simulated_speed)
-	:Particle(c.particle_config)
+Projectile::Projectile(physx::PxScene* s, projectile_config& c, float real_speed, float simulated_speed)
+	:Particle(s,c.particle_config)
 {
 	set_velocity_magnitude(simulated_speed);
 	gravity_multiplier = get_gravity_proportion(real_speed, simulated_speed);

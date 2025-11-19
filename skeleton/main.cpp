@@ -44,10 +44,11 @@ PxMaterial*				gMaterial	= NULL;
 PxPvd*                  gPvd        = NULL;
 
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
-PxScene*				gScene      = NULL;
+//PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 GameObject* current_scene = nullptr;
+physx::PxScene* physx_current_scene = nullptr;
 enum scenes {
 	gamescene,
 	mainmenu,
@@ -56,6 +57,7 @@ enum scenes {
 
 scenes starting_scene = mainmenu;
 GameObject* scenes_vec[scenes::max_number];
+physx::PxScene* physx_scene_vec[scenes::max_number];
 
 
 GameObject* get_rendering_obj() {
@@ -74,6 +76,7 @@ void initPhysics(bool interactive)
 	gPvd->connect(*transport,PxPvdInstrumentationFlag::eALL);
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
+	GameObject::physics_ref = gPhysics;
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
@@ -84,25 +87,25 @@ void initPhysics(bool interactive)
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
-	gScene = gPhysics->createScene(sceneDesc);
+	physx_scene_vec[gamescene] = gPhysics->createScene(sceneDesc);
 
 	//INSTANTIATE SCENE NODE
-	scenes_vec[gamescene] = new GameObject();
+	scenes_vec[gamescene] = new GameObject(physx_scene_vec[gamescene]);
 	//CREATE ALL FORCE GENERATORS:
-	scenes_vec[gamescene]->addChild(new Gravity_ForceGenerator("gravity", physx::PxVec3(0, -1, 0)));
+	scenes_vec[gamescene]->addChild(new Gravity_ForceGenerator(physx_scene_vec[gamescene], "gravity", physx::PxVec3(0, -1, 0)));
 
 	//------------------------------
 
-	scenes_vec[gamescene]->addChild(new CoordinateAxis());
+	scenes_vec[gamescene]->addChild(new CoordinateAxis(physx_scene_vec[gamescene]));
 
-	scenes_vec[gamescene]->addChild(new BlackHole({ 5,5,5 }, 1));
+	scenes_vec[gamescene]->addChild(new BlackHole(physx_scene_vec[gamescene], { 5,5,5 }, 1));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
-	auto player = new Ship();
+	auto player = new Ship(physx_scene_vec[gamescene]);
 	scenes_vec[gamescene]->addChild(player);
 	for (int i = 0; i < 10; ++i) {
-		scenes_vec[gamescene]->addChild(new EnemyShip(player));
+		scenes_vec[gamescene]->addChild(new EnemyShip(physx_scene_vec[gamescene],player));
 	}
 
 	//Muelles----------------------------------------------
@@ -115,28 +118,29 @@ void initPhysics(bool interactive)
 	//scenes_vec[gamescene]->addChild(p_gen);
 	//-----------------------------------------------------
 
-	scenes_vec[gamescene]->addChild(new hud_elem("casco_nave.png"));
+	scenes_vec[gamescene]->addChild(new hud_elem(physx_scene_vec[gamescene], "casco_nave.png"));
 
 	//MAIN MENU SCENE
+	physx_scene_vec[mainmenu] = gPhysics->createScene(sceneDesc);
+	scenes_vec[mainmenu] = new GameObject(physx_scene_vec[mainmenu]);
 
-	scenes_vec[mainmenu] = new GameObject();
-
-	auto start_but = new button([&] {
+	auto start_but = new button(physx_scene_vec[gamescene], [&] {
 		current_scene = scenes_vec[gamescene];
 		},
 		"start_game_button.png", { 0.33,0.65 }, {0.33,0.20});
 	scenes_vec[mainmenu]->addChild(start_but);
-	scenes_vec[mainmenu]->addChild(new hud_elem("logo_juego.png", { 0.25, 0.1 }, {0.5,0.5}));
-	scenes_vec[mainmenu]->addChild(new text_hud_elem("Creado por Izan de Vega", {0.01,0.01}));
+	scenes_vec[mainmenu]->addChild(new hud_elem(physx_scene_vec[gamescene], "logo_juego.png", { 0.25, 0.1 }, {0.5,0.5}));
+	scenes_vec[mainmenu]->addChild(new text_hud_elem(physx_scene_vec[gamescene], "Creado por Izan de Vega", {0.01,0.01}));
 
 	for (int i = 0; i < 20; ++i) {
-		scenes_vec[mainmenu]->addChild(new EnemyShip(scenes_vec[mainmenu]));
+		scenes_vec[mainmenu]->addChild(new EnemyShip(physx_scene_vec[gamescene], scenes_vec[mainmenu]));
 	}
 	GetCamera()->setTransform(scenes_vec[mainmenu]->get_global_tr());
 
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];
+	physx_current_scene = physx_scene_vec[starting_scene];
 }
 
 
@@ -147,8 +151,8 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 	current_scene->step(t);
-	gScene->simulate(t);
-	gScene->fetchResults(true);
+	physx_current_scene->simulate(t);
+	physx_current_scene->fetchResults(true);
 }
 
 // Function to clean data
@@ -158,7 +162,7 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	gScene->release();
+	physx_current_scene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
 	gPhysics->release();	

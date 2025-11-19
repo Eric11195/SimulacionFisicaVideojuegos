@@ -3,8 +3,8 @@
 #include "Projectile.hpp"
 #include "ForceGenerator.hpp"
 
-ShipRegularProjectileCannon::ShipRegularProjectileCannon()
-	: TriggeredParticleGenerator(x_wing_shoot_type)
+ShipRegularProjectileCannon::ShipRegularProjectileCannon(physx::PxScene* s)
+	: TriggeredParticleGenerator(s, x_wing_shoot_type)
 {
 	//float real_speed = avrg_speed;
 	//float sim_speed = 10;
@@ -18,7 +18,7 @@ ShipRegularProjectileCannon::ShipRegularProjectileCannon()
 Particle* ShipRegularProjectileCannon::set_up_particle(Particle::config& p)
 {
 	auto proj_config = Projectile::projectile_config{ p };// , 30000.0f};
-	auto particle = new Projectile(proj_config, 1000000, const_p_config.initial_speed_magnitude);
+	auto particle = new Projectile(my_scene, proj_config, 1000000, const_p_config.initial_speed_magnitude);
 	//particle->add_force_to_myself(my_mod_gravity);
 	return particle;
 }

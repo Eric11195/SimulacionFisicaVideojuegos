@@ -1,8 +1,8 @@
 #include "PointSpring.hpp"
 #include "SceneObject.hpp"
 
-PointSpring::PointSpring(physx::PxVec3 v, config c, std::string name)
-	: PT_OBJ_Spring_ForceGenerator(name, c)
+PointSpring::PointSpring(physx::PxScene* s, physx::PxVec3 v, config c, std::string name)
+	: PT_OBJ_Spring_ForceGenerator(s, name, c)
 {
 	translate_to(v);
 	CubeObject::config cube_c = {
@@ -10,5 +10,5 @@ PointSpring::PointSpring(physx::PxVec3 v, config c, std::string name)
 		{0.5,0.5,0.5}
 	};
 	cube_c.so_config.go_config.pos = v;
-	addChild(new CubeObject(cube_c));
+	addChild(new CubeObject(s,cube_c));
 }

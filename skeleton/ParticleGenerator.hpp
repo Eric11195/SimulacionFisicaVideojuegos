@@ -46,7 +46,7 @@ public:
 		Particle::config particle_config;
 		particle_calculator_functions particle_lambdas;
 	};
-	ParticleGenerator(config& c);
+	ParticleGenerator(physx::PxScene* s, config& c);
 	virtual void step(double dt) override;
 protected:
 	float avrg_lifetime;
@@ -66,7 +66,7 @@ protected:
 
 class ForceAffected_ParticleGenerator : public ParticleGenerator {
 public:
-	ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	virtual Particle* set_up_particle(Particle::config& p) override;
 	virtual void step(double dt) override;
 protected:
@@ -80,7 +80,7 @@ protected:
 
 class TriggeredParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
-	TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	TriggeredParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	//Generates particles as specified config
 	void trigger();
 	void step(double dt) override;
@@ -90,7 +90,7 @@ public:
 
 class ToggleParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
-	ToggleParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
+	ToggleParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	void set_toggle(bool state);
 	void step(double dt) override;
 protected:

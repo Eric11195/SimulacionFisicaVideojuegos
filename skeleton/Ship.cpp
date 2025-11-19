@@ -10,20 +10,20 @@
 
 constexpr float max_speed = 30;
 
-Ship::Ship()
-	:GameObject()
+Ship::Ship(physx::PxScene* s)
+	:GameObject(s)
 {
 	mass = InvMass(Mass(500));
 	set_dumping(0.8);
-	addChild(new ShipCannon(global_transform));
+	addChild(new ShipCannon(s, global_transform));
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator({0,0,1}, 5/mass.inv_mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 5/mass.inv_mass);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
 
-	my_speed_hud = new text_hud_elem(std::to_string(0), physx::PxVec2(0.1, 0.25));
+	my_speed_hud = new text_hud_elem(s,std::to_string(0), physx::PxVec2(0.1, 0.25));
 	addChild(my_speed_hud);
 
 	add_force_to_myself("black_hole");

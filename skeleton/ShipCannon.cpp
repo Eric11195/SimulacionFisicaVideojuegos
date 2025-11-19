@@ -5,16 +5,16 @@
 #include "BombGenerator.hpp"
 #include "ShipRegularProjectileCannon.hpp"
 
-ShipCannon::ShipCannon(Transform const& parent_tr)
-	: ParticleSystem(parent_tr)
+ShipCannon::ShipCannon(physx::PxScene* s, Transform const& parent_tr)
+	: ParticleSystem(s, parent_tr)
 {
-	GameObject* pg = new ShipRegularProjectileCannon();
+	GameObject* pg = new ShipRegularProjectileCannon(s);
 	addChild(pg);
 	normal_cannon_idx = 0;
 
-	missile_cannon = addChild(new MissileGenerator());
+	missile_cannon = addChild(new MissileGenerator(s));
 
-	bomb_cannon = addChild(new BombGenerator(60,50,1));
+	bomb_cannon = addChild(new BombGenerator(s,60,50,1));
 }
 
 void ShipCannon::step(double dt)

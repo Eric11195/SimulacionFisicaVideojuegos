@@ -7,7 +7,7 @@ class Directional_ForceGenerator;
 
 class Ship : public GameObject {
 public:
-	Ship();
+	Ship(physx::PxScene* s);
 	//virtual void process_input(unsigned char c) override;
 	virtual void step(double dt) override;
 	virtual void handle_keyboard_button_down(unsigned char c) override;

@@ -11,14 +11,14 @@ MissileCannon::MissileCannon() {
 }
 */
 
-MissileGenerator::MissileGenerator()
-	:TriggeredParticleGenerator(missile)
+MissileGenerator::MissileGenerator(physx::PxScene* s)
+	:TriggeredParticleGenerator(s,missile)
 {
 }
 
 Particle* MissileGenerator::set_up_particle(Particle::config& p)
 {
-	auto part = new Missile(Projectile::projectile_config{ p });
+	auto part = new Missile(my_scene, Projectile::projectile_config{ p });
 	for (auto& f : force_names) {
 		part->add_force_to_myself(f);
 	}
@@ -28,12 +28,12 @@ Particle* MissileGenerator::set_up_particle(Particle::config& p)
 	return part;
 }
 
-Missile::Missile(Projectile::projectile_config& c) 
-	:Projectile(c, 3000.0f, c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
+Missile::Missile(physx::PxScene* s, Projectile::projectile_config& c)
+	:Projectile(s, c, 3000.0f, c.particle_config.spho_config.so_config.go_config.initial_speed_magnitude)
 {
 	addChild(
-		new ForceAffected_ParticleGenerator(missile_particle_system, {},
-			{ new Wind_ForceGenerator({0,0,-1}, 100) })
+		new ForceAffected_ParticleGenerator(s, missile_particle_system, {},
+			{ new Wind_ForceGenerator(s, {0,0,-1}, 100) })
 	);
 }
 

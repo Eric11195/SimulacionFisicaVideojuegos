@@ -7,7 +7,7 @@
 class hud_elem : public GameObject{
 public:
 	//Pos in percentage
-	hud_elem(const std::string& file_name, physx::PxVec2 start_pos = { 0,0 }, physx::PxVec2 witdh_height = {1, 1});
+	hud_elem(physx::PxScene* s, const std::string& file_name, physx::PxVec2 start_pos = { 0,0 }, physx::PxVec2 witdh_height = {1, 1});
 	void render2D() override;
 protected:
 	unsigned int texture;
@@ -20,7 +20,7 @@ protected:
 
 class text_hud_elem : public GameObject {
 public:
-	text_hud_elem(std::string text, physx::PxVec2 start_pos = { 0,0 });
+	text_hud_elem(physx::PxScene* s, std::string text, physx::PxVec2 start_pos = { 0,0 });
 	void render2D() override;
 	void change_text(const std::string&&);
 protected:

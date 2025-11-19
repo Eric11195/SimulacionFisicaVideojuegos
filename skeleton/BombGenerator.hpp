@@ -4,7 +4,7 @@
 
 class BombGenerator : public TriggeredParticleGenerator {
 public:
-	BombGenerator(float force_mag, float rad, float explosion_force_tao, std::initializer_list<std::string> forces = {});
+	BombGenerator(physx::PxScene* s, float force_mag, float rad, float explosion_force_tao, std::initializer_list<std::string> forces = {});
 	virtual Particle* set_up_particle(Particle::config& p);
 protected:
 	const float force_mag;

@@ -10,19 +10,19 @@
 
 constexpr float near_threshold_to_flee = 12;
 
-EnemyShip::EnemyShip(GameObject* player)
-	: GameObject(), player_go(player)
+EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
+	: GameObject(s), player_go(player)
 {
 	mass = InvMass(Mass(700));
 	set_dumping(0.8);
 	SphereObject::config sph_c = { SceneObject::config(), 1 };
-	auto n = new SphereObject(sph_c);
+	auto n = new SphereObject(s, sph_c);
 	n->set_color({ 1, 0.682, 0, 1});
 	addChild(n);
 
 	CubeObject::config c_c = { SceneObject::config(), {0.1, 1.5, 1.5} };
 	for (auto i = -1; i < 2; i = i + 2) {
-		auto cube = new CubeObject(c_c);
+		auto cube = new CubeObject(s, c_c);
 		cube->translate({ i * 1.2f,0,0 });
 		cube->set_color({ 1, 0.682, 0, 1 });
 		addChild(cube);
@@ -30,7 +30,7 @@ EnemyShip::EnemyShip(GameObject* player)
 	SceneObject::config c{};
 	c.color = {1,0,0,1};
 	c_c.half_extents = {0.1, 0.1, 1};
-	auto cube = new CubeObject(c_c);
+	auto cube = new CubeObject(s,c_c);
 	cube->set_color({0.11f, 0.333f, 1, 1});
 	cube->translate({ 0,0,0.5 });
 	addChild(cube);
@@ -42,11 +42,11 @@ EnemyShip::EnemyShip(GameObject* player)
 		(Distributions::LinearDistribution::get() * 100) - 50
 	});
 	//set_velocity({ 0,0,15 });
-	auto estela_motor = new ToggleParticleGenerator(propulsores_enemy_ship);
+	auto estela_motor = new ToggleParticleGenerator(s,propulsores_enemy_ship);
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator({0,0,1}, 5/mass.inv_mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 5/mass.inv_mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
 	add_force_to_myself("black_hole");

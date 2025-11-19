@@ -29,7 +29,7 @@ public:
 		//speed s_real;
 	};
 	//modifies its own mass, and mutiplies force_applied to gravity
-	Projectile(projectile_config& c, float real_speed, float simulated_speed);
+	Projectile(physx::PxScene* s, projectile_config& c, float real_speed, float simulated_speed);
 	float get_gravity_proportion(float real_speed, float sim_speed);
 	float get_s_mass(float mass, float real_speed, float sim_speed);
 	virtual void integrate(double dt) override;

@@ -1,12 +1,15 @@
 #include "GameObject.hpp"
 #include "ForceGenerator.hpp"
 #include <iostream>
+#include <cassert>
 
-GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
-	: global_transform(Transform(c.pos,c.initial_rotation)),
-	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
-	damping_mult(c.damping_mult), mass(c.mass)
+GameObject::GameObject(physx::PxScene* scene, config& c, std::initializer_list<GameObject*> go_s)
+	: global_transform(Transform(c.pos, c.initial_rotation)),
+	vel(c.initial_speed_dir.getNormalized()* c.initial_speed_magnitude),
+	damping_mult(c.damping_mult), mass(c.mass), my_scene(scene)
 {
+	//assert(my_scene);
+
 	for (auto go : go_s) {
 		addChild(go);
 	}

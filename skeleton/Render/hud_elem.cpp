@@ -10,8 +10,8 @@
 
 #include "../mouse_pos.hpp"
 
-hud_elem::hud_elem(const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 width_height)
-	: GameObject(), texture(load_texture(file_name))
+hud_elem::hud_elem(physx::PxScene* s, const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 width_height)
+	: GameObject(s), texture(load_texture(file_name))
 {
 	generate_quad(start_pos,width_height, texCoords);
 }
@@ -128,8 +128,8 @@ void hud_elem::generate_quad(physx::PxVec2 start_point, physx::PxVec2 width_heig
 	};
 }
 
-text_hud_elem::text_hud_elem(std::string text, physx::PxVec2 start_pos)
-	: my_text(text), my_start_pos(start_pos)
+text_hud_elem::text_hud_elem(physx::PxScene* s, std::string text, physx::PxVec2 start_pos)
+	: my_text(text), my_start_pos(start_pos), GameObject(s)
 {
 }
 

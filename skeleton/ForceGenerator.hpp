@@ -5,8 +5,8 @@
 
 class ForceGenerator : public GameObject {
 public:
-	ForceGenerator(float force_magnitude);
-	ForceGenerator(std::string name, float force_magnitude);
+	ForceGenerator(physx::PxScene* s, float force_magnitude);
+	ForceGenerator(physx::PxScene* s, std::string name, float force_magnitude);
 	virtual physx::PxVec3 apply_force(GameObject const& g) = 0;
 	void cleanup_me();
 	void set_state(bool state) {
@@ -22,8 +22,8 @@ protected:
 //For performance issues this should be changed to saving only once each frame the global force applied
 class Directional_ForceGenerator : public ForceGenerator {
 public:
-	Directional_ForceGenerator(physx::PxVec3 force_direction, float force_magnitude);
-	Directional_ForceGenerator(std::string s, physx::PxVec3 force_direction, float force_magnitude);
+	Directional_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_direction, float force_magnitude);
+	Directional_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float force_magnitude);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	physx::PxVec3 normalized_force_direction;
@@ -31,8 +31,8 @@ protected:
 
 class Gravity_ForceGenerator : public Directional_ForceGenerator {
 public:
-	Gravity_ForceGenerator(physx::PxVec3 force_dir, float mag = 9.8f);
-	Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction, float mag = 9.8f);
+	Gravity_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_dir, float mag = 9.8f);
+	Gravity_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float mag = 9.8f);
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 };
@@ -40,8 +40,8 @@ public:
 //standard sea level density of air at 101.325 kPa(abs) and 15 °C(59 °F) is 1.2250 kg / m3
 class Wind_ForceGenerator : public Directional_ForceGenerator {
 public:
-	Wind_ForceGenerator(physx::PxVec3, float magnitude, float air_density = 1.33, float avance_resistance_aerodinamic_coef = 0.5f);
-	Wind_ForceGenerator(std::string s, physx::PxVec3, float magnitude, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
+	Wind_ForceGenerator(physx::PxScene* s, physx::PxVec3, float magnitude, float air_density = 1.33, float avance_resistance_aerodinamic_coef = 0.5f);
+	Wind_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3, float magnitude, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	physx::PxVec3 calculate_force(physx::PxVec3 wind_speed, physx::PxVec3 obj_speed);
@@ -51,7 +51,7 @@ protected:
 
 class TorbellinoSencillo : public Wind_ForceGenerator {
 public:
-	TorbellinoSencillo(std::string s, physx::PxVec3, float magnitude, float height = 50.0f, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
+	TorbellinoSencillo(physx::PxScene* s, std::string name, physx::PxVec3, float magnitude, float height = 50.0f, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
@@ -62,10 +62,10 @@ protected:
 //This type of generator always owns the particles or objects it manages. For the case in which it erases itself, so no references are left
 class Variable_ForceGenerator : public ForceGenerator {
 public:
-	Variable_ForceGenerator(float force_magnitude,
+	Variable_ForceGenerator(physx::PxScene* s, float force_magnitude,
 		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
 	);
-	Variable_ForceGenerator(std::string s, float force_magnitude, 
+	Variable_ForceGenerator(physx::PxScene* s, std::string name, float force_magnitude,
 		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
 	);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
@@ -84,8 +84,8 @@ public:
 	};
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
-	Spring_ForceGenerator(config);
-	Spring_ForceGenerator(std::string, config);
+	Spring_ForceGenerator(physx::PxScene* s, config);
+	Spring_ForceGenerator(physx::PxScene* s, std::string, config);
 	physx::PxVec3 calculate_force(physx::PxVec3 from_1_to_2);
 	//Elastic const is force_magnitude
 	float repose_long;
@@ -93,7 +93,7 @@ protected:
 
 class OBJ_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
 public:
-	OBJ_OBJ_Spring_ForceGenerator(config c, physx::PxVec3* obj1, physx::PxVec3* obj2);
+	OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, physx::PxVec3* obj1, physx::PxVec3* obj2);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	physx::PxVec3* obj1;
@@ -103,15 +103,15 @@ protected:
 //The point is its transform position
 class PT_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
 public:
-	PT_OBJ_Spring_ForceGenerator(config c);
+	PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c);
 
-	PT_OBJ_Spring_ForceGenerator(std::string, config c);
+	PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, std::string, config c);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 };
 
 class Floating_ForceGenerator : public ForceGenerator {
 public:
-	Floating_ForceGenerator(config c, float height, float density);
+	Floating_ForceGenerator(physx::PxScene* s, config c, float height, float density);
 	virtual physx::PxVec3 apply_force(GameObject const& g) override;
 protected:
 	//Force magnitude == density

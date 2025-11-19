@@ -5,7 +5,7 @@
 
 class ShipCannon : public ParticleSystem {
 public:
-	ShipCannon(Transform const& parent_tr);
+	ShipCannon(physx::PxScene* s, Transform const& parent_tr);
 	virtual void step(double dt) override;
 	void start_fire();
 	void stop_fire();

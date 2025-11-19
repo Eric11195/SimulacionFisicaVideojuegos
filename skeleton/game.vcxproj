@@ -272,6 +272,7 @@
     <ClCompile Include="PointSpring.cpp" />
     <ClCompile Include="PointSpring.hpp" />
     <ClCompile Include="Render\hud_elem.cpp" />
+    <ClCompile Include="RigidbodyObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Render\hud_elem.hpp" />
+    <ClInclude Include="RigidbodyObject.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />

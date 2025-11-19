@@ -7,7 +7,7 @@ class Directional_ForceGenerator;
 
 class EnemyShip : public GameObject {
 public:
-	EnemyShip(GameObject*);
+	EnemyShip(physx::PxScene* s, GameObject*);
 	virtual void step(double dt) override;
 	void handle_keyboard_button_down(unsigned char c) override;
 protected:

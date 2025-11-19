@@ -1,8 +1,8 @@
 #include "buttons.hpp"
 #include "mouse_pos.hpp"
 
-button::button(std::function<void()> func, const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 witdh_height)
-	:hud_elem(file_name, start_pos, witdh_height), my_click_action(func)
+button::button(physx::PxScene* s, std::function<void()> func, const std::string& file_name, physx::PxVec2 start_pos, physx::PxVec2 witdh_height)
+	:hud_elem(s, file_name, start_pos, witdh_height), my_click_action(func)
 {
 }
 

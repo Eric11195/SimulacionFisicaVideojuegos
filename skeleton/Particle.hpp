@@ -22,7 +22,7 @@ public:
 		//THIS PARAMETER SHOULD BE INSIDE A PARTICLE GENERATOR INSTEAD
 		float time_till_death = std::numeric_limits<float>::infinity();
 	};
-	Particle(config& c);
+	Particle(physx::PxScene* s, config& c);
 	/*
 	struct config_particle_in_system {
 		SceneObject::config scene_obj_config;

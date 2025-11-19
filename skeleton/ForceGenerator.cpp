@@ -3,13 +3,13 @@
 #include <cassert>
 
 
-Directional_ForceGenerator::Directional_ForceGenerator(physx::PxVec3 force_direction, float force_magnitude)
-	:ForceGenerator(force_magnitude), normalized_force_direction(force_direction.getNormalized())
+Directional_ForceGenerator::Directional_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_direction, float force_magnitude)
+	:ForceGenerator(s,force_magnitude), normalized_force_direction(force_direction.getNormalized())
 {
 }
 
-Directional_ForceGenerator::Directional_ForceGenerator(std::string name, physx::PxVec3 force_direction, float force_magnitude)
-	:ForceGenerator(name, force_magnitude), normalized_force_direction(force_direction.getNormalized()) {}
+Directional_ForceGenerator::Directional_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float force_magnitude)
+	:ForceGenerator(s,name, force_magnitude), normalized_force_direction(force_direction.getNormalized()) {}
 
 
 //F = masa * accel
@@ -19,13 +19,13 @@ physx::PxVec3 Directional_ForceGenerator::apply_force(GameObject const& g)
 	return global_transform.q.rotate(force_magnitude*normalized_force_direction);
 }
 
-ForceGenerator::ForceGenerator(float force_magnitude)
-	:force_magnitude(force_magnitude)
+ForceGenerator::ForceGenerator(physx::PxScene* s, float force_magnitude)
+	:force_magnitude(force_magnitude), GameObject(s)
 {
 }
 
-ForceGenerator::ForceGenerator(std::string name, float magnitude)
-	:force_magnitude(magnitude), my_name(name)
+ForceGenerator::ForceGenerator(physx::PxScene* s, std::string name, float magnitude)
+	:force_magnitude(magnitude), my_name(name), GameObject(s)
 {
 	auto it = GameObject::force_generators_map.find(name);
 	if (it != GameObject::force_generators_map.end()) {
@@ -57,11 +57,11 @@ ForceGenerator::~ForceGenerator()
 	
 }
 */
-Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxVec3 v, float mag)
-	: Directional_ForceGenerator(v, mag) {}
+Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxScene* s, physx::PxVec3 v, float mag)
+	: Directional_ForceGenerator(s,v, mag) {}
 
-Gravity_ForceGenerator::Gravity_ForceGenerator(std::string name, physx::PxVec3 force_direction, float mag)
-	: Directional_ForceGenerator(name, force_direction, mag)
+Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float mag)
+	: Directional_ForceGenerator(s, name, force_direction, mag)
 {
 }
 
@@ -81,13 +81,13 @@ physx::PxVec3 Gravity_ForceGenerator::apply_force(GameObject const& g)
 	return Directional_ForceGenerator::apply_force(g) / inv_mass;
 }
 
-Wind_ForceGenerator::Wind_ForceGenerator(physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
-	:Directional_ForceGenerator(v, magnitude), cd_p_medios(0.5 * air_density * avance_resistance_aerodinamic_coef)
+Wind_ForceGenerator::Wind_ForceGenerator(physx::PxScene* s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
+	:Directional_ForceGenerator(s, v, magnitude), cd_p_medios(0.5 * air_density * avance_resistance_aerodinamic_coef)
 {
 }
 
-Wind_ForceGenerator::Wind_ForceGenerator(std::string s, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
-	: Directional_ForceGenerator(s, v, magnitude), cd_p_medios(0.5*air_density*avance_resistance_aerodinamic_coef)
+Wind_ForceGenerator::Wind_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 v, float magnitude, float air_density, float avance_resistance_aerodinamic_coef)
+	: Directional_ForceGenerator(s, name, v, magnitude), cd_p_medios(0.5*air_density*avance_resistance_aerodinamic_coef)
 {
 }
 
@@ -117,8 +117,8 @@ physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) 
 	return q;
 }
 
-TorbellinoSencillo::TorbellinoSencillo(std::string s, physx::PxVec3 v, float magnitude,float height, float air_density, float avance_resistance_aerodinamic_coef)
-	:Wind_ForceGenerator(s,v,magnitude,air_density,avance_resistance_aerodinamic_coef), height(height)
+TorbellinoSencillo::TorbellinoSencillo(physx::PxScene* s, std::string name, physx::PxVec3 v, float magnitude,float height, float air_density, float avance_resistance_aerodinamic_coef)
+	:Wind_ForceGenerator(s, name,v,magnitude,air_density,avance_resistance_aerodinamic_coef), height(height)
 {
 }
 
@@ -151,13 +151,13 @@ bool TorbellinoSencillo::inside_area_of_influence(GameObject const& g) const
 	return active && (global_transform.p - g.get_global_tr().p).magnitudeSquared() < 10000;
 }
 
-Variable_ForceGenerator::Variable_ForceGenerator(float force_magnitude,
+Variable_ForceGenerator::Variable_ForceGenerator(physx::PxScene* s, float force_magnitude,
 	std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function)
-	: ForceGenerator(force_magnitude), force_value_func(force_function), time_since_started(0) { }
+	: ForceGenerator(s, force_magnitude), force_value_func(force_function), time_since_started(0) { }
 
-Variable_ForceGenerator::Variable_ForceGenerator(std::string s, float force_magnitude,
+Variable_ForceGenerator::Variable_ForceGenerator(physx::PxScene* s, std::string name, float force_magnitude,
 	std::function<physx::PxVec3(float force_mag, float time, GameObject const& self, GameObject const& g)> force_function)
-	: ForceGenerator(s,force_magnitude), force_value_func(force_function), time_since_started(0) { }
+	: ForceGenerator(s, name,force_magnitude), force_value_func(force_function), time_since_started(0) { }
 
 physx::PxVec3 Variable_ForceGenerator::apply_force(GameObject const& g)
 {
@@ -171,8 +171,8 @@ void Variable_ForceGenerator::step(double dt)
 	time_since_started += dt;
 }
 
-OBJ_OBJ_Spring_ForceGenerator::OBJ_OBJ_Spring_ForceGenerator(config c, physx::PxVec3* _obj1, physx::PxVec3* _obj2)
-	:Spring_ForceGenerator(c), obj1(_obj1), obj2(_obj2)
+OBJ_OBJ_Spring_ForceGenerator::OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, physx::PxVec3* _obj1, physx::PxVec3* _obj2)
+	:Spring_ForceGenerator(s,c), obj1(_obj1), obj2(_obj2)
 {
 	assert(obj1 != nullptr);
 	assert(obj2 != nullptr);
@@ -195,13 +195,13 @@ void Spring_ForceGenerator::handle_keyboard_button_down(unsigned char key)
 	if (key == 'm' || key == 'M') toggle();
 }
 
-Spring_ForceGenerator::Spring_ForceGenerator(config c)
-	: ForceGenerator(c.elastic_const), repose_long(c.repose_long)
+Spring_ForceGenerator::Spring_ForceGenerator(physx::PxScene* s, config c)
+	: ForceGenerator(s,c.elastic_const), repose_long(c.repose_long)
 {
 }
 
-Spring_ForceGenerator::Spring_ForceGenerator(std::string s, config c)
-	: ForceGenerator(s, c.elastic_const), repose_long(c.repose_long)
+Spring_ForceGenerator::Spring_ForceGenerator(physx::PxScene* s, std::string name, config c)
+	: ForceGenerator(s,name, c.elastic_const), repose_long(c.repose_long)
 {
 }
 
@@ -213,13 +213,13 @@ physx::PxVec3 Spring_ForceGenerator::calculate_force(physx::PxVec3 from_1_to_2)
 	return - force_magnitude * (current_long - repose_long) * from_1_to_2;
 }
 
-PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(config c)
-	:Spring_ForceGenerator(c)
+PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c)
+	:Spring_ForceGenerator(s,c)
 {
 }
 
-PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(std::string s, config c)
-	:Spring_ForceGenerator(s, c)
+PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, std::string name, config c)
+	:Spring_ForceGenerator(s,name, c)
 {
 }
 
@@ -231,8 +231,8 @@ physx::PxVec3 PT_OBJ_Spring_ForceGenerator::apply_force(GameObject const& g)
 	return f;
 }
 
-Floating_ForceGenerator::Floating_ForceGenerator(config c, float height, float density)
-	: ForceGenerator(density), height(height)
+Floating_ForceGenerator::Floating_ForceGenerator(physx::PxScene* s, config c, float height, float density)
+	: ForceGenerator(s,density), height(height)
 {
 }
 

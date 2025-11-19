@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include "inverse_mass.hpp"
+#include "PxScene.h"
 
 #define EULER_SEMI_IMPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -21,7 +22,7 @@ struct GameObject : public InputProcessor{
 	inline std::list<std::unique_ptr<GameObject>>& get_child_list() {
 		return child_objects;
 	};
-
+	inline static physx::PxPhysics* physics_ref = nullptr;
 	inline static std::unordered_map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 };
@@ -33,7 +34,7 @@ struct GameObject : public InputProcessor{
 	};
 	GameObject(const GameObject&) = delete;
 	GameObject& operator =(const GameObject&) = delete;
-	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
+	GameObject(physx::PxScene* scene, config& c=config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
 	virtual void render2D();
@@ -43,6 +44,9 @@ struct GameObject : public InputProcessor{
 	
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
+	physx::PxScene* get_scene() {
+		return my_scene;
+	}
 	virtual Vector3 get_pos();
 	virtual Vector3 get_vel() const;
 	virtual void step(double dt);
@@ -74,6 +78,7 @@ struct GameObject : public InputProcessor{
 	void set_dumping(float f);
 #endif
 protected:
+	physx::PxScene* my_scene;
 	virtual void integrate(double t);
 	InvMass mass;
 	Transform global_transform;
