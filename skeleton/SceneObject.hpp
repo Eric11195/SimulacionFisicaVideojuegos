@@ -1,6 +1,6 @@
 #pragma once
 #include "core.hpp"
-#include "RenderUtils.hpp"
+#include "RenderGo.hpp"
 #include <list>
 #include "GameObject.hpp"
 
@@ -23,8 +23,7 @@ public:
 	~SceneObject() override;
 	virtual void render3D() override;
 private:
-	void render_shape(const PxShape& shape, const PxTransform& transform, const PxVec4& color);
-	void render_geometry(const PxGeometryHolder& h, bool wireframe = false);
+
 };
 
 

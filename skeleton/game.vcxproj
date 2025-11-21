@@ -271,6 +271,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PointSpring.cpp" />
     <ClCompile Include="PointSpring.hpp" />
+    <ClCompile Include="RenderGO.cpp" />
     <ClCompile Include="Render\hud_elem.cpp" />
     <ClCompile Include="RigidbodyObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="RenderGO.hpp" />
     <ClInclude Include="Render\hud_elem.hpp" />
     <ClInclude Include="RigidbodyObject.hpp" />
     <ClInclude Include="SceneObject.hpp" />

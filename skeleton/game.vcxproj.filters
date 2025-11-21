@@ -35,6 +35,7 @@
     <ClCompile Include="mouse_pos.cpp" />
     <ClCompile Include="buttons.cpp" />
     <ClCompile Include="RigidbodyObject.cpp" />
+    <ClCompile Include="RenderGO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="buttons.hpp" />
     <ClInclude Include="RigidbodyObject.hpp" />
+    <ClInclude Include="RenderGO.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

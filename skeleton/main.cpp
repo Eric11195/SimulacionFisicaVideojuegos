@@ -110,16 +110,39 @@ void initPhysics(bool interactive)
 	}
 
 	//TESTING SOLIDO RIGIDO
-
+	
 	scenes_vec[gamescene]->addChild(new StaticRigid_CubeObject(physx_scene_vec[gamescene], 
 		StaticRigid_CubeObject::config{ StaticRigidbody_Object::config(), physx::PxVec3(100,0.01,100)} ));
 
 	auto cube = scenes_vec[gamescene]->addChild(new Rigid_CubeObject(physx_scene_vec[gamescene],
-		Rigid_CubeObject::config{ Rigidbody_Object::config{{SceneObject::config{GameObject::config(), Color(1,0,0,1)}}}, physx::PxVec3(1,1,1)}));
-	(*cube)->set_pos({ 0,0,11 });
-	(*cube)->set_velocity({ 0,30,0 });
+		Rigid_CubeObject::config{ Rigidbody_Object::config{GameObject::config()}, physx::PxVec3(1,1,1)}));
+	//(*cube)->set_pos({ 0,10,0 });
+	//(*cube)->set_velocity({ 0,0,0 });
+	
 
 	//---------------------
+	//TRIALING RIGID
+	/*
+	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({0,0,0}));
+	PxShape* shape = CreateShape(PxBoxGeometry(100,0.1,100));
+	suelo->attachShape(*shape);
+	physx_scene_vec[gamescene]->addActor(*suelo);
+
+	RenderItem* item;
+	item = new RenderItem(shape, suelo, {0.8, 0.8, 0.8, 1});
+
+	PxRigidDynamic* new_solid;
+	new_solid = gPhysics->createRigidDynamic(PxTransform({-10,200,-10}));
+	new_solid->setLinearVelocity({0,5,0});
+	new_solid->setAngularVelocity({ 0,0,0 });
+	PxShape* shape_ad = CreateShape(PxBoxGeometry(5, 5, 5));
+	new_solid->attachShape(*shape_ad);
+	PxRigidBodyExt::updateMassAndInertia(*new_solid, 0.15);
+	physx_scene_vec[gamescene]->addActor(*new_solid);
+	
+	RenderItem* dynamic_item;
+	dynamic_item = new RenderItem(shape_ad, new_solid, { 0.8,0.8,0.8,1 });
+	*/
 
 
 	//Muelles----------------------------------------------
@@ -140,6 +163,7 @@ void initPhysics(bool interactive)
 
 	auto start_but = new button(physx_scene_vec[gamescene], [&] {
 		current_scene = scenes_vec[gamescene];
+		physx_current_scene = physx_scene_vec[gamescene];
 		},
 		"start_game_button.png", { 0.33,0.65 }, {0.33,0.20});
 	scenes_vec[mainmenu]->addChild(start_but);
