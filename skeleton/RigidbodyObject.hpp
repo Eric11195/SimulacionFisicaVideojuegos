@@ -11,7 +11,15 @@ public:
 	virtual void set_velocity(physx::PxVec3) override;
 	PxRigidDynamic* set_rb(PxRigidDynamic* new_rb);
 	virtual void set_pos(physx::PxVec3) override;
+	virtual Vector3 get_pos() override;
+	virtual Vector3 get_vel() override;
+	virtual void translate(physx::PxVec3) override;
+	virtual void translate_to(physx::PxVec3) override;
+	virtual void set_velocity_magnitude(float m) override;
+	Transform get_global_tr();
+	virtual void add_speed(physx::PxVec3) override;
 protected:
+	virtual void integrate(double dt) override;
 	PxRigidDynamic* rb;
 };
 

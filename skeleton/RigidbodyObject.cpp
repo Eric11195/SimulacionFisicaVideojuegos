@@ -1,11 +1,11 @@
 #include "RigidbodyObject.hpp"
 #include <cassert>
+#include "ForceGenerator.hpp"
 
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
 	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg.so_config)
 {
 	rb->setGlobalPose(global_transform);
-	//rb = physics_ref->createRigidDynamic(global_transform);
 	rb->setAngularVelocity({ 0,90,0 });
 	rb->attachShape(*sh);
 	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.so_config.go_config.mass.mass);
@@ -29,7 +29,83 @@ PxRigidDynamic* Rigidbody_Object::set_rb(PxRigidDynamic* new_rb)
 
 void Rigidbody_Object::set_pos(physx::PxVec3 v)
 {
-	rb->setGlobalPose ({ v,global_transform.q });
+	SceneObject::set_pos(v);
+	rb->setGlobalPose (global_transform);
+}
+
+Vector3 Rigidbody_Object::get_pos()
+{
+	return global_transform.p = rb->getGlobalPose().p;
+}
+
+Vector3 Rigidbody_Object::get_vel()
+{
+	return vel = rb->getLinearVelocity();
+}
+
+void Rigidbody_Object::translate(physx::PxVec3 add_p)
+{
+	SceneObject::translate(add_p);
+	rb->setGlobalPose(global_transform);
+}
+
+void Rigidbody_Object::translate_to(physx::PxVec3 p)
+{
+	set_pos(p);
+}
+
+void Rigidbody_Object::set_velocity_magnitude(float m)
+{
+	get_vel();
+	vel /= vel.magnitude();
+	vel *= m;
+	rb->setLinearVelocity(vel);
+}
+
+Transform Rigidbody_Object::get_global_tr()
+{
+	return global_transform = rb->getGlobalPose();
+}
+
+void Rigidbody_Object::add_speed(physx::PxVec3 v)
+{
+	rb->addForce(v);
+}
+
+void Rigidbody_Object::integrate(double dt)
+{
+#if defined(EULER_SEMI_IMPLICIT_INTEGRATION) || (!defined(EULER_SEMI_IMPLICIT_INTEGRATION) && !defined(EULER_INTEGRATION))
+	//In theory this does not exist
+	physx::PxVec3 force_in_newtons = { 0,0,0 };
+	for (auto& force : forces_applied_to_this_obj) {
+		//Get matrix transformation only on rotation, to pass from global to local
+		auto new_accel = force->apply_force(*this);
+		//new_accel = global_to_local_rot.rotate(new_accel);
+		force_in_newtons += new_accel;
+	}
+	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	auto accel = force_in_newtons * mass.inv_mass;
+	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
+	add_speed(accel * dt);
+	//translate(dt * vel); //COMMENTED BECAUSE I GUESS PHYSICS DOES THIS BY ITSELF
+#elif defined EULER_INTEGRATION
+	translate(dt * vel);
+	physx::PxVec3 accel = { 0,0,0 };
+	for (auto& force : forces_applied_to_this_obj) {
+		//Get matrix transformation only on rotation, to pass from global to local
+		auto new_accel = force->apply_force(*this);
+		//new_accel = global_to_local_rot.rotate(new_accel);
+		accel += new_accel;
+	}
+	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	accel *= mass.inv_mass;
+	vel += accel * dt;
+#endif
+
+#ifdef DAMPING
+	vel *= pow(damping_mult, dt);
+#endif
+
 }
 
 

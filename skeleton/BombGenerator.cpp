@@ -14,7 +14,7 @@ Particle* BombGenerator::set_up_particle(Particle::config& p_config)
 	auto p = TriggeredParticleGenerator::set_up_particle(p_config);
 	double e = std::exp(1.0);
 	auto force_raw_ptr = new Variable_ForceGenerator(my_scene, force_mag,
-		[=](float force_mag, float time, GameObject const& self, GameObject const& g) {
+		[=](float force_mag, float time, GameObject & self, GameObject & g) {
 			auto v = g.get_global_tr().p - self.get_global_tr().p;
 			auto dist_to_center_squared = v.magnitudeSquared();
 			physx::PxVec3 force_applied = { 0,0,0 };

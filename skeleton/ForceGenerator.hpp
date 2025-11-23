@@ -7,7 +7,7 @@ class ForceGenerator : public GameObject {
 public:
 	ForceGenerator(physx::PxScene* s, float force_magnitude);
 	ForceGenerator(physx::PxScene* s, std::string name, float force_magnitude);
-	virtual physx::PxVec3 apply_force(GameObject const& g) = 0;
+	virtual physx::PxVec3 apply_force(GameObject & g) = 0;
 	void cleanup_me();
 	void set_state(bool state) {
 		active = state;
@@ -24,7 +24,7 @@ class Directional_ForceGenerator : public ForceGenerator {
 public:
 	Directional_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_direction, float force_magnitude);
 	Directional_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float force_magnitude);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
 	physx::PxVec3 normalized_force_direction;
 };
@@ -34,7 +34,7 @@ public:
 	Gravity_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_dir, float mag = 9.8f);
 	Gravity_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float mag = 9.8f);
 	virtual void handle_keyboard_button_down(unsigned char key) override;
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 };
 
 //standard sea level density of air at 101.325 kPa(abs) and 15 °C(59 °F) is 1.2250 kg / m3
@@ -42,7 +42,7 @@ class Wind_ForceGenerator : public Directional_ForceGenerator {
 public:
 	Wind_ForceGenerator(physx::PxScene* s, physx::PxVec3, float magnitude, float air_density = 1.33, float avance_resistance_aerodinamic_coef = 0.5f);
 	Wind_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3, float magnitude, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
 	physx::PxVec3 calculate_force(physx::PxVec3 wind_speed, physx::PxVec3 obj_speed);
 	//El valor calculado en el constructor constante por el que se multiplicará la fuerza
@@ -52,10 +52,10 @@ protected:
 class TorbellinoSencillo : public Wind_ForceGenerator {
 public:
 	TorbellinoSencillo(physx::PxScene* s, std::string name, physx::PxVec3, float magnitude, float height = 50.0f, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
-	virtual bool inside_area_of_influence(GameObject const& g) const;
+	virtual bool inside_area_of_influence(GameObject & g) const;
 	float height;
 };
 
@@ -63,15 +63,15 @@ protected:
 class Variable_ForceGenerator : public ForceGenerator {
 public:
 	Variable_ForceGenerator(physx::PxScene* s, float force_magnitude,
-		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
+		std::function<physx::PxVec3(float force, float time, GameObject & self, GameObject & g)> force_function
 	);
 	Variable_ForceGenerator(physx::PxScene* s, std::string name, float force_magnitude,
-		std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_function
+		std::function<physx::PxVec3(float force, float time, GameObject & self, GameObject & g)> force_function
 	);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 	virtual void step(double dt) override;
 protected:
-	std::function<physx::PxVec3(float force, float time, GameObject const& self, GameObject const& g)> force_value_func;
+	std::function<physx::PxVec3(float force, float time, GameObject & self, GameObject & g)> force_value_func;
 
 	double time_since_started;
 };
@@ -94,7 +94,7 @@ protected:
 class OBJ_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
 public:
 	OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, physx::PxVec3* obj1, physx::PxVec3* obj2);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
 	physx::PxVec3* obj1;
 	physx::PxVec3* obj2;
@@ -106,13 +106,13 @@ public:
 	PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c);
 
 	PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, std::string, config c);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 };
 
 class Floating_ForceGenerator : public ForceGenerator {
 public:
 	Floating_ForceGenerator(physx::PxScene* s, config c, float height, float density);
-	virtual physx::PxVec3 apply_force(GameObject const& g) override;
+	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
 	//Force magnitude == density
 	float height;

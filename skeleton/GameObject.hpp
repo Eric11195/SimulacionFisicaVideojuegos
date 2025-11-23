@@ -40,6 +40,7 @@ struct GameObject : public InputProcessor{
 	virtual void render2D();
 	virtual void render3D();
 
+	virtual void rotate(Quaternion);
 	void setTransform(Transform& tr);
 	
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
@@ -48,19 +49,18 @@ struct GameObject : public InputProcessor{
 		return my_scene;
 	}
 	virtual Vector3 get_pos();
-	virtual Vector3 get_vel() const;
+	virtual Vector3 get_vel();
 	virtual void step(double dt);
 
-	void translate(physx::PxVec3);
+	virtual void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
-	virtual void rotate(Quaternion);
 
 	virtual void set_pos(physx::PxVec3);
 	virtual void set_velocity(physx::PxVec3);
-	void set_velocity_magnitude(float m);
+	virtual void set_velocity_magnitude(float m);
 
 	float get_inv_mass() const { return mass.inv_mass; }
-	Transform get_global_tr()const { return global_transform; }
+	Transform get_global_tr() { return global_transform; }
 
 	const physx::PxVec3* get_pos_ptr() const {
 		return &(global_transform.p);
@@ -72,13 +72,14 @@ struct GameObject : public InputProcessor{
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual void handle_keyboard_button_up(unsigned char key) override;
 
-	void add_force_to_myself(ForceGenerator*);
+	virtual void add_force_to_myself(ForceGenerator*);
 	void add_force_to_myself(std::string);
 
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif
 protected:
+	virtual void add_speed(physx::PxVec3);
 	physx::PxScene* my_scene;
 	virtual void integrate(double t);
 	InvMass mass;

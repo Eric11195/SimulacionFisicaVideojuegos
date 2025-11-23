@@ -34,6 +34,12 @@ void GameObject::render3D()
 		c->render3D();
 	}
 }
+void GameObject::rotate(physx::PxQuat q)
+{
+	global_transform.q *= q;
+	//local_transform.q *= q;
+}
+
 
 void GameObject::setTransform(Transform& tr)
 {
@@ -52,7 +58,7 @@ Vector3 GameObject::get_pos()
 	return global_transform.p;
 }
 
-Vector3 GameObject::get_vel() const
+Vector3 GameObject::get_vel()
 {
 	return vel;
 }
@@ -77,12 +83,6 @@ void GameObject::translate_to(physx::PxVec3 t)
 	//local_transform.p = local_transform.q.rotate(t);
 }
 
-void GameObject::rotate(physx::PxQuat q)
-{
-	global_transform.q *= q;
-	//local_transform.q *= q;
-}
-
 void GameObject::set_pos(physx::PxVec3 p)
 {
 	global_transform.p = p;
@@ -102,6 +102,10 @@ void GameObject::set_dumping(float f)
 	damping_mult = f;
 }
 #endif
+void GameObject::add_speed(physx::PxVec3 v)
+{
+	vel += v;
+}
 void GameObject::integrate(double dt)
 {
 #if defined(EULER_SEMI_IMPLICIT_INTEGRATION) || (!defined(EULER_SEMI_IMPLICIT_INTEGRATION) && !defined(EULER_INTEGRATION))
@@ -116,7 +120,7 @@ void GameObject::integrate(double dt)
 	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
 	auto accel = force_in_newtons * mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
-	vel += accel * dt;
+	add_speed(accel * dt);
 	translate(dt * vel);
 #elif defined EULER_INTEGRATION
 	translate(dt * vel);
