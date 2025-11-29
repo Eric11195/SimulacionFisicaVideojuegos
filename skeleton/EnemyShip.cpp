@@ -11,10 +11,17 @@
 constexpr float near_threshold_to_flee = 12;
 
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: GameObject(s), player_go(player)
+	: Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }/*, NO_REPRESENTATION::no_representation*/), player_go(player)
 {
-	mass = InvMass(Mass(700));
-	set_dumping(0.8);
+	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
+	rb->setLinearVelocity({ 0,0,0 });
+	rb->setAngularVelocity({ 0,0,0 });
+	rb->setAngularDamping(0.9);
+	rb->setLinearDamping(0.2);
+
+	Mass my_mass = 500;
+	mass = InvMass(my_mass);
+
 	SphereObject::config sph_c = { SceneObject::config(), 1 };
 	auto n = new SphereObject(s, sph_c);
 	n->set_color({ 1, 0.682, 0, 1});
@@ -46,15 +53,16 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 5/mass.inv_mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 10*my_mass.mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
-	add_force_to_myself("black_hole");
+	//add_force_to_myself("black_hole");
 }
 
 void EnemyShip::step(double dt)
 {
 	think_step(dt);
+	global_transform = rb->getGlobalPose();
 	integrate(dt);
 
 	int i = 0;
@@ -112,9 +120,27 @@ float lerp(float a, float b, float c) {
 	return a * (1-c) + b * c;
 }
 
+Vector3 EnemyShip::think_off_torque() {
+	Transform& player_tr = player_go->get_global_tr();
+	//This is how i want my forward dir vector to be
+	PxVec3 global_vector_to_player = (global_transform.p - player_tr.p).getNormalized();
+	//This is how it is right now
+	PxVec3 current_dir_vec = global_transform.q.rotate({0,0,1});
+
+	//El cross product me da un vector perpendicular a estos dos
+	PxVec3 vector_de_rotación = global_vector_to_player.cross(current_dir_vec);
+
+	//Para obtener que tan rápido debería girar resto estos dos y me da una escala
+	float vel_rot = (current_dir_vec - global_vector_to_player).normalize();
+
+	return vel_rot*vector_de_rotación;
+}
+
 void EnemyShip::think_step(double dt)
 {
 	//Aim for the player ship
+	rb->addTorque(500*dt*think_off_torque());
+	/*
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_vector_to_player = global_transform.p - player_tr.p;
 	float distance_to_player = (global_vector_to_player - vel).magnitude();
@@ -140,5 +166,5 @@ void EnemyShip::think_step(double dt)
 	global_transform.q.z = lerp(global_transform.q.z, q.z, interpolation_value * dt);
 	global_transform.q.w = lerp(global_transform.q.w, q.w, interpolation_value * dt);
 	global_transform.q.normalize();
-
+	*/
 }

@@ -112,7 +112,7 @@ void Rigidbody_Object::integrate(double dt)
 	//std::cout << force_in_newtons.x << ' ' << force_in_newtons.y << ' ' << force_in_newtons.z << '\n';
 	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
-	add_speed(force_in_newtons);
+	add_speed(dt*force_in_newtons);
 	//translate(dt * vel); //COMMENTED BECAUSE I GUESS PHYSICS DOES THIS BY ITSELF
 #elif defined EULER_INTEGRATION
 	translate(dt * vel);
