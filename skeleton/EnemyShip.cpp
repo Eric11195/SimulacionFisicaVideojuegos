@@ -11,7 +11,7 @@
 constexpr float near_threshold_to_flee = 12;
 
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }/*, NO_REPRESENTATION::no_representation*/), player_go(player)
+	: Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), player_go(player)
 {
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 	rb->setLinearVelocity({ 0,0,0 });
@@ -139,7 +139,7 @@ Vector3 EnemyShip::think_off_torque() {
 void EnemyShip::think_step(double dt)
 {
 	//Aim for the player ship
-	rb->addTorque(500*dt*think_off_torque());
+	rb->addTorque(/*global_transform.q.rotate(*/1000 * dt * think_off_torque()/*)*/);
 	/*
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_vector_to_player = global_transform.p - player_tr.p;
