@@ -20,6 +20,7 @@ public:
 	SceneObject(physx::PxScene* s, PxShape* shape, config& c=config());
 	SceneObject(physx::PxScene* s, config& c);
 	SceneObject(physx::PxScene* s, PxShape* shape, PxRigidActor* actor, config& c);
+	SceneObject(physx::PxScene* s, PxRigidActor* actor, config& c);
 	~SceneObject() override;
 	virtual void render3D() override;
 private:

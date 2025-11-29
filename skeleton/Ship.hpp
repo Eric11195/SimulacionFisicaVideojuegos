@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.hpp"
+#include "RigidbodyObject.hpp"
 
 class text_hud_elem;
 
 class Directional_ForceGenerator;
 
-class Ship : public GameObject {
+class Ship : public Rigid_CubeObject {
 public:
 	Ship(physx::PxScene* s);
 	//virtual void process_input(unsigned char c) override;
@@ -31,7 +32,7 @@ protected:
 	//from 0 to 1
 	//float speed = 0;
 	float angular_speed_radians_per_second = 1;
-	float virar_radians_per_second = 1.5f;
+	float virar_torque_speed = 150.0f;
 	enum state {
 		constante = 0,
 		acelerando = 1,

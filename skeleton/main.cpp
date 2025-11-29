@@ -110,7 +110,7 @@ void initPhysics(bool interactive)
 	}
 
 	//TESTING SOLIDO RIGIDO
-
+	/*
 	scenes_vec[gamescene]->addChild(new StaticRigid_CubeObject(physx_scene_vec[gamescene], 
 		StaticRigid_CubeObject::config{ StaticRigidbody_Object::config(), physx::PxVec3(100,0.01,100)} ));
 
@@ -118,6 +118,7 @@ void initPhysics(bool interactive)
 		Rigid_CubeObject::config{ Rigidbody_Object::config{{SceneObject::config{GameObject::config(), Color(1,0,0,1)}}}, physx::PxVec3(1,1,1)}));
 	(*cube)->set_pos({ 0,0,11 });
 	(*cube)->set_velocity({ 0,30,0 });
+	*/
 
 	//---------------------
 

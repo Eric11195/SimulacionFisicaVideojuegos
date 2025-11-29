@@ -1,16 +1,27 @@
 #include "RigidbodyObject.hpp"
 #include <cassert>
 #include "ForceGenerator.hpp"
+#include <iostream>
 
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
 	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg.so_config)
 {
+	rb->setLinearVelocity({0,0,0});
 	rb->setGlobalPose(global_transform);
-	rb->setAngularVelocity({ 0,90,0 });
+	rb->setAngularVelocity({ 0,0,0 });
 	rb->attachShape(*sh);
 	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.so_config.go_config.mass.mass);
 	s->addActor(*rb);
-	//rb->setMassSpaceInertiaTensor
+}
+Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg, NO_REPRESENTATION)
+	: SceneObject(s, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg.so_config)
+{
+	rb->setLinearVelocity({ 0,0,0 });
+	rb->setGlobalPose(global_transform);
+	rb->setAngularVelocity({ 0,0,0 });
+	rb->attachShape(*sh);
+	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.so_config.go_config.mass.mass);
+	s->addActor(*rb);
 }
 
 void Rigidbody_Object::set_velocity(physx::PxVec3 v)
@@ -35,7 +46,7 @@ void Rigidbody_Object::set_pos(physx::PxVec3 v)
 
 Vector3 Rigidbody_Object::get_pos()
 {
-	return global_transform.p = rb->getGlobalPose().p;
+	return global_transform.p;// = rb->getGlobalPose().p;
 }
 
 Vector3 Rigidbody_Object::get_vel()
@@ -43,9 +54,20 @@ Vector3 Rigidbody_Object::get_vel()
 	return vel = rb->getLinearVelocity();
 }
 
+void Rigidbody_Object::step(double dt)
+{
+	global_transform = rb->getGlobalPose();
+	SceneObject::step(dt);
+}
+
+void Rigidbody_Object::add_torque(physx::PxVec3 add_t)
+{
+	rb->addTorque(add_t);
+}
+
 void Rigidbody_Object::translate(physx::PxVec3 add_p)
 {
-	SceneObject::translate(add_p);
+	//SceneObject::translate(add_p);
 	rb->setGlobalPose(global_transform);
 }
 
@@ -64,12 +86,17 @@ void Rigidbody_Object::set_velocity_magnitude(float m)
 
 Transform Rigidbody_Object::get_global_tr()
 {
-	return global_transform = rb->getGlobalPose();
+	return rb->getGlobalPose();
 }
 
 void Rigidbody_Object::add_speed(physx::PxVec3 v)
 {
 	rb->addForce(v);
+}
+
+void Rigidbody_Object::set_actor_flags(physx::PxActorFlag::Enum f, bool val)
+{
+	rb->setActorFlag(f, val);
 }
 
 void Rigidbody_Object::integrate(double dt)
@@ -79,14 +106,13 @@ void Rigidbody_Object::integrate(double dt)
 	physx::PxVec3 force_in_newtons = { 0,0,0 };
 	for (auto& force : forces_applied_to_this_obj) {
 		//Get matrix transformation only on rotation, to pass from global to local
-		auto new_accel = force->apply_force(*this);
-		//new_accel = global_to_local_rot.rotate(new_accel);
-		force_in_newtons += new_accel;
+		force_in_newtons += force->apply_force(*this);
 	}
+
+	//std::cout << force_in_newtons.x << ' ' << force_in_newtons.y << ' ' << force_in_newtons.z << '\n';
 	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
-	auto accel = force_in_newtons * mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
-	add_speed(accel * dt);
+	add_speed(force_in_newtons);
 	//translate(dt * vel); //COMMENTED BECAUSE I GUESS PHYSICS DOES THIS BY ITSELF
 #elif defined EULER_INTEGRATION
 	translate(dt * vel);
@@ -114,8 +140,18 @@ Rigid_SphereObject::Rigid_SphereObject(PxScene* s, config& c)
 {
 }
 
+Rigid_SphereObject::Rigid_SphereObject(PxScene* s, config& c, NO_REPRESENTATION nr)
+	: Rigidbody_Object(s, CreateShape(PxSphereGeometry(c.radius)), c.rb_config, nr)
+{
+}
+
 Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, config& c)
 	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.rb_config)
+{
+}
+
+Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, config& c, NO_REPRESENTATION nr)
+	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.rb_config, nr)
 {
 }
 

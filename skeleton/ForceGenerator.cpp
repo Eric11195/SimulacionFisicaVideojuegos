@@ -16,7 +16,7 @@ Directional_ForceGenerator::Directional_ForceGenerator(physx::PxScene* s, std::s
 physx::PxVec3 Directional_ForceGenerator::apply_force(GameObject & g)
 {
 	if (!active) return{ 0,0,0 };
-	return global_transform.q.rotate(force_magnitude*normalized_force_direction);
+	return global_transform.q.rotate(force_magnitude * normalized_force_direction);
 }
 
 ForceGenerator::ForceGenerator(physx::PxScene* s, float force_magnitude)

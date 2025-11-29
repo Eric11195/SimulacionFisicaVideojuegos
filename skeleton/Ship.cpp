@@ -11,14 +11,22 @@
 constexpr float max_speed = 30;
 
 Ship::Ship(physx::PxScene* s)
-	:GameObject(s)
+	:Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {2,2,2} }, NO_REPRESENTATION::no_representation)
 {
+	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
+	rb->setLinearVelocity({ 0,0,0 });
+	rb->setAngularVelocity({ 0,0,0 });
+	rb->setAngularDamping(0.9);
+	rb->setLinearDamping(0.2);
+
+
 	mass = InvMass(Mass(500));
-	set_dumping(0.8);
+
+	//set_dumping(0.8);
 	addChild(new ShipCannon(s, global_transform));
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 5/mass.inv_mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 500);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
@@ -31,18 +39,24 @@ Ship::Ship(physx::PxScene* s)
 
 void Ship::step(double dt)
 {	
-	GameObject::step(dt);
+	Rigid_CubeObject::step(dt);
 	//Girar
-	if(PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f)
-		rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
+	if (PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f) {
+		add_torque(current_angular_velocity.angle * global_transform.q.rotate(current_angular_velocity.rotation_axis));
+		//rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
+	}
 
 	//Virar
-	float virar_radians_vel = -virar_radians_per_second * dt * (virar_buttons[0] - virar_buttons[1]);
-	rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
+	float virar_radians_vel = 3*virar_torque_speed * (virar_buttons[1] - virar_buttons[0]);
+	add_torque(virar_radians_vel* global_transform.q.rotate(PxVec3(0,0,1)));
+	//rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 
 	update_child_transform();
 
-	my_speed_hud->change_text(std::to_string(vel.magnitude()));
+	my_speed_hud->change_text(std::to_string(rb->getLinearVelocity().magnitude()));
+	auto v = rb->getLinearVelocity();
+	auto r = rb->getAngularVelocity();
+	//std::cout << "(" << v.x << ',' << v.y << ',' << v.z << ')' << "   " << "(" << r.x << ',' << r.y << ',' << r.z << ')'<<'\n';
 
 	//SPEED DELIMITER
 	//auto speed_mag = vel.normalize();
@@ -121,7 +135,7 @@ void Ship::handle_mouse_pos(float x, float y)
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
 	const float magnitude = normalized_rot_direction.normalize();
-	current_angular_velocity = { 3.14f * min(magnitude,1) , normalized_rot_direction };
+	current_angular_velocity = { 100*3.14f * min(magnitude,1) , normalized_rot_direction };
 	
 }
 
@@ -147,7 +161,7 @@ void Ship::handle_mouse_button_up(uint8_t but)
 
 void Ship::update_child_transform()
 {
-	GetCamera()->setTransform(global_transform);
+	GetCamera()->setTransform(rb->getGlobalPose());
 	for (auto& c : child_objects)
-		c->setTransform(global_transform);
+		c->setTransform(rb->getGlobalPose());
 }

@@ -24,6 +24,11 @@ SceneObject::SceneObject(physx::PxScene* s, PxShape* shape, PxRigidActor* actor,
 {
 	assert(actor);
 }
+SceneObject::SceneObject(physx::PxScene* s, PxRigidActor* actor, config& c)
+	: GameObject(s, c.go_config), render_item(nullptr)
+{
+	assert(actor);
+}
 
 SceneObject::~SceneObject()
 {
@@ -34,6 +39,8 @@ SceneObject::~SceneObject()
 void SceneObject::render3D()
 {
 	GameObject::render3D();
+	
+	if (render_item.get() == nullptr) return;
 
 	auto objTransform = render_item->transform;
 	if (!objTransform)
