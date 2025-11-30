@@ -3,15 +3,17 @@
 #include <cassert>
 #include "ForceGenerator.hpp"
 
-Projectile::Projectile(physx::PxScene* s, projectile_config& c, float real_speed, float simulated_speed)
-	:Particle(s,c.particle_config)
+Projectile::Projectile(physx::PxScene* s, Particle::config& c, float real_speed, float simulated_speed)
+	:RigidParticle(s,c)
 {
-	set_velocity_magnitude(simulated_speed);
+	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
+
+	//set_velocity_magnitude(simulated_speed);
 	gravity_multiplier = get_gravity_proportion(real_speed, simulated_speed);
-	mass = Mass(get_s_mass(c.particle_config.spho_config.so_config.go_config.mass.mass, real_speed, simulated_speed));
+	rb->setMass(Mass(get_s_mass(c.spho_config.so_config.go_config.mass.mass, real_speed, simulated_speed)).mass);
 	//ENSURE THIS IS THE FIRST FORCE APPLIED TO THIS OBJECT
-	assert(forces_applied_to_this_obj.size() == 0);
-	add_force_to_myself("gravity");
+	//assert(forces_applied_to_this_obj.size() == 0);
+	//add_force_to_myself("gravity");
 }
 
 float Projectile::get_gravity_proportion(float real_speed, float sim_speed)
@@ -25,6 +27,13 @@ float Projectile::get_s_mass(float mass, float real_speed, float sim_speed)
 	return mass * vel_proportion;
 }
 
+void Projectile::step(double dt)
+{
+	RigidParticle::step(dt);
+	std::cout << "pos: " << global_transform.p.x << ' ' << global_transform.p.y << ' ' << global_transform.p.z<<'\n';
+}
+
+/*
 void Projectile::integrate(double dt)
 {
 #if defined EULER_SEMI_IMPLICIT_INTEGRATION
@@ -53,3 +62,4 @@ void Projectile::integrate(double dt)
 	vel *= pow(damping_mult, dt);
 #endif
 }
+*/

@@ -11,7 +11,7 @@
 constexpr float near_threshold_to_flee = 12;
 
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), player_go(player)
+	: Rigid_CubeObject(s, CubeObject::config{ {SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), player_go(player)
 {
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 	rb->setLinearVelocity({ 0,0,0 });

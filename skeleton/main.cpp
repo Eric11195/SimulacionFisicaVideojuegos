@@ -229,7 +229,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 
 	std::vector<std::unordered_map<PxActor*, ShipInterface*>::iterator> its = { ships.find(actor1), ships.find(actor2) };
 
-	int n_ships = 2*(its[0] != ships.end()) + (its[1] != ships.end());
+	int n_ships = (its[0] != ships.end()) + 2*(its[1] != ships.end());
 	ShipInterface* the_ship;// = its[0]->second;
 	switch (n_ships) {
 	case 2:
@@ -250,7 +250,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 		}
 
 		if (player_here) {
-			the_ship->die();
+			//the_ship->die();
 		}
 		else {
 			//Other ships

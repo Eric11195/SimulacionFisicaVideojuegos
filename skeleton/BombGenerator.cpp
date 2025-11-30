@@ -9,9 +9,9 @@ BombGenerator::BombGenerator(physx::PxScene* s, float force_mag, float rad, floa
 {
 }
 
-Particle* BombGenerator::set_up_particle(Particle::config& p_config)
+void* BombGenerator::set_up_particle(Particle::config& p_config)
 {
-	auto p = TriggeredParticleGenerator::set_up_particle(p_config);
+	auto p = static_cast<GameObject*>(TriggeredParticleGenerator::set_up_particle(p_config));
 	double e = std::exp(1.0);
 	auto force_raw_ptr = new Variable_ForceGenerator(my_scene, force_mag,
 		[=](float force_mag, float time, GameObject & self, GameObject & g) {

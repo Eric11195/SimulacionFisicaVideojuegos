@@ -4,13 +4,15 @@
 
 class Rigidbody_Object : public SceneObject {
 public:
+	/*
 	struct config {
 		SceneObject::config so_config;
 	};
+	*/
 	enum NO_REPRESENTATION{
 		no_representation
 	};
-	Rigidbody_Object(PxScene* s, PxShape* sh,config& c);
+	Rigidbody_Object(PxScene* s, PxShape* sh, config& c);
 	Rigidbody_Object(PxScene* s, PxShape* sh, config& c, NO_REPRESENTATION);
 	virtual void set_velocity(physx::PxVec3) override;
 	PxRigidDynamic* set_rb(PxRigidDynamic* new_rb);
@@ -33,22 +35,20 @@ protected:
 
 class Rigid_SphereObject : public Rigidbody_Object {
 public:
-	struct config {
+	/*
+	struct SphereObjectconfig {
 		Rigidbody_Object::config rb_config;
 		float radius;
 	};
-	Rigid_SphereObject(PxScene* s, config& c);
-	Rigid_SphereObject(PxScene* s, config& c, NO_REPRESENTATION);
+	*/
+	Rigid_SphereObject(PxScene* s, SphereObject::config& c);
+	Rigid_SphereObject(PxScene* s, SphereObject::config& c, NO_REPRESENTATION);
 };
 
 struct Rigid_CubeObject : public Rigidbody_Object {
 public:
-	struct config {
-		Rigidbody_Object::config rb_config;
-		PxVec3 half_extents;
-	};
-	Rigid_CubeObject(physx::PxScene* s, config& c);
-	Rigid_CubeObject(physx::PxScene* s, config& c, NO_REPRESENTATION);
+	Rigid_CubeObject(physx::PxScene* s, CubeObject::config& c);
+	Rigid_CubeObject(physx::PxScene* s, CubeObject::config& c, NO_REPRESENTATION);
 };
 
 //STATIC------------------------------------------------------------------------------------------------------------

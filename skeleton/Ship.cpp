@@ -11,7 +11,7 @@
 constexpr float max_speed = 30;
 
 Ship::Ship(physx::PxScene* s)
-	:Rigid_CubeObject(s, config{ Rigidbody_Object::config{SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation)
+	:Rigid_CubeObject(s, CubeObject::config{SceneObject::config{GameObject::config{},{0,0,0,0}}, {1,1,1} }, NO_REPRESENTATION::no_representation)
 {
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 	rb->setLinearVelocity({ 0,0,0 });

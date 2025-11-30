@@ -4,23 +4,23 @@
 #include <iostream>
 
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
-	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg.so_config)
+	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg)
 {
-	rb->setLinearVelocity({0,0,0});
+	rb->setLinearVelocity(cfg.go_config.initial_speed_dir*cfg.go_config.initial_speed_magnitude);
 	rb->setGlobalPose(global_transform);
 	rb->setAngularVelocity({ 0,0,0 });
 	rb->attachShape(*sh);
-	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.so_config.go_config.mass.mass);
+	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.go_config.mass.mass);
 	s->addActor(*rb);
 }
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg, NO_REPRESENTATION)
-	: SceneObject(s, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg.so_config)
+	: SceneObject(s, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg)
 {
-	rb->setLinearVelocity({ 0,0,0 });
+	rb->setLinearVelocity(cfg.go_config.initial_speed_dir * cfg.go_config.initial_speed_magnitude);
 	rb->setGlobalPose(global_transform);
 	rb->setAngularVelocity({ 0,0,0 });
 	rb->attachShape(*sh);
-	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.so_config.go_config.mass.mass);
+	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.go_config.mass.mass);
 	s->addActor(*rb);
 }
 
@@ -140,23 +140,23 @@ void Rigidbody_Object::integrate(double dt)
 }
 
 
-Rigid_SphereObject::Rigid_SphereObject(PxScene* s, config& c)
-	: Rigidbody_Object(s, CreateShape(PxSphereGeometry(c.radius)),c.rb_config)
+Rigid_SphereObject::Rigid_SphereObject(PxScene* s, SphereObject::config& c)
+	: Rigidbody_Object(s, CreateShape(PxSphereGeometry(c.radius)),c.so_config)
 {
 }
 
-Rigid_SphereObject::Rigid_SphereObject(PxScene* s, config& c, NO_REPRESENTATION nr)
-	: Rigidbody_Object(s, CreateShape(PxSphereGeometry(c.radius)), c.rb_config, nr)
+Rigid_SphereObject::Rigid_SphereObject(PxScene* s, SphereObject::config& c, NO_REPRESENTATION nr)
+	: Rigidbody_Object(s, CreateShape(PxSphereGeometry(c.radius)), c.so_config, nr)
 {
 }
 
-Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, config& c)
-	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.rb_config)
+Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, CubeObject::config& c)
+	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.so_config)
 {
 }
 
-Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, config& c, NO_REPRESENTATION nr)
-	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.rb_config, nr)
+Rigid_CubeObject::Rigid_CubeObject(physx::PxScene* s, CubeObject::config& c, NO_REPRESENTATION nr)
+	: Rigidbody_Object(s, CreateShape(PxBoxGeometry(c.half_extents)), c.so_config, nr)
 {
 }
 

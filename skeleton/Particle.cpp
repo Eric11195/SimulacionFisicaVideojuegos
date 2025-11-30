@@ -1,8 +1,9 @@
 #include "Particle.hpp"
 
 Particle::Particle(PxScene* s, config& c)
-	:SphereObject(s, c.spho_config), time_till_death(c.time_till_death)
+	:SphereObject(s, c.spho_config)
 {
+	time_till_death = c.time_till_death;
 }
 
 void Particle::step(double dt)
@@ -11,10 +12,10 @@ void Particle::step(double dt)
 	SphereObject::step(dt);
 }
 
-RigidParticle::RigidParticle(physx::PxScene* s, config& c) 
-	:Rigid_SphereObject(s,c.rb_spho_config)
+RigidParticle::RigidParticle(physx::PxScene* s, Particle::config& c) 
+	:Rigid_SphereObject(s,c.spho_config)
 {
-
+	time_till_death = c.time_till_death;
 }
 
 void RigidParticle::step(double dt)

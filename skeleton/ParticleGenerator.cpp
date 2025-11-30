@@ -46,9 +46,9 @@ void TriggeredParticleGenerator::step(double dt)
 ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
 	:ParticleGenerator(s,c), force_names(forces), force_ptr(forces_ptr) {}
 
-Particle* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
+void* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
 {
-	auto particle = ParticleGenerator::set_up_particle(p);
+	auto particle = static_cast<GameObject*>(ParticleGenerator::set_up_particle(p));
 	for (auto& f : force_names) {
 		particle->add_force_to_myself(f);
 	}
@@ -120,11 +120,11 @@ void ParticleGenerator::generate_particles(double dt)
 		new_p_config_short.mass = const_p_config.mass + my_particle_lambdas.mass();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
-		addChild(set_up_particle(p_config));
+		addChild(static_cast<GameObject*>(set_up_particle(p_config)));
 	}
 }
 
-Particle* ParticleGenerator::set_up_particle(Particle::config& p)
+void* ParticleGenerator::set_up_particle(Particle::config& p)
 {
 	return new Particle(my_scene, p);
 }

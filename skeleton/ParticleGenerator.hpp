@@ -58,7 +58,7 @@ protected:
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
 	virtual void ParticleGenerator::generate_particles(double dt);
-	virtual Particle* set_up_particle(Particle::config&);
+	virtual void* set_up_particle(Particle::config&);
 	particle_calculator_functions my_particle_lambdas;
 };
 
@@ -67,7 +67,7 @@ protected:
 class ForceAffected_ParticleGenerator : public ParticleGenerator {
 public:
 	ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
-	virtual Particle* set_up_particle(Particle::config& p) override;
+	virtual void* set_up_particle(Particle::config& p) override;
 	virtual void step(double dt) override;
 protected:
 	std::vector<std::string> force_names;
