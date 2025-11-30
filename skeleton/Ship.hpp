@@ -1,12 +1,13 @@
 #pragma once
 #include "GameObject.hpp"
 #include "RigidbodyObject.hpp"
+#include "ShipInterface.hpp"
 
 class text_hud_elem;
 
 class Directional_ForceGenerator;
 
-class Ship : public Rigid_CubeObject {
+class Ship : public Rigid_CubeObject, public ShipInterface {
 public:
 	Ship(physx::PxScene* s);
 	//virtual void process_input(unsigned char c) override;

@@ -283,6 +283,7 @@
     <ClCompile Include="ScreenSizeConstants.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="ShipCannon.cpp" />
+    <ClCompile Include="ShipInterface.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +319,7 @@
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="ShipCannon.hpp" />
+    <ClInclude Include="ShipInterface.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stb_image.hpp" />

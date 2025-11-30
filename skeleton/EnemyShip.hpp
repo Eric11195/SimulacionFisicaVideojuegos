@@ -2,10 +2,11 @@
 
 #include "RigidbodyObject.hpp"
 #include "core.hpp"
+#include "ShipInterface.hpp"
 
 class Directional_ForceGenerator;
 
-class EnemyShip : public Rigid_CubeObject {
+class EnemyShip : public Rigid_CubeObject, public ShipInterface {
 public:
 	EnemyShip(physx::PxScene* s, GameObject*);
 	virtual void step(double dt) override;

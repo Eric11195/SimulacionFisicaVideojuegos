@@ -14,6 +14,7 @@ public:
 	Rigidbody_Object(PxScene* s, PxShape* sh, config& c, NO_REPRESENTATION);
 	virtual void set_velocity(physx::PxVec3) override;
 	PxRigidDynamic* set_rb(PxRigidDynamic* new_rb);
+	PxActor* getActor();
 	virtual void set_pos(physx::PxVec3) override;
 	virtual Vector3 get_pos() override;
 	virtual Vector3 get_vel() override;

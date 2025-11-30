@@ -31,6 +31,9 @@
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
 
+std::unordered_map<PxActor*, ShipInterface*> ships;
+Ship* player;
+
 using namespace physx;
 
 PxDefaultAllocator		gAllocator;
@@ -103,10 +106,20 @@ void initPhysics(bool interactive)
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
 
-	auto player = new Ship(physx_scene_vec[gamescene]);
+	ships = std::unordered_map<PxActor*, ShipInterface*>{};
+	player = new Ship(physx_scene_vec[gamescene]);
+	ships[player->getActor()] = player;
+	player->assign_die_func(
+		[&]() {
+			current_scene = scenes_vec[mainmenu];
+			physx_current_scene = physx_scene_vec[mainmenu];
+		}
+	);
 	scenes_vec[gamescene]->addChild(player);
 	for (int i = 0; i < 10; ++i) {
-		scenes_vec[gamescene]->addChild(new EnemyShip(physx_scene_vec[gamescene],player));
+		auto en = new EnemyShip(physx_scene_vec[gamescene], player);
+		ships[en->getActor()] = en;
+		scenes_vec[gamescene]->addChild(en);
 	}
 
 	//TESTING SOLIDO RIGIDO
@@ -213,6 +226,43 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+
+	std::vector<std::unordered_map<PxActor*, ShipInterface*>::iterator> its = { ships.find(actor1), ships.find(actor2) };
+
+	int n_ships = 2*(its[0] != ships.end()) + (its[1] != ships.end());
+	ShipInterface* the_ship;// = its[0]->second;
+	switch (n_ships) {
+	case 2:
+		the_ship = its[1]->second;
+		the_ship->die();
+		break;
+	case 1:
+		//A ship has bumped into something else
+		the_ship = its[0]->second;
+		the_ship->die();
+		break;
+	case 3: {
+		//The ship will be the player
+		bool player_here = false;
+		if (its[0]->second == player || its[1]->second==player) {
+			the_ship = player;
+			player_here = true;
+		}
+
+		if (player_here) {
+			the_ship->die();
+		}
+		else {
+			//Other ships
+		}
+		//A ship has bumped into another ship
+		break;
+	}
+	default:
+		//UNIMPORTANT THINGS HAPPENED
+		break;
+	}
+
 }
 
 

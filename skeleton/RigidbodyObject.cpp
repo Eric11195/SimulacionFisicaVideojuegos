@@ -37,6 +37,11 @@ PxRigidDynamic* Rigidbody_Object::set_rb(PxRigidDynamic* new_rb)
 	return rb;
 }
 
+PxActor* Rigidbody_Object::getActor()
+{
+	return rb;
+}
+
 
 void Rigidbody_Object::set_pos(physx::PxVec3 v)
 {
