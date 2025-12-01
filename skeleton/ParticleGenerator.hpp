@@ -57,8 +57,8 @@ protected:
 	const GameObject::config const_p_config;
 	float particles_per_second_accumulator = 0;
 	//called when particles would be generated
-	virtual void ParticleGenerator::generate_particles(double dt);
-	virtual void* set_up_particle(Particle::config&);
+	virtual void ParticleGenerator::generate_particles(double dt, void*);
+	virtual GameObject* set_up_particle(Particle::config&, void* v);
 	particle_calculator_functions my_particle_lambdas;
 };
 
@@ -67,12 +67,12 @@ protected:
 class ForceAffected_ParticleGenerator : public ParticleGenerator {
 public:
 	ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr = {});
-	virtual void* set_up_particle(Particle::config& p) override;
 	virtual void step(double dt) override;
 protected:
 	std::vector<std::string> force_names;
 	//You own this ones
 	std::vector<ForceGenerator*> force_ptr;
+	virtual GameObject* set_up_particle(Particle::config&, void* v) override;
 };
 
 
@@ -82,7 +82,7 @@ class TriggeredParticleGenerator : public ForceAffected_ParticleGenerator {
 public:
 	TriggeredParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces = {}, std::initializer_list<ForceGenerator*> forces_ptr = {});
 	//Generates particles as specified config
-	void trigger();
+	void trigger(void*);
 	void step(double dt) override;
 };
 

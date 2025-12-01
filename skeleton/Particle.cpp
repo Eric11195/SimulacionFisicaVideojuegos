@@ -17,6 +17,12 @@ RigidParticle::RigidParticle(physx::PxScene* s, Particle::config& c)
 {
 	time_till_death = c.time_till_death;
 }
+/*
+RigidParticle::~RigidParticle()
+{
+	rb->
+}
+*/
 
 void RigidParticle::step(double dt)
 {

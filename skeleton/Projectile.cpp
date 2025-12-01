@@ -14,6 +14,7 @@ Projectile::Projectile(physx::PxScene* s, Particle::config& c, float real_speed,
 	//ENSURE THIS IS THE FIRST FORCE APPLIED TO THIS OBJECT
 	//assert(forces_applied_to_this_obj.size() == 0);
 	//add_force_to_myself("gravity");
+	std::cout << "Created\n" << std::endl;
 }
 
 float Projectile::get_gravity_proportion(float real_speed, float sim_speed)
@@ -30,7 +31,7 @@ float Projectile::get_s_mass(float mass, float real_speed, float sim_speed)
 void Projectile::step(double dt)
 {
 	RigidParticle::step(dt);
-	std::cout << "pos: " << global_transform.p.x << ' ' << global_transform.p.y << ' ' << global_transform.p.z<<'\n';
+	//std::cout << "pos: " << global_transform.p.x << ' ' << global_transform.p.y << ' ' << global_transform.p.z<<'\n';
 }
 
 /*

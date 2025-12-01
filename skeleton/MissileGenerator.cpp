@@ -16,7 +16,7 @@ MissileGenerator::MissileGenerator(physx::PxScene* s)
 {
 }
 
-void* MissileGenerator::set_up_particle(Particle::config& p)
+GameObject* MissileGenerator::set_up_particle(Particle::config& p, void* v)
 {
 	auto part = new Missile(my_scene, Particle::config{ p.spho_config,p.time_till_death });
 	for (auto& f : force_names) {

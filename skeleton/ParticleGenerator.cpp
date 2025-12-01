@@ -10,9 +10,9 @@ TriggeredParticleGenerator::TriggeredParticleGenerator(physx::PxScene* s, Partic
 }
 
 
-void TriggeredParticleGenerator::trigger()
+void TriggeredParticleGenerator::trigger(void* v)
 {
-	generate_particles(1);
+	generate_particles(1, v);
 }
 
 
@@ -46,9 +46,9 @@ void TriggeredParticleGenerator::step(double dt)
 ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
 	:ParticleGenerator(s,c), force_names(forces), force_ptr(forces_ptr) {}
 
-void* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
+GameObject* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p, void* v)
 {
-	auto particle = static_cast<GameObject*>(ParticleGenerator::set_up_particle(p));
+	auto particle = static_cast<GameObject*>(ParticleGenerator::set_up_particle(p, v));
 	for (auto& f : force_names) {
 		particle->add_force_to_myself(f);
 	}
@@ -78,7 +78,7 @@ ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
 
 void ParticleGenerator::step(double dt)
 {
-	generate_particles(dt);
+	generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 
 	auto it = child_objects.begin();
@@ -102,7 +102,7 @@ void ParticleGenerator::step(double dt)
 	}
 }
 
-void ParticleGenerator::generate_particles(double dt)
+void ParticleGenerator::generate_particles(double dt, void* v)
 {
 	float particles_this_frame = particles_per_second_accumulator + particle_generated_per_second * dt;
 	int particles_generated_in_current_frame = floor(particles_this_frame);
@@ -120,11 +120,11 @@ void ParticleGenerator::generate_particles(double dt)
 		new_p_config_short.mass = const_p_config.mass + my_particle_lambdas.mass();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
-		addChild(static_cast<GameObject*>(set_up_particle(p_config)));
+		addChild(static_cast<GameObject*>(set_up_particle(p_config, v)));
 	}
 }
 
-void* ParticleGenerator::set_up_particle(Particle::config& p)
+GameObject* ParticleGenerator::set_up_particle(Particle::config& p, void* v)
 {
 	return new Particle(my_scene, p);
 }
@@ -142,7 +142,7 @@ void ToggleParticleGenerator::set_toggle(bool state)
 void ToggleParticleGenerator::step(double dt)
 {
 	if (active) {
-		generate_particles(dt);
+		generate_particles(dt, nullptr);
 	}
 	//GameObject::step(dt);
 

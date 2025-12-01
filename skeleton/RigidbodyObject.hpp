@@ -13,6 +13,7 @@ public:
 		no_representation
 	};
 	Rigidbody_Object(PxScene* s, PxShape* sh, config& c);
+	~Rigidbody_Object();
 	Rigidbody_Object(PxScene* s, PxShape* sh, config& c, NO_REPRESENTATION);
 	virtual void set_velocity(physx::PxVec3) override;
 	PxRigidDynamic* set_rb(PxRigidDynamic* new_rb);
@@ -31,6 +32,7 @@ public:
 protected:
 	virtual void integrate(double dt) override;
 	PxRigidDynamic* rb;
+	PxScene* my_scene;
 };
 
 class Rigid_SphereObject : public Rigidbody_Object {

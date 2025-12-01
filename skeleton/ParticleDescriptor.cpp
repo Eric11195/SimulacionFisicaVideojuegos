@@ -107,7 +107,7 @@ Particle::config& laser_shot()
 					},
 					0.25 //rad
 				},
-				5 //lifetime
+				4 //lifetime
 	};
 	return p;
 }
@@ -121,14 +121,14 @@ Particle::config& missile_particle()
 			{0,0,0}, //Pos
 			{0,0,1}, //speed_dir
 			//{0,-1,0},//accel_dir
-			20,//10, //Speed module
+			10,//10, //Speed module
 			//0//PhysicLib::GRAVITY,//Accel module
 		},
 		physx::PxVec4(1,1,1,1)//Color
 	},
 	0.2 //rad
 },
-4 //lifetime
+6 //lifetime
 	};
 	return p;
 }

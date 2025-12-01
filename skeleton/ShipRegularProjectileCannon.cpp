@@ -15,7 +15,7 @@ ShipRegularProjectileCannon::ShipRegularProjectileCannon(physx::PxScene* s)
 	//force_ptr.push_back(my_mod_gravity);
 }
 
-void* ShipRegularProjectileCannon::set_up_particle(Particle::config& p)
+GameObject* ShipRegularProjectileCannon::set_up_particle(Particle::config& p, void* v)
 {
 	//auto proj_config = Particle::config{ p };// , 30000.0f};
 	auto particle = new Projectile(my_scene, p, 1000000, const_p_config.initial_speed_magnitude);

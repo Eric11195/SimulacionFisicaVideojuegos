@@ -41,10 +41,11 @@ void ShipCannon::fire_missile()
 {
 	GameObject* aux_ptr = (*missile_cannon).get();
 	Transform tr = global_transform;
-	tr.p += global_transform.q.rotate({0,-0.5,0});
+	tr.p += global_transform.q.rotate({0,-1,2});
 	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
-	casted_trigger->trigger();
+	//get_current_speed
+	casted_trigger->trigger(nullptr);
 }
 
 void ShipCannon::fire_bomb()
@@ -55,7 +56,7 @@ void ShipCannon::fire_bomb()
 	tr.p += global_transform.q.rotate({ 0,0,0 });
 	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<BombGenerator*>(aux_ptr);
-	casted_trigger->trigger();
+	casted_trigger->trigger(nullptr);
 }
 
 /*
@@ -78,7 +79,7 @@ void ShipCannon::normal_shoot()
 	tr.p += global_transform.q.rotate(cannon_pos[normal_cannon_idx]);
 	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<TriggeredParticleGenerator*>(aux_ptr);
-	casted_trigger->trigger();
+	casted_trigger->trigger(nullptr);
 
 	++normal_cannon_idx;
 	if (normal_cannon_idx >= cannon_pos.size()) normal_cannon_idx = 0;

@@ -4,7 +4,7 @@
 #include <iostream>
 
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
-	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg)
+	: SceneObject(s, sh, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg), my_scene(s)
 {
 	rb->setLinearVelocity(cfg.go_config.initial_speed_dir*cfg.go_config.initial_speed_magnitude);
 	rb->setGlobalPose(global_transform);
@@ -12,6 +12,11 @@ Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
 	rb->attachShape(*sh);
 	PxRigidBodyExt::updateMassAndInertia(*rb, cfg.go_config.mass.mass);
 	s->addActor(*rb);
+}
+Rigidbody_Object::~Rigidbody_Object()
+{
+	//my_scene->removeActor(*rb);
+	//rb->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 }
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg, NO_REPRESENTATION)
 	: SceneObject(s, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg)
