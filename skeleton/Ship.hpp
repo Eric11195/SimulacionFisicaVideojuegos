@@ -6,6 +6,7 @@
 class text_hud_elem;
 
 class Directional_ForceGenerator;
+class ShipCannon;
 
 class Ship : public Rigid_CubeObject, public ShipInterface {
 public:
@@ -40,4 +41,5 @@ protected:
 		decelerando = -1
 	};
 	state current_state = constante;
+	ShipCannon* my_cannon;
 };

@@ -234,15 +234,16 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	switch (n_ships) {
 	case 2:
 		the_ship = its[1]->second;
-		the_ship->die();
+		//the_ship->die();
 		break;
 	case 1:
 		//A ship has bumped into something else
 		the_ship = its[0]->second;
-		the_ship->die();
+		//the_ship->die();
 		break;
 	case 3: {
 		//The ship will be the player
+		//if()
 		bool player_here = false;
 		if (its[0]->second == player || its[1]->second==player) {
 			the_ship = player;

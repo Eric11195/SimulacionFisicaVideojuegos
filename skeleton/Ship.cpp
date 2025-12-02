@@ -13,6 +13,7 @@ constexpr float max_speed = 30;
 Ship::Ship(physx::PxScene* s)
 	:Rigid_CubeObject(s, CubeObject::config{SceneObject::config{GameObject::config{},{0,0,0,0}}, {1,1,1} }, NO_REPRESENTATION::no_representation)
 {
+	my_team_id = player;
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 	rb->setLinearVelocity({ 0,0,0 });
 	rb->setAngularVelocity({ 0,0,0 });
@@ -23,10 +24,11 @@ Ship::Ship(physx::PxScene* s)
 	mass = InvMass(my_mass);
 
 	//set_dumping(0.8);
-	addChild(new ShipCannon(s, global_transform));
+	my_cannon = new ShipCannon(s, global_transform);
+	addChild(my_cannon);
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 50*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 40*my_mass.mass);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
@@ -47,7 +49,7 @@ void Ship::step(double dt)
 	}
 
 	//Virar
-	float virar_radians_vel = 60*virar_torque_speed * (virar_buttons[1] - virar_buttons[0]);
+	float virar_radians_vel = 40*virar_torque_speed * (virar_buttons[1] - virar_buttons[0]);
 	add_torque(dt*virar_radians_vel* global_transform.q.rotate(PxVec3(0,0,1)));
 	//rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 
@@ -58,9 +60,7 @@ void Ship::step(double dt)
 	auto r = rb->getAngularVelocity();
 	//std::cout << "(" << v.x << ',' << v.y << ',' << v.z << ')' << "   " << "(" << r.x << ',' << r.y << ',' << r.z << ')'<<'\n';
 
-	//SPEED DELIMITER
-	//auto speed_mag = vel.normalize();
-	//vel *= min(max(speed_mag, 0), max_speed);
+	my_cannon->currentInertia = rb->getLinearVelocity();
 
 }
 
@@ -135,7 +135,7 @@ void Ship::handle_mouse_pos(float x, float y)
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
 	const float magnitude = normalized_rot_direction.normalize();
-	current_angular_velocity = { 1800*3.14f * min(magnitude,1) , normalized_rot_direction };
+	current_angular_velocity = { 1100*3.14f * min(magnitude,1) , normalized_rot_direction };
 	
 }
 

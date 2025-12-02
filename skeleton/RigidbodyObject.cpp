@@ -15,7 +15,7 @@ Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
 }
 Rigidbody_Object::~Rigidbody_Object()
 {
-	//my_scene->removeActor(*rb);
+	my_scene->removeActor(*rb);
 	//rb->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 }
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg, NO_REPRESENTATION)
@@ -42,6 +42,10 @@ PxRigidDynamic* Rigidbody_Object::set_rb(PxRigidDynamic* new_rb)
 	return rb;
 }
 
+void Rigidbody_Object::set_my_transform_to_actor()
+{
+	setTransform(rb->getGlobalPose());
+}
 PxActor* Rigidbody_Object::getActor()
 {
 	return rb;

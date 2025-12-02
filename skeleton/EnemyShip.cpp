@@ -53,7 +53,7 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 20*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 12*my_mass.mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
 	//add_force_to_myself("black_hole");
@@ -91,8 +91,8 @@ void EnemyShip::step(double dt)
 			child->setTransform(aux_tr);
 			break;
 		}
-		++i;
 		child->step(dt);
+		++i;
 	}
 }
 

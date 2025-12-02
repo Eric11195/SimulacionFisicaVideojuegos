@@ -4,7 +4,7 @@
 #include <cassert>
 
 GameObject::GameObject(physx::PxScene* scene, config& c, std::initializer_list<GameObject*> go_s)
-	: global_transform(Transform(c.pos, c.initial_rotation)),
+	: global_transform(Transform(c.pos, c.initial_rotation)), my_class_id(uninteresting), my_team_id(enemy),
 	damping_mult(c.damping_mult), mass(c.mass), my_scene(scene)
 {
 	assert(my_scene);
