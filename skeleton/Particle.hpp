@@ -18,7 +18,7 @@
 
 class InterfaceParticle {
 public:
-	inline bool alive() {
+	virtual bool alive() {
 		return time_till_death > 0;
 	};
 protected:

@@ -26,6 +26,7 @@ class Projectile : public RigidParticle {
 public:
 	//modifies its own mass, and mutiplies force_applied to gravity
 	Projectile(physx::PxScene* s, Particle::config& c, float real_speed, float simulated_speed);
+	~Projectile();
 	float get_gravity_proportion(float real_speed, float sim_speed);
 	float get_s_mass(float mass, float real_speed, float sim_speed);
 	virtual void step(double dt) override;

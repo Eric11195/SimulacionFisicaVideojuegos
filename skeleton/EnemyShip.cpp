@@ -70,7 +70,6 @@ void EnemyShip::step(double dt)
 	physx::PxVec3 x_axis = global_transform.q.rotate({1,0,0});
 	physx::PxVec3 z_axis = global_transform.q.rotate({ 0,0,1 });
 	for (auto& child : child_objects) {
-		child->step(dt);
 		switch (i) {
 		case 0: //SPHERE
 		case 4: //PARTICLE GEN
@@ -93,6 +92,7 @@ void EnemyShip::step(double dt)
 			break;
 		}
 		++i;
+		child->step(dt);
 	}
 }
 

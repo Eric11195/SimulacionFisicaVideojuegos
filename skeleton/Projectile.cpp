@@ -14,7 +14,12 @@ Projectile::Projectile(physx::PxScene* s, Particle::config& c, float real_speed,
 	//ENSURE THIS IS THE FIRST FORCE APPLIED TO THIS OBJECT
 	//assert(forces_applied_to_this_obj.size() == 0);
 	//add_force_to_myself("gravity");
-	std::cout << "Generado\n";
+	//std::cout << "Generado\n";
+}
+
+Projectile::~Projectile()
+{
+	//std::cout << "Destroyed\n";
 }
 
 float Projectile::get_gravity_proportion(float real_speed, float sim_speed)

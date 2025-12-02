@@ -1,6 +1,8 @@
 #include "ParticleGenerator.hpp"
 #include <iostream>
 #include "ForceGenerator.hpp"
+#include <cassert>
+
 //#include "Particle.hpp"
 
 //-------------------------------------------------------------------------------------------------------
@@ -23,17 +25,17 @@ void TriggeredParticleGenerator::step(double dt)
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
 
-		GameObject* aux_ptr = (*it).get();
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		void* ptr = (*it).get();
+		InterfaceParticle* casted_particle = static_cast<InterfaceParticle*>(ptr);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
 			it = child_objects.erase(it);
 			continue;
 		}
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
-		}
+
 		
 		++it;
 	}
@@ -83,22 +85,21 @@ void ParticleGenerator::step(double dt)
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+
+		void* ptr = (*it).get();
+		InterfaceParticle* casted_particle = static_cast<InterfaceParticle*>(ptr);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}else		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
 			it = child_objects.erase(it);
 			continue;
 		}
-
-		GameObject* aux_ptr = (*it).get();
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
+		else {
+			(*it)->step(dt);
+			++it;
 		}
-		(*it)->step(dt);
-		//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
-
-		++it;
 	}
 }
 
@@ -141,28 +142,52 @@ void ToggleParticleGenerator::set_toggle(bool state)
 
 void ToggleParticleGenerator::step(double dt)
 {
-	if (active) {
-		generate_particles(dt, nullptr);
-	}
+	//GameObject::step(dt);
+	if(active) generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+
+		void* ptr = (*it).get();
+		InterfaceParticle* casted_particle = static_cast<InterfaceParticle*>(ptr);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
 			it = child_objects.erase(it);
 			continue;
 		}
+		else {
+			(*it)->step(dt);
+			//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
 
+			++it;
+		}
+	}
+	/*
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
 		GameObject* aux_ptr = (*it).get();
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
+		auto casted_particle = (InterfaceParticle*)(aux_ptr);
+		assert(casted_particle);
 		if (!casted_particle->alive()) {
 			it = child_objects.erase(it);
 			continue;
+		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		{
+			it = child_objects.erase(it);
+			continue;
 		}
-		(*it)->step(dt);
-		//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
-
-		++it;
+		else {
+			(*it)->step(dt);
+			++it;
+		}
 	}
+
+	if (active) {
+		generate_particles(dt, nullptr);
+	}
+	*/
 }
