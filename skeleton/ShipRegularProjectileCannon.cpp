@@ -20,5 +20,11 @@ void* ShipRegularProjectileCannon::set_up_particle(Particle::config& p)
 	//auto proj_config = Particle::config{ p };// , 30000.0f};
 	auto particle = new Projectile(my_scene, p, 1000000, const_p_config.initial_speed_magnitude);
 	//particle->add_force_to_myself(my_mod_gravity);
+	for (auto& f : force_names) {
+		particle->add_force_to_myself(f);
+	}
+	for (auto f : force_ptr) {
+		particle->add_force_to_myself(f);
+	}
 	return particle;
 }

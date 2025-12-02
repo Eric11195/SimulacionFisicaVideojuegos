@@ -61,7 +61,8 @@ Vector3 Rigidbody_Object::get_vel()
 
 void Rigidbody_Object::step(double dt)
 {
-	global_transform = rb->getGlobalPose();
+	//auto tr = rb->getGlobalPose();
+	setTransform(rb->getGlobalPose());
 	SceneObject::step(dt);
 }
 
