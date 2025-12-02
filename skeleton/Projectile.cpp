@@ -9,8 +9,8 @@ Projectile::Projectile(physx::PxScene* s, Particle::config& c, float real_speed,
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 
 	//set_velocity_magnitude(simulated_speed);
-	gravity_multiplier = get_gravity_proportion(real_speed, simulated_speed);
-	rb->setMass(Mass(get_s_mass(c.spho_config.so_config.go_config.mass.mass, real_speed, simulated_speed)).mass);
+	//gravity_multiplier = get_gravity_proportion(real_speed, simulated_speed);
+	//rb->setMass(Mass(get_s_mass(c.spho_config.so_config.go_config.mass.mass, real_speed, simulated_speed)).mass);
 	//ENSURE THIS IS THE FIRST FORCE APPLIED TO THIS OBJECT
 	//assert(forces_applied_to_this_obj.size() == 0);
 	//add_force_to_myself("gravity");

@@ -53,7 +53,7 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 10*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 20*my_mass.mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
 	//add_force_to_myself("black_hole");
@@ -139,7 +139,7 @@ Vector3 EnemyShip::think_off_torque() {
 void EnemyShip::think_step(double dt)
 {
 	//Aim for the player ship
-	rb->addTorque(/*global_transform.q.rotate(*/1000 * dt * think_off_torque()/*)*/);
+	rb->addTorque(/*global_transform.q.rotate(*/750 * dt * think_off_torque()/*)*/);
 	/*
 	Transform& player_tr = player_go->get_global_tr();
 	PxVec3 global_vector_to_player = global_transform.p - player_tr.p;

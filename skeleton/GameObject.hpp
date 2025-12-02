@@ -22,6 +22,12 @@ struct GameObject : public InputProcessor{
 	inline std::list<std::unique_ptr<GameObject>>& get_child_list() {
 		return child_objects;
 	};
+	enum class_id {
+		uninteresting = 0,
+		particle = 1,
+		rb_particle = 2
+	};
+	uint8_t my_class_id = uninteresting;
 	inline static physx::PxPhysics* physics_ref = nullptr;
 	inline static std::unordered_map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {

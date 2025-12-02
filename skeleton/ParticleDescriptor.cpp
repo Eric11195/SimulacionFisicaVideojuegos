@@ -101,6 +101,7 @@ Particle::config& laser_shot()
 							//{0,-1,0},//accel_dir
 							40, //Speed module
 							//0//PhysicLib::GRAVITY,//Accel module
+							Mass(10)
 						},
 						physx::PxVec4(0.937,1,0,1)
 						//Color
@@ -123,6 +124,7 @@ Particle::config& missile_particle()
 			//{0,-1,0},//accel_dir
 			10,//10, //Speed module
 			//0//PhysicLib::GRAVITY,//Accel module
+			Mass(1000)
 		},
 		physx::PxVec4(1,1,1,1)//Color
 	},

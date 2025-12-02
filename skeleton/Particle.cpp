@@ -4,6 +4,7 @@
 Particle::Particle(PxScene* s, config& c)
 	:SphereObject(s, c.spho_config)
 {
+	my_class_id = particle;
 	time_till_death = c.time_till_death;
 }
 
@@ -16,6 +17,7 @@ void Particle::step(double dt)
 RigidParticle::RigidParticle(physx::PxScene* s, Particle::config& c) 
 	:Rigid_SphereObject(s,c.spho_config)
 {
+	my_class_id = rb_particle;
 	//std::cout << "till death: " << c.time_till_death<<'\n';
 	time_till_death = c.time_till_death;
 }

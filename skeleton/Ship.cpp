@@ -17,7 +17,7 @@ Ship::Ship(physx::PxScene* s)
 	rb->setLinearVelocity({ 0,0,0 });
 	rb->setAngularVelocity({ 0,0,0 });
 	rb->setAngularDamping(0.9);
-	rb->setLinearDamping(0.2);
+	rb->setLinearDamping(0.3);
 
 	Mass my_mass = 500;
 	mass = InvMass(my_mass);
@@ -26,7 +26,7 @@ Ship::Ship(physx::PxScene* s)
 	addChild(new ShipCannon(s, global_transform));
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 30*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 50*my_mass.mass);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
@@ -135,7 +135,7 @@ void Ship::handle_mouse_pos(float x, float y)
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
 	const float magnitude = normalized_rot_direction.normalize();
-	current_angular_velocity = { 1200*3.14f * min(magnitude,1) , normalized_rot_direction };
+	current_angular_velocity = { 1800*3.14f * min(magnitude,1) , normalized_rot_direction };
 	
 }
 

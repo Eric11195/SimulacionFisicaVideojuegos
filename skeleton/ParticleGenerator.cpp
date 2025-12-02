@@ -24,20 +24,41 @@ void TriggeredParticleGenerator::step(double dt)
 	//Missing generate particles
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-
-		void* ptr = (*it).get();
-		InterfaceParticle* casted_particle = static_cast<InterfaceParticle*>(ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
-		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		auto ptr = (*it).get();
+		switch (ptr->my_class_id) {
+		case uninteresting:
+			assert(false);
+			break;
+		case particle:
 		{
-			it = child_objects.erase(it);
-			continue;
+			Particle* casted_particle = static_cast<Particle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			break;
 		}
-
-		
+		case rb_particle: {
+			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			break;
+		}
+		}
 		++it;
+
 	}
 	GameObject::step(dt);
 }
