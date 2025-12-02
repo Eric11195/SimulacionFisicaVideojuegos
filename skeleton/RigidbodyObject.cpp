@@ -16,7 +16,8 @@ Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg)
 Rigidbody_Object::~Rigidbody_Object()
 {
 	my_scene->removeActor(*rb);
-	//rb->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+	if ((render_item) != nullptr)
+		render_item->release();
 }
 Rigidbody_Object::Rigidbody_Object(PxScene* s, PxShape* sh, config& cfg, NO_REPRESENTATION)
 	: SceneObject(s, set_rb(physics_ref->createRigidDynamic(PxTransform(PxIDENTITY::PxIdentity))), cfg)

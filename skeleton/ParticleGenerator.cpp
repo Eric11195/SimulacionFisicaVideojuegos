@@ -24,6 +24,7 @@ void TriggeredParticleGenerator::step(double dt)
 	//Missing generate particles
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
+		it->get()->step(dt);
 		auto ptr = (*it).get();
 		switch (ptr->my_class_id) {
 		case uninteresting:
@@ -107,7 +108,7 @@ void ParticleGenerator::step(double dt)
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-
+		it->get()->step(dt);
 		auto ptr = (*it).get();
 		switch (ptr->my_class_id) {
 		case uninteresting:
@@ -192,7 +193,7 @@ void ToggleParticleGenerator::step(double dt)
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-
+		it->get()->step(dt);
 		auto ptr = (*it).get();
 		switch (ptr->my_class_id) {
 		case uninteresting:
