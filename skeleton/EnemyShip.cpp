@@ -62,7 +62,7 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 void EnemyShip::step(double dt)
 {
 	think_step(dt);
-	global_transform = rb->getGlobalPose();
+	setTransform(rb->getGlobalPose());
 	integrate(dt);
 
 	int i = 0;

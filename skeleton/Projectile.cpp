@@ -14,7 +14,7 @@ Projectile::Projectile(physx::PxScene* s, Particle::config& c, float real_speed,
 	//ENSURE THIS IS THE FIRST FORCE APPLIED TO THIS OBJECT
 	//assert(forces_applied_to_this_obj.size() == 0);
 	//add_force_to_myself("gravity");
-	std::cout << "Created\n" << std::endl;
+	std::cout << "Generado\n";
 }
 
 float Projectile::get_gravity_proportion(float real_speed, float sim_speed)
@@ -49,7 +49,7 @@ void Projectile::integrate(double dt)
 		accel += new_accel;
 	}
 
-	//F = m * a, así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
+	//F = m * a, asï¿½ que si solo le aï¿½ado todas las fuerzas a accel. Antes de poder aï¿½adirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
 	accel *= mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
 	vel += accel * dt;
