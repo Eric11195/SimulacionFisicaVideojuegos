@@ -42,13 +42,16 @@ Missile::Missile(physx::PxScene* s, Particle::config& c)
 {
 	addChild(
 		new ForceAffected_ParticleGenerator(s, missile_particle_system, {},
-			{ new Wind_ForceGenerator(s, {0,0,-1}, 100) })
+			{ new Wind_ForceGenerator(s, {0,0,-1}, 1) })
 	);
 }
 
 void Missile::step(double dt)
 {
 	Projectile::step(dt);
+	for (auto& c : get_child_list()) {
+		c->setTransform(global_transform);
+	}
 	/*
 	integrate(dt);
 	cout << 
