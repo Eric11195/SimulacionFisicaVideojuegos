@@ -113,7 +113,7 @@ void initPhysics(bool interactive)
 
 
 	scenes_vec[gamescene]->addChild(new hud_elem(physx_scene_vec[gamescene], "casco_nave.png"));
-	auto my_n_enemies_text = new text_hud_elem(physx_scene_vec[gamescene], ("Enemies Remaining: " + std::to_string(STARTING_NUMBER_OF_ELEMENTS)), { 0.01,0.01 });
+	auto my_n_enemies_text = new text_hud_elem(physx_scene_vec[gamescene], ("Enemies Remaining: " + std::to_string(STARTING_NUMBER_OF_ELEMENTS)), { 0.8f,0.8f });
 	scenes_vec[gamescene]->addChild(my_n_enemies_text);
 
 	ships = std::unordered_map<PxActor*, ShipInterface*>{};

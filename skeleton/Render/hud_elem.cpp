@@ -157,7 +157,8 @@ void text_hud_elem::draw_text()
 	glLoadIdentity();
 	glPushMatrix();
 	//glLoadIdentity();
-	glRasterPos2i(my_start_pos.x*WINDOW_WIDTH, my_start_pos.y*WINDOW_HEIGHT);
+	GLint x = my_start_pos.x * WINDOW_WIDTH, y = my_start_pos.y * WINDOW_HEIGHT;
+	glRasterPos2i(x,y);
 
 	int length = my_text.length();
 
