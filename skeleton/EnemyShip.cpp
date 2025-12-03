@@ -69,7 +69,7 @@ void EnemyShip::step(double dt)
 		time_till_definitive_dead -= dt;
 		if(time_till_definitive_dead < 0) {
 			//Die for good
-			//die();
+			die();
 			to_be_destroyed = true;
 			return;
 		}

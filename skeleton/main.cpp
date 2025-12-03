@@ -132,7 +132,7 @@ void initPhysics(bool interactive)
 		auto enemy_it = scenes_vec[gamescene]->addChild(en);
 		
 		en->assign_die_func(
-			[&]() {
+			[&, my_n_enemies_text]() {
 				--remaining_enemies;
 				my_n_enemies_text->change_text("Enemies Remaining: " + std::to_string(remaining_enemies));
 			}
