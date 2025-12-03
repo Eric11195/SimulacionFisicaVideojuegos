@@ -29,8 +29,6 @@
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
     <ClCompile Include="ParticleDescriptor.cpp" />
-    <ClCompile Include="PointSpring.hpp" />
-    <ClCompile Include="PointSpring.cpp" />
     <ClCompile Include="Render\hud_elem.cpp" />
     <ClCompile Include="mouse_pos.cpp" />
     <ClCompile Include="buttons.cpp" />

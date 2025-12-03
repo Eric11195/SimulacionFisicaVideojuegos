@@ -24,7 +24,6 @@
 #include "ForceGenerator.hpp"
 #include "EnemyShip.hpp"
 #include "BlackHole.hpp"
-#include "PointSpring.hpp"
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
 #include "RigidbodyObject.hpp"
@@ -139,16 +138,6 @@ void initPhysics(bool interactive)
 		);
 	}
 
-
-	//Muelles----------------------------------------------
-	//const std::string spring_name = "my_first_spring";
-	//auto spring_force = new PointSpring(physx::PxVec3(0,0,0), Spring_ForceGenerator::config{ 1, 0.01 }, spring_name);//new PT_OBJ_Spring_ForceGenerator("spring", {1000, 10});
-	//scenes_vec[gamescene]->addChild(spring_force);
-
-	//auto p_gen = new ForceAffected_ParticleGenerator(missile_particle_system, {  "spring" });
-	//p_gen->translate_to({ 0,0,0 });
-	//scenes_vec[gamescene]->addChild(p_gen);
-	//-----------------------------------------------------
 	//MAIN MENU SCENE
 	physx_scene_vec[mainmenu] = gPhysics->createScene(sceneDesc);
 	scenes_vec[mainmenu] = new GameObject(physx_scene_vec[mainmenu]);

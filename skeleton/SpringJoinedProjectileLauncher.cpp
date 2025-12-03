@@ -29,7 +29,7 @@ void SpringJoinedProjectileLauncher::generate_particles(double dt, void* ptr)
 		v[i] = set_up_particle(p_config, ptr);
 		addChild(static_cast<GameObject*>(v[i]));
 	}
-	Spring_ForceGenerator::config c{ elastic_const, spring_idle_long };
+	Spring_ForceGenerator::config c{ const_p_config.mass.mass * elastic_const, spring_idle_long };
 	auto new_force = new OBJ_OBJ_Spring_ForceGenerator(my_scene, c, v[0]->get_pos_ptr(), v[1]->get_pos_ptr());
 	addChild(new_force);
 	v[0]->add_force_to_myself(new_force);

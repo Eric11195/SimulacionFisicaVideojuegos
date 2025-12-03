@@ -185,7 +185,7 @@ physx::PxVec3 OBJ_OBJ_Spring_ForceGenerator::apply_force(GameObject & g)
 		from_1_to_2 = (*obj1) - (*obj2);
 	}
 	else {
-		from_1_to_2 = (*obj2) - (*obj2);
+		from_1_to_2 = (*obj2) - (*obj1);
 	}
 	return calculate_force(from_1_to_2);
 }

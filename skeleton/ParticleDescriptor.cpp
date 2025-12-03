@@ -220,7 +220,7 @@ Particle::config& spring_shot_particle_descriptor()
 						{0,0,1}, //speed_dir
 						10,//5, //Speed module
 						//0,//ACCEL
-						Mass(0.1)//MASS
+						Mass(40)//MASS
 						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
 					},
 					physx::PxVec4(0.5f,0,0,1)

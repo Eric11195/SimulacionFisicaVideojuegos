@@ -5,8 +5,8 @@
 //#include "ParticleDescriptor.hpp"
 #include "ParticleGeneratorsDescriptors.hpp"
 
-constexpr float spring_idle_long = 1.00;
-constexpr float elastic_const = 3;
+constexpr float spring_idle_long = 3.00;
+constexpr float elastic_const = 100;
 class SpringJoinedProjectileLauncher : public TriggeredParticleGenerator {
 public:
 	SpringJoinedProjectileLauncher(physx::PxScene* s);
