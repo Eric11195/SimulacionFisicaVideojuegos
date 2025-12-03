@@ -191,9 +191,13 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
+	for (auto scene : scenes_vec) {
+		delete scene;
+	}
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	physx_current_scene->release();
+	for (auto physx_scene : physx_scene_vec) {
+		physx_scene->release();
+	}
 	gDispatcher->release();
 	// -----------------------------------------------------
 	gPhysics->release();	
