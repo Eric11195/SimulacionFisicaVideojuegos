@@ -60,6 +60,7 @@ physx::PxScene* physx_current_scene = nullptr;
 enum scenes {
 	gamescene,
 	mainmenu,
+	endgame,
 	max_number
 };
 
@@ -133,7 +134,12 @@ void initPhysics(bool interactive)
 		en->assign_die_func(
 			[&, my_n_enemies_text]() {
 				--remaining_enemies;
+				//std::cout << std::to_string(remaining_enemies) << '\n';
 				my_n_enemies_text->change_text("Enemies Remaining: " + std::to_string(remaining_enemies));
+				if (remaining_enemies <= 0) {
+					current_scene = scenes_vec[endgame];
+					physx_current_scene = physx_scene_vec[endgame];
+				}
 			}
 		);
 	}
@@ -157,6 +163,14 @@ void initPhysics(bool interactive)
 	}
 	GetCamera()->setTransform(scenes_vec[mainmenu]->get_global_tr());
 
+	//------------------------------------------------------------------------------------------------------------------------
+	physx_scene_vec[endgame] = gPhysics->createScene(sceneDesc);
+	scenes_vec[endgame] = new GameObject(physx_scene_vec[endgame]);
+	scenes_vec[endgame]->addChild(new button(physx_scene_vec[endgame], []() {
+		exit(0);
+		}, "exit_button.png", { 0.33,0.65 }, { 0.33,0.20 })
+	);
+	scenes_vec[endgame]->addChild(new text_hud_elem(physx_scene_vec[endgame], "Felicidades! Has eliminado a todos los enemigos", {0.1,0.8}));
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];

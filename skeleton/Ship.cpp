@@ -135,7 +135,7 @@ void Ship::handle_mouse_pos(float x, float y)
 	//std::lerp
 	PxVec3 normalized_rot_direction = PxVec3(y_m1_1_val,-x_m1_1_val, 0);
 	const float magnitude = normalized_rot_direction.normalize();
-	current_angular_velocity = { 1100*3.14f * min(magnitude,1) , normalized_rot_direction };
+	current_angular_velocity = { 1800*3.14f * min(magnitude,1) , normalized_rot_direction };
 	
 }
 
