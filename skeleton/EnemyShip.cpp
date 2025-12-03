@@ -7,11 +7,15 @@
 #include "ParticleGeneratorsDescriptors.hpp"
 #include "ParticleGenerator.hpp"
 #include "ForceGenerator.hpp"
+#include <cassert>
+#include "BombGenerator.hpp"
 
 constexpr float near_threshold_to_flee = 12;
 
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: Rigid_CubeObject(s, CubeObject::config{ {SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), player_go(player)
+	: Rigid_CubeObject(s, CubeObject::config{ {SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), 
+	player_go(player)//, my_scene(s)
+
 {
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
 	rb->setLinearVelocity({ 0,0,0 });
@@ -61,7 +65,26 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 
 void EnemyShip::step(double dt)
 {
-	think_step(dt);
+	if (dead) {
+		time_till_definitive_dead -= dt;
+		if(time_till_definitive_dead < 0) {
+			//Die for good
+			//die();
+			to_be_destroyed = true;
+			return;
+		}
+		else if (time_till_definitive_dead < 0.5 ) {
+			//Explode
+			if (!exploded) {
+				exploded = true;
+				explosion->setTransform(global_transform);
+				explosion->trigger(nullptr);
+			}
+		}
+	}
+	else {
+		think_step(dt);
+	}
 	setTransform(rb->getGlobalPose());
 	integrate(dt);
 
@@ -85,11 +108,23 @@ void EnemyShip::step(double dt)
 			child->setTransform(aux_tr);
 			break;
 		}
-		case 3: //PITORRO
+		case 3: {//PITORRO
 			Transform aux_tr = global_transform;
-			aux_tr.p += z_axis*x_wing_offset;
+			aux_tr.p += z_axis * x_wing_offset;
 			child->setTransform(aux_tr);
 			break;
+		}
+		case 6:
+			break;
+		default: {
+			//Its one of the particle system that show us fire where it has been shot
+			assert((i - 7) < points_impacted.size());
+			Transform aux_tr = global_transform;
+			aux_tr.p += aux_tr.rotate(points_impacted[i - 7].pos);
+			aux_tr.q = global_transform.q * points_impacted[i - 7].looking_to;
+			child->setTransform(aux_tr);
+			break;
+		}
 		}
 		child->step(dt);
 		++i;
@@ -102,19 +137,33 @@ void EnemyShip::handle_keyboard_button_down(unsigned char c)
 		propulsors->toggle();
 }
 
-/*
-physx::PxQuat get_rotation_to(const physx::PxVec3 from, const physx::PxVec3 to) {
-	physx::PxQuat q;
-	physx::PxVec3 a = from.cross(to);
-	q.x = a.x;
-	q.y = a.y;
-	q.z = a.z;
-	auto from_mag = from.magnitude();
-	auto to_mag = to.magnitude();
-	q.w = (sqrt((from_mag * from_mag * to_mag * to_mag)) + from.dot(to));
-	return q;
+void EnemyShip::set_collision_point(physx::PxVec3 pos, physx::PxVec3 normal)
+{
+	if (!dead) {
+		dead = true;
+		propulsors->set_state(false);
+
+		explosion = new BombGenerator(my_scene, 80, 5, 0.6);//new TriggeredParticleGenerator(my_scene, bomb);
+		addChild(explosion);
+		//die();
+	}
+	//std::cout << pos.x << ' ' << pos.y << ' ' << pos.z << " , " << normal.x << ' ' << normal.y << ' ' << normal.z << '\n';
+	PxQuat global_pos_to_this_obj_pos = global_transform.q.getConjugate();
+	fire_transform f;
+	f.pos = global_pos_to_this_obj_pos.rotate(pos - global_transform.p);
+	auto pos_normalized = f.pos.getNormalized();
+	f.looking_to = PxQuat(physx::PxAcos(pos_normalized.dot({ 0,0,1 })), pos_normalized.cross({ 0,0,1 }).getNormalized());
+	auto fire_hit = new ToggleParticleGenerator(my_scene, fire_hit_enemy_ship);
+	fire_hit->set_toggle(true);
+	addChild(fire_hit);
+	points_impacted.push_back(f);
+
 }
-*/
+
+bool EnemyShip::alive()
+{
+	return !to_be_destroyed;
+}
 
 float lerp(float a, float b, float c) {
 	return a * (1-c) + b * c;

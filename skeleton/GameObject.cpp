@@ -67,8 +67,13 @@ void GameObject::step(double dt)
 {
 	integrate(dt);
 
-	for (auto& child : child_objects) {
-		child->step(dt);
+	auto it = child_objects.begin();
+	while(it!=child_objects.end()) {
+		(*it)->step(dt);
+		if (!(*it)->alive())
+			it = child_objects.erase(it);
+		else
+			++it;
 	}
 }
 void GameObject::translate(physx::PxVec3 t)

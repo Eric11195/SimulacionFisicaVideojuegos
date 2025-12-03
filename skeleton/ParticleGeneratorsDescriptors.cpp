@@ -353,3 +353,51 @@ ParticleGenerator::particle_calculator_functions{
 	}
 }
 };
+
+
+ParticleGenerator::config fire_hit_enemy_ship{
+	15,
+	//Particles per second
+	fire_hit_enemy_ship_particles(),
+ParticleGenerator::particle_calculator_functions{
+	[] {return physx::PxVec3{
+	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	};
+},//POS
+[] {//VEL_DIR
+	return physx::PxVec3{
+		0.1f*Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
+		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get()//1,
+	};
+},
+[] {//SPEED MOD
+	return 5*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_05);
+},
+[] {//Lifetime MOD
+	return 1 * Distributions::NormalDistribution::get(NormalDistribution::d_025) * Distributions::RandomSignDistribution::get();
+},
+[] {//Color
+	return Vector4(
+		Distributions::LinearDistribution::get() * 0.4,
+		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.3,
+		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.6,
+		0
+	);
+},
+[] {//Size
+	return 0;//0.03 * Distributions::NormalDistribution::get(NormalDistribution::d_025);
+},
+[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
+		/*
+		//Inside radius of parent
+		auto vector_from_particle_to_generator = pos_generator - pos_particle;
+		auto module = vector_from_particle_to_generator.magnitude();
+		return module < 1000;
+		*/
+		return true;
+	}
+}
+};

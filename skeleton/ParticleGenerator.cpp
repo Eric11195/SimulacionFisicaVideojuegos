@@ -20,7 +20,9 @@ void TriggeredParticleGenerator::trigger(void* v)
 
 void TriggeredParticleGenerator::step(double dt)
 {
-
+	GameObject::step(dt);
+	//ForceAffected_ParticleGenerator::step(dt);
+	/*
 	//Missing generate particles
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
@@ -63,6 +65,7 @@ void TriggeredParticleGenerator::step(double dt)
 
 	}
 	GameObject::step(dt);
+	*/
 }
 
 
@@ -86,9 +89,11 @@ GameObject* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p
 void ForceAffected_ParticleGenerator::step(double dt)
 {
 	ParticleGenerator::step(dt);
+	/*
 	for (auto f : force_ptr) {
 		f->setTransform(global_transform);
 	}
+	*/
 }
 
 ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
@@ -103,6 +108,9 @@ ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
 
 void ParticleGenerator::step(double dt)
 {
+	generate_particles(dt, nullptr);
+	GameObject::step(dt);
+	/*
 	generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 
@@ -146,6 +154,7 @@ void ParticleGenerator::step(double dt)
 
 		++it;
 	}
+	*/
 }
 
 void ParticleGenerator::generate_particles(double dt, void* v)
@@ -187,7 +196,9 @@ void ToggleParticleGenerator::set_toggle(bool state)
 
 void ToggleParticleGenerator::step(double dt)
 {
-	//GameObject::step(dt);
+	if (active) generate_particles(dt, nullptr);
+	GameObject::step(dt);
+	/*
 	if(active) generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 

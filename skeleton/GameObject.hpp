@@ -19,6 +19,7 @@ using Quaternion = physx::PxQuat;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
+	virtual bool alive() { return true; }
 	inline std::list<std::unique_ptr<GameObject>>& get_child_list() {
 		return child_objects;
 	};

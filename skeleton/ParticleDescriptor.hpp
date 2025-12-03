@@ -19,3 +19,5 @@ Particle::config& missile_particle();
 Particle::config& missile_generated_particles();
 
 Particle::config& propulsores_enemy_ship_particles();
+
+Particle::config& fire_hit_enemy_ship_particles();

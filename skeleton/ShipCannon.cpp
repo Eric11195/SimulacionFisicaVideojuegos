@@ -14,7 +14,7 @@ ShipCannon::ShipCannon(physx::PxScene* s, Transform const& parent_tr)
 
 	missile_cannon = addChild(new MissileGenerator(s));
 
-	bomb_cannon = addChild(new BombGenerator(s,60,50,1));
+	//bomb_cannon = addChild(new BombGenerator(s,60,50,1));
 }
 
 void ShipCannon::step(double dt)
@@ -48,16 +48,6 @@ void ShipCannon::fire_missile()
 	casted_trigger->trigger(&currentInertia);
 }
 
-void ShipCannon::fire_bomb()
-{
-	//new Bomb();
-	GameObject* aux_ptr = (*bomb_cannon).get();
-	Transform tr = global_transform;
-	tr.p += global_transform.q.rotate({ 0,0,0 });
-	aux_ptr->setTransform(tr);
-	auto casted_trigger = static_cast<BombGenerator*>(aux_ptr);
-	casted_trigger->trigger(&currentInertia);
-}
 
 /*
 void ShipCannon::trigger_fire()

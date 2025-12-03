@@ -3,6 +3,7 @@
 #include <PxPhysicsAPI.h>
 
 #include <vector>
+#include <string>
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
@@ -27,6 +28,10 @@
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
 #include "RigidbodyObject.hpp"
+
+
+constexpr uint8_t STARTING_NUMBER_OF_ELEMENTS = 10;
+uint8_t remaining_enemies = STARTING_NUMBER_OF_ELEMENTS;
 
 std::string display_text = "This is a test";
 CoordinateAxis* co=nullptr;
@@ -102,9 +107,14 @@ void initPhysics(bool interactive)
 
 	scenes_vec[gamescene]->addChild(new CoordinateAxis(physx_scene_vec[gamescene]));
 
-	scenes_vec[gamescene]->addChild(new BlackHole(physx_scene_vec[gamescene], { 5,5,5 }, 1));
+	//scenes_vec[gamescene]->addChild(new BlackHole(physx_scene_vec[gamescene], { 5,5,5 }, 1));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, "black_hole"));
+
+
+	scenes_vec[gamescene]->addChild(new hud_elem(physx_scene_vec[gamescene], "casco_nave.png"));
+	auto my_n_enemies_text = new text_hud_elem(physx_scene_vec[gamescene], ("Enemies Remaining: " + std::to_string(STARTING_NUMBER_OF_ELEMENTS)), { 0.01,0.01 });
+	scenes_vec[gamescene]->addChild(my_n_enemies_text);
 
 	ships = std::unordered_map<PxActor*, ShipInterface*>{};
 	player = new Ship(physx_scene_vec[gamescene]);
@@ -119,21 +129,15 @@ void initPhysics(bool interactive)
 	for (int i = 0; i < 10; ++i) {
 		auto en = new EnemyShip(physx_scene_vec[gamescene], player);
 		ships[en->getActor()] = en;
-		scenes_vec[gamescene]->addChild(en);
+		auto enemy_it = scenes_vec[gamescene]->addChild(en);
+		
+		en->assign_die_func(
+			[&]() {
+				--remaining_enemies;
+				my_n_enemies_text->change_text("Enemies Remaining: " + std::to_string(remaining_enemies));
+			}
+		);
 	}
-
-	//TESTING SOLIDO RIGIDO
-	/*
-	scenes_vec[gamescene]->addChild(new StaticRigid_CubeObject(physx_scene_vec[gamescene], 
-		StaticRigid_CubeObject::config{ StaticRigidbody_Object::config(), physx::PxVec3(100,0.01,100)} ));
-
-	auto cube = scenes_vec[gamescene]->addChild(new Rigid_CubeObject(physx_scene_vec[gamescene],
-		Rigid_CubeObject::config{ Rigidbody_Object::config{{SceneObject::config{GameObject::config(), Color(1,0,0,1)}}}, physx::PxVec3(1,1,1)}));
-	(*cube)->set_pos({ 0,0,11 });
-	(*cube)->set_velocity({ 0,30,0 });
-	*/
-
-	//---------------------
 
 
 	//Muelles----------------------------------------------
@@ -145,25 +149,22 @@ void initPhysics(bool interactive)
 	//p_gen->translate_to({ 0,0,0 });
 	//scenes_vec[gamescene]->addChild(p_gen);
 	//-----------------------------------------------------
-
-	scenes_vec[gamescene]->addChild(new hud_elem(physx_scene_vec[gamescene], "casco_nave.png"));
-
 	//MAIN MENU SCENE
 	physx_scene_vec[mainmenu] = gPhysics->createScene(sceneDesc);
 	scenes_vec[mainmenu] = new GameObject(physx_scene_vec[mainmenu]);
 
-	auto start_but = new button(physx_scene_vec[gamescene], [&] {
+	auto start_but = new button(physx_scene_vec[mainmenu], [&] {
 		current_scene = scenes_vec[gamescene];
 		physx_current_scene = physx_scene_vec[gamescene];
 		},
 		"start_game_button.png", { 0.33,0.65 }, {0.33,0.20}
 	);
 	scenes_vec[mainmenu]->addChild(start_but);
-	scenes_vec[mainmenu]->addChild(new hud_elem(physx_scene_vec[gamescene], "logo_juego.png", { 0.25, 0.1 }, {0.5,0.5}));
-	scenes_vec[mainmenu]->addChild(new text_hud_elem(physx_scene_vec[gamescene], "Creado por Izan de Vega", {0.01,0.01}));
+	scenes_vec[mainmenu]->addChild(new hud_elem(physx_scene_vec[mainmenu], "logo_juego.png", { 0.25, 0.1 }, {0.5,0.5}));
+	scenes_vec[mainmenu]->addChild(new text_hud_elem(physx_scene_vec[mainmenu], "Creado por Izan de Vega", {0.01,0.01}));
 
 	for (int i = 0; i < 20; ++i) {
-		scenes_vec[mainmenu]->addChild(new EnemyShip(physx_scene_vec[gamescene], scenes_vec[mainmenu]));
+		scenes_vec[mainmenu]->addChild(new EnemyShip(physx_scene_vec[mainmenu], scenes_vec[mainmenu]));
 	}
 	GetCamera()->setTransform(scenes_vec[mainmenu]->get_global_tr());
 
@@ -222,7 +223,7 @@ void mousePosUpdated(float x, float y) {
 	current_scene->handle_mouse_pos(x,y);
 }
 
-void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
+void onCollision(physx::PxActor* actor1, physx::PxActor* actor2, physx::PxVec3 contact_point, physx::PxVec3 normal)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
@@ -233,13 +234,10 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	ShipInterface* the_ship;// = its[0]->second;
 	switch (n_ships) {
 	case 2:
-		the_ship = its[1]->second;
-		//the_ship->die();
+		its[1]->second->set_collision_point(contact_point,normal);
 		break;
 	case 1:
-		//A ship has bumped into something else
-		the_ship = its[0]->second;
-		//the_ship->die();
+		its[0]->second->set_collision_point(contact_point,normal);
 		break;
 	case 3: {
 		//The ship will be the player

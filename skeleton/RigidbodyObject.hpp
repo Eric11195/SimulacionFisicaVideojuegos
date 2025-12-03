@@ -33,7 +33,6 @@ public:
 protected:
 	virtual void integrate(double dt) override;
 	PxRigidDynamic* rb;
-	PxScene* my_scene;
 };
 
 class Rigid_SphereObject : public Rigidbody_Object {

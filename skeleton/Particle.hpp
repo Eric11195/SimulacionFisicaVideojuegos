@@ -16,16 +16,7 @@
 //#define EULER_INTEGRATION
 #define DAMPING
 
-class InterfaceParticle {
-public:
-	virtual bool alive() {
-		return time_till_death > 0;
-	};
-protected:
-	float time_till_death;
-};
-
-class Particle : public SphereObject, public InterfaceParticle{
+class Particle : public SphereObject{
 public:
 	struct config {
 		SphereObject::config spho_config;
@@ -33,12 +24,23 @@ public:
 		float time_till_death = std::numeric_limits<float>::infinity();
 	};
 	Particle(physx::PxScene* s, config& c);
+	virtual bool alive() override {
+		return time_till_death > 0;
+	};
 	
 	virtual void step(double dt) override;
+
+protected:
+	float time_till_death;
 };
 
-class RigidParticle : public Rigid_SphereObject, public InterfaceParticle {
+class RigidParticle : public Rigid_SphereObject {
 public:
 	RigidParticle(physx::PxScene*, Particle::config& c);
 	virtual void step(double dt) override;
+	virtual bool alive() override {
+		return time_till_death > 0;
+	};
+protected:
+	float time_till_death;
 };
