@@ -4,6 +4,7 @@
 #include "MissileGenerator.hpp"
 #include "BombGenerator.hpp"
 #include "ShipRegularProjectileCannon.hpp"
+#include "SpringJoinedProjectileLauncher.hpp"
 
 ShipCannon::ShipCannon(physx::PxScene* s, Transform const& parent_tr)
 	: ParticleSystem(s, parent_tr)
@@ -13,6 +14,8 @@ ShipCannon::ShipCannon(physx::PxScene* s, Transform const& parent_tr)
 	normal_cannon_idx = 0;
 
 	missile_cannon = addChild(new MissileGenerator(s));
+
+	spring_proj_cannon = addChild(new SpringJoinedProjectileLauncher(s));
 
 	//bomb_cannon = addChild(new BombGenerator(s,60,50,1));
 }
@@ -44,8 +47,19 @@ void ShipCannon::fire_missile()
 	tr.p += global_transform.q.rotate({0,-1,2});
 	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<MissileGenerator*>(aux_ptr);
-	//get_current_speed
+
 	casted_trigger->trigger(&currentInertia);
+}
+
+void ShipCannon::fire_spring()
+{
+	GameObject* aux_ptr = (*spring_proj_cannon).get();
+	Transform tr = global_transform;
+	tr.p += global_transform.q.rotate({ 0,0,2 });
+	aux_ptr->setTransform(tr);
+	auto casted_trigger = static_cast<SpringJoinedProjectileLauncher*>(aux_ptr);
+
+	casted_trigger->trigger(nullptr);
 }
 
 

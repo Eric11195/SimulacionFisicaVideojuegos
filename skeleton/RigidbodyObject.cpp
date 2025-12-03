@@ -122,7 +122,10 @@ void Rigidbody_Object::integrate(double dt)
 	physx::PxVec3 force_in_newtons = { 0,0,0 };
 	for (auto& force : forces_applied_to_this_obj) {
 		//Get matrix transformation only on rotation, to pass from global to local
-		force_in_newtons += force->apply_force(*this);
+		try {
+			force_in_newtons += force->apply_force(*this);
+		}
+		catch (const std::exception& e) {}
 	}
 
 	//std::cout << force_in_newtons.x << ' ' << force_in_newtons.y << ' ' << force_in_newtons.z << '\n';

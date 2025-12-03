@@ -22,3 +22,5 @@ extern ParticleGenerator::config missile;
 extern ParticleGenerator::config propulsores_enemy_ship;
 
 extern ParticleGenerator::config fire_hit_enemy_ship;
+
+extern ParticleGenerator::config spring_projectile_generator;

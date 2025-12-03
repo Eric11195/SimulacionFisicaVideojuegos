@@ -208,3 +208,28 @@ Particle::config& fire_hit_enemy_ship_particles()
 	return p;
 }
 ;
+
+Particle::config& spring_shot_particle_descriptor()
+{
+	static
+		Particle::config p{
+			{//SphO_config
+				{//SceneObject config
+					{//GameObject config
+						{0,0,0}, //Pos
+						{0,0,1}, //speed_dir
+						10,//5, //Speed module
+						//0,//ACCEL
+						Mass(0.1)//MASS
+						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
+					},
+					physx::PxVec4(0.5f,0,0,1)
+		//Color
+	},
+	0.15 //rad
+},
+10 //lifetime
+	};
+	return p;
+}
+;

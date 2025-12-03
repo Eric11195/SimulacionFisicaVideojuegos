@@ -36,6 +36,8 @@
     <ClCompile Include="buttons.cpp" />
     <ClCompile Include="RigidbodyObject.cpp" />
     <ClCompile Include="ShipInterface.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.hpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />

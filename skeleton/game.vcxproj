@@ -285,6 +285,8 @@
     <ClCompile Include="ShipCannon.cpp" />
     <ClCompile Include="ShipInterface.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Common\Print.h" />

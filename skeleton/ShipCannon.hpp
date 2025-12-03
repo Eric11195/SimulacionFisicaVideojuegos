@@ -11,6 +11,7 @@ public:
 	void start_fire();
 	void stop_fire();
 	void fire_missile();
+	void fire_spring();
 	//void fire_bomb();
 protected:
 	bool active = false;
@@ -18,6 +19,7 @@ protected:
 	virtual void step_fire(double dt);
 	std::list<std::unique_ptr<GameObject>>::iterator cannon_it;
 	std::list<std::unique_ptr<GameObject>>::iterator missile_cannon;
+	std::list<std::unique_ptr<GameObject>>::iterator spring_proj_cannon;
 	//std::list<std::unique_ptr<GameObject>>::iterator bomb_cannon;
 	int normal_cannon_idx = 0;
 	float time_acumulated = 0;

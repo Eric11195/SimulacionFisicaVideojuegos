@@ -93,11 +93,11 @@ protected:
 
 class OBJ_OBJ_Spring_ForceGenerator : public Spring_ForceGenerator {
 public:
-	OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, physx::PxVec3* obj1, physx::PxVec3* obj2);
+	OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c,const physx::PxVec3* obj1, const physx::PxVec3* obj2);
 	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
-	physx::PxVec3* obj1;
-	physx::PxVec3* obj2;
+	const physx::PxVec3* obj1;
+	const physx::PxVec3* obj2;
 };
 
 //The point is its transform position

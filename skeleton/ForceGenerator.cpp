@@ -171,7 +171,7 @@ void Variable_ForceGenerator::step(double dt)
 	time_since_started += dt;
 }
 
-OBJ_OBJ_Spring_ForceGenerator::OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, physx::PxVec3* _obj1, physx::PxVec3* _obj2)
+OBJ_OBJ_Spring_ForceGenerator::OBJ_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c, const physx::PxVec3* _obj1, const physx::PxVec3* _obj2)
 	:Spring_ForceGenerator(s,c), obj1(_obj1), obj2(_obj2)
 {
 	assert(obj1 != nullptr);
