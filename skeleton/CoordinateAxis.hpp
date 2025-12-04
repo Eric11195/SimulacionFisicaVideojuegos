@@ -4,13 +4,13 @@
 
 class CoordinateAxis : public GameObject{
 public:
-	CoordinateAxis() 
-		: GameObject(GameObject::config()){
+	CoordinateAxis(physx::PxScene* s) 
+		: GameObject(s, GameObject::config()){
 		//NEUTRAL WHITE BALL
-		addChild(new SphereObject(SphereObject::config()));
+		addChild(new SphereObject(s, SphereObject::config()));
 		//RED X RIGHT
 		addChild(new SphereObject
-		(SphereObject::config{//Scene
+		(s, SphereObject::config{//Scene
 			SceneObject::config{//GO
 				GameObject::config{{5,0,0}},
 				Color(1, 0, 0, 1)
@@ -19,7 +19,7 @@ public:
 		}));
 		//GREEN Y UP
 		addChild(new SphereObject
-		(SphereObject::config{//Scene
+		(s, SphereObject::config{//Scene
 			SceneObject::config{//GO
 				GameObject::config{{0,5,0}},
 				Color(0, 1, 0, 1)
@@ -28,7 +28,7 @@ public:
 		}));
 		//BLUE Z FORWARD
 		addChild(new SphereObject
-		(SphereObject::config{//Scene
+		(s, SphereObject::config{//Scene
 			SceneObject::config{//GO
 				GameObject::config{{0,0,5}},
 				Color(0, 0, 1, 1)

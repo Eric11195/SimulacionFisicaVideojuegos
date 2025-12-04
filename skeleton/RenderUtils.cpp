@@ -6,10 +6,13 @@
 #include "RenderUtils.hpp"
 #include "ScreenSizeConstants.hpp";
 #include <iostream>
+#include "GameObject.hpp"
 
+#include "mouse_pos.hpp"
 
 using namespace physx;
 
+extern GameObject* get_rendering_obj();
 extern void initPhysics(bool interactive);
 extern void stepPhysics(bool interactive, double t);	
 extern void cleanupPhysics(bool interactive);
@@ -56,10 +59,12 @@ namespace
 void motionCallback(int x, int y)
 {
 	//From 0 to 1
-	float x_float = float(x)/WINDOW_LENGTH;
+	float x_float = float(x)/WINDOW_WIDTH;
 	float y_float = float(y)/WINDOW_HEIGHT;
 	x_float = max(0.0f, min(1, x_float));
 	y_float = max(0.0f, min(1, y_float));
+	mouse_pos_x = x_float;
+	mouse_pos_y = y_float;
 	mousePosUpdated(x_float, y_float);
 }
 
@@ -77,6 +82,10 @@ void keyboardUpCallback(unsigned char key, int x, int y) {
 void mouseCallback(int button, int state, int x, int y)
 {
 	//sCamera->handleMouse(button, state, x, y);
+	float x_float = float(x) / WINDOW_WIDTH;
+	float y_float = float(y) / WINDOW_HEIGHT;
+	x_float = max(0.0f, min(1, x_float));
+	y_float = max(0.0f, min(1, y_float));
 	if (state == GLUT_UP) {
 		mouseReleased(button);
 	}
@@ -115,9 +124,13 @@ void renderCallback()
 #else
 	stepPhysics(true, t);
 #endif
+	hud_rendering_obj = get_rendering_obj();
 
 	startRender(sCamera->getEye(), sCamera->getDir(), sCamera->getUp());
 
+	hud_rendering_obj->render3D();
+
+	/*
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
 	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
 	{
@@ -134,6 +147,7 @@ void renderCallback()
 		}
 		renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
 	}
+	*/
 
 	//PxScene* scene;
 	//PxGetPhysics().getScenes(&scene, 1);
@@ -144,6 +158,7 @@ void renderCallback()
 	//	scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
+	renderHUD();
 
 	finishRender();
 }
@@ -160,7 +175,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_LENGTH, WINDOW_HEIGHT);
+	setupDefaultWindow("Simulacion Fisica Videojuegos", WINDOW_WIDTH, WINDOW_HEIGHT);
 	setupDefaultRenderState();
 
 	initPhysics(true);

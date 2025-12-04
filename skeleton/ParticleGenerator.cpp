@@ -1,54 +1,82 @@
 #include "ParticleGenerator.hpp"
 #include <iostream>
 #include "ForceGenerator.hpp"
+#include <cassert>
+
 //#include "Particle.hpp"
 
 //-------------------------------------------------------------------------------------------------------
-TriggeredParticleGenerator::TriggeredParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ForceAffected_ParticleGenerator(c,forces_names, forces_ptr)
+TriggeredParticleGenerator::TriggeredParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces_names, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ForceAffected_ParticleGenerator(s,c,forces_names, forces_ptr)
 {
 }
 
 
-void TriggeredParticleGenerator::trigger()
+void TriggeredParticleGenerator::trigger(void* v)
 {
-	generate_particles(1);
+	generate_particles(1, v);
 }
 
 
 void TriggeredParticleGenerator::step(double dt)
 {
-
+	GameObject::step(dt);
+	//ForceAffected_ParticleGenerator::step(dt);
+	/*
 	//Missing generate particles
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-
-		GameObject* aux_ptr = (*it).get();
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		it->get()->step(dt);
+		auto ptr = (*it).get();
+		switch (ptr->my_class_id) {
+		case uninteresting:
+			assert(false);
+			break;
+		case particle:
 		{
-			it = child_objects.erase(it);
-			continue;
+			Particle* casted_particle = static_cast<Particle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			break;
 		}
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
+		case rb_particle: {
+			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			casted_particle->set_my_transform_to_actor();
+			break;
 		}
-		
+		}
 		++it;
+
 	}
 	GameObject::step(dt);
+	*/
 }
 
 
 //-------------------------------------------------------------------------------------------------------
 
-ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ParticleGenerator(c), force_names(forces), force_ptr(forces_ptr) {}
+ForceAffected_ParticleGenerator::ForceAffected_ParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ParticleGenerator(s,c), force_names(forces), force_ptr(forces_ptr) {}
 
-Particle* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
+GameObject* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p, void* v)
 {
-	auto particle = ParticleGenerator::set_up_particle(p);
+	auto particle = static_cast<GameObject*>(ParticleGenerator::set_up_particle(p, v));
 	for (auto& f : force_names) {
 		particle->add_force_to_myself(f);
 	}
@@ -61,48 +89,75 @@ Particle* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p)
 void ForceAffected_ParticleGenerator::step(double dt)
 {
 	ParticleGenerator::step(dt);
+	/*
 	for (auto f : force_ptr) {
 		f->setTransform(global_transform);
 	}
+	*/
 }
 
-ParticleGenerator::ParticleGenerator(config& c)
+ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
 	:
 	const_p_config(c.particle_config.spho_config.so_config.go_config),
 	particle_generated_per_second(c.particle_generated_per_second),
 	avrg_lifetime(c.particle_config.time_till_death),
 	avrg_color(c.particle_config.spho_config.so_config.color),
 	avrg_size(c.particle_config.spho_config.radius),
-	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas) {
+	p_config(c.particle_config), my_particle_lambdas(c.particle_lambdas), GameObject(s){
 }
 
 void ParticleGenerator::step(double dt)
 {
-	generate_particles(dt);
+	generate_particles(dt, nullptr);
+	GameObject::step(dt);
+	/*
+	generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		it->get()->step(dt);
+		auto ptr = (*it).get();
+		switch (ptr->my_class_id) {
+		case uninteresting:
+			assert(false);
+			break;
+		case particle:
 		{
-			it = child_objects.erase(it);
-			continue;
+			Particle* casted_particle = static_cast<Particle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			break;
 		}
-
-		GameObject* aux_ptr = (*it).get();
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
+		case rb_particle: {
+			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			casted_particle->set_my_transform_to_actor();
+			break;
 		}
-		(*it)->step(dt);
-		//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
+		}
 
 		++it;
 	}
+	*/
 }
 
-void ParticleGenerator::generate_particles(double dt)
+void ParticleGenerator::generate_particles(double dt, void* v)
 {
 	float particles_this_frame = particles_per_second_accumulator + particle_generated_per_second * dt;
 	int particles_generated_in_current_frame = floor(particles_this_frame);
@@ -120,17 +175,17 @@ void ParticleGenerator::generate_particles(double dt)
 		new_p_config_short.mass = const_p_config.mass + my_particle_lambdas.mass();
 		p_config.time_till_death = avrg_lifetime + my_particle_lambdas.lifetime();
 		p_config.spho_config.so_config.color = avrg_color + my_particle_lambdas.color();
-		addChild(set_up_particle(p_config));
+		addChild(static_cast<GameObject*>(set_up_particle(p_config, v)));
 	}
 }
 
-Particle* ParticleGenerator::set_up_particle(Particle::config& p)
+GameObject* ParticleGenerator::set_up_particle(Particle::config& p, void* v)
 {
-	return new Particle(p);
+	return new Particle(my_scene, p);
 }
 
-ToggleParticleGenerator::ToggleParticleGenerator(ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
-	:ForceAffected_ParticleGenerator(c,forces,forces_ptr), active(true)
+ToggleParticleGenerator::ToggleParticleGenerator(physx::PxScene* s, ParticleGenerator::config& c, std::initializer_list<std::string> forces, std::initializer_list<ForceGenerator*> forces_ptr)
+	:ForceAffected_ParticleGenerator(s,c,forces,forces_ptr), active(true)
 {
 }
 
@@ -141,28 +196,73 @@ void ToggleParticleGenerator::set_toggle(bool state)
 
 void ToggleParticleGenerator::step(double dt)
 {
-	if (active) {
-		generate_particles(dt);
-	}
+	if (active) generate_particles(dt, nullptr);
+	GameObject::step(dt);
+	/*
+	if(active) generate_particles(dt, nullptr);
 	//GameObject::step(dt);
 
 	auto it = child_objects.begin();
 	while (it != child_objects.end()) {
-		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+		it->get()->step(dt);
+		auto ptr = (*it).get();
+		switch (ptr->my_class_id) {
+		case uninteresting:
+			assert(false);
+			break;
+		case particle:
+		{
+			Particle* casted_particle = static_cast<Particle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			break;
+		}
+		case rb_particle: {
+			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
+			if (!casted_particle->alive()) {
+				it = child_objects.erase(it);
+				continue;
+			}
+			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
+			{
+				it = child_objects.erase(it);
+				continue;
+			}
+			casted_particle->set_my_transform_to_actor();
+			break;
+		}
+		}
+		++it;
+	}
+	/*
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
+		GameObject* aux_ptr = (*it).get();
+		auto casted_particle = (InterfaceParticle*)(aux_ptr);
+		assert(casted_particle);
+		if (!casted_particle->alive()) {
+			it = child_objects.erase(it);
+			continue;
+		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
 		{
 			it = child_objects.erase(it);
 			continue;
 		}
-
-		GameObject* aux_ptr = (*it).get();
-		auto casted_particle = static_cast<Particle*>(aux_ptr);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
+		else {
+			(*it)->step(dt);
+			++it;
 		}
-		(*it)->step(dt);
-		//(*it)->update_position(PhysicLib::NEUTRAL_TRANSFORM);
-
-		++it;
 	}
+
+	if (active) {
+		generate_particles(dt, nullptr);
+	}
+	*/
 }

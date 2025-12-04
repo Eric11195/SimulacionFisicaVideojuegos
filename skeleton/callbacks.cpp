@@ -1,6 +1,6 @@
 #include "callbacks.hpp"
 
-extern void onCollision(physx::PxActor* actor1, physx::PxActor* actor2);
+extern void onCollision(physx::PxActor* actor1, physx::PxActor* actor2, physx::PxVec3 contact_point, physx::PxVec3 colision_normal);
 
 physx::PxFilterFlags contactReportFilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 	physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
@@ -27,5 +27,7 @@ void ContactReportCallback::onContact(const physx::PxContactPairHeader& pairHead
 	PX_UNUSED(nbPairs);
 	physx::PxActor* actor1 = pairHeader.actors[0];
 	physx::PxActor* actor2 = pairHeader.actors[1];
-	onCollision(actor1, actor2);
+	physx::PxContactPairPoint colisions;
+	pairs[0].extractContacts(&colisions,1);
+	onCollision(actor1, actor2, colisions.position, colisions.normal);
 }

@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include "inverse_mass.hpp"
+#include "PxScene.h"
 
 #define EULER_SEMI_IMPLICIT_INTEGRATION
 //#define EULER_INTEGRATION
@@ -18,6 +19,22 @@ using Quaternion = physx::PxQuat;
 class ForceGenerator;
 
 struct GameObject : public InputProcessor{
+	virtual bool alive() { return true; }
+	inline std::list<std::unique_ptr<GameObject>>& get_child_list() {
+		return child_objects;
+	};
+	enum class_id : uint8_t {
+		uninteresting = 0,
+		particle = 1,
+		rb_particle = 2
+	};
+	enum team : uint8_t {
+		player = 1,
+		enemy = 0
+	};
+	uint8_t my_team_id : 4;
+	uint8_t my_class_id : 4;
+	inline static physx::PxPhysics* physics_ref = nullptr;
 	inline static std::unordered_map<std::string, ForceGenerator*> force_generators_map = {};
 	struct config {
 		physx::PxVec3 pos = { 0,0,0 };
@@ -29,26 +46,37 @@ struct GameObject : public InputProcessor{
 	};
 	GameObject(const GameObject&) = delete;
 	GameObject& operator =(const GameObject&) = delete;
-	GameObject(config& c = config(), std::initializer_list<GameObject*> go_s = {});
+	GameObject(physx::PxScene* scene, config& c=config(), std::initializer_list<GameObject*> go_s = {});
 	virtual ~GameObject();
 
+	virtual void render2D();
+	virtual void render3D();
+
+	virtual void rotate(Quaternion);
 	void setTransform(Transform& tr);
 	
 	virtual std::list<std::unique_ptr<GameObject>>::iterator addChild(GameObject* go);
 
+	physx::PxScene* get_scene() {
+		return my_scene;
+	}
 	virtual Vector3 get_pos();
-	virtual Vector3 get_vel() const;
+	virtual Vector3 get_vel();
 	virtual void step(double dt);
 
-	void translate(physx::PxVec3);
+	virtual void translate(physx::PxVec3);
 	virtual void translate_to(physx::PxVec3);
-	virtual void rotate(Quaternion);
 
-	void set_velocity(physx::PxVec3);
-	void set_velocity_magnitude(float m);
+	virtual void set_pos(physx::PxVec3);
+	virtual void set_velocity(physx::PxVec3);
+	virtual void set_velocity_magnitude(float m);
 
 	float get_inv_mass() const { return mass.inv_mass; }
-	Transform get_global_tr()const { return global_transform; }
+	Transform get_global_tr() { return global_transform; }
+
+	const physx::PxVec3* get_pos_ptr() const {
+		return &(global_transform.p);
+	}
 
 	virtual void handle_mouse_pos(float x, float y) override;
 	virtual void handle_mouse_button_up(uint8_t mb_id) override;
@@ -56,13 +84,15 @@ struct GameObject : public InputProcessor{
 	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual void handle_keyboard_button_up(unsigned char key) override;
 
-	void add_force_to_myself(ForceGenerator*);
+	virtual void add_force_to_myself(ForceGenerator*);
 	void add_force_to_myself(std::string);
 
 #ifdef DAMPING
 	void set_dumping(float f);
 #endif
 protected:
+	virtual void add_speed(physx::PxVec3);
+	physx::PxScene* my_scene;
 	virtual void integrate(double t);
 	InvMass mass;
 	Transform global_transform;

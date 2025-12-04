@@ -29,6 +29,13 @@
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
     <ClCompile Include="ParticleDescriptor.cpp" />
+    <ClCompile Include="Render\hud_elem.cpp" />
+    <ClCompile Include="mouse_pos.cpp" />
+    <ClCompile Include="buttons.cpp" />
+    <ClCompile Include="RigidbodyObject.cpp" />
+    <ClCompile Include="ShipInterface.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.hpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -62,6 +69,16 @@
     <ClInclude Include="inverse_mass.hpp" />
     <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="..\common\Common\Print.h" />
+    <ClInclude Include="..\common\Common\PVD.h" />
+    <ClInclude Include="stb_image.hpp" />
+    <ClInclude Include="Render\hud_elem.hpp" />
+    <ClInclude Include="EventsSystem.hpp" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="mouse_pos.hpp" />
+    <ClInclude Include="buttons.hpp" />
+    <ClInclude Include="RigidbodyObject.hpp" />
+    <ClInclude Include="ShipInterface.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

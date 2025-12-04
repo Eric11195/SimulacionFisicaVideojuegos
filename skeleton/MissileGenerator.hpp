@@ -11,13 +11,13 @@ class MissileCannon : public ShipCannon {
 
 class MissileGenerator : public TriggeredParticleGenerator {
 public:
-	MissileGenerator();
+	MissileGenerator(physx::PxScene* s);
 protected:
-	virtual Particle* set_up_particle(Particle::config& p) override;
+	virtual GameObject* set_up_particle(Particle::config& p, void* v) override;
 };
 
 class Missile : public Projectile {
 public:
-	Missile(Projectile::projectile_config&);
-	void step(double dt);
+	Missile(physx::PxScene* s, Particle::config&);
+	void step(double dt) override;
 };

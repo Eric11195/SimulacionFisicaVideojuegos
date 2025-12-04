@@ -22,17 +22,15 @@ gs = gr*(vs^2/vr^2)
 */
 
 
-class Projectile : public Particle {
+class Projectile : public RigidParticle {
 public:
-	struct projectile_config {
-		Particle::config particle_config;
-		//speed s_real;
-	};
 	//modifies its own mass, and mutiplies force_applied to gravity
-	Projectile(projectile_config& c, float real_speed, float simulated_speed);
+	Projectile(physx::PxScene* s, Particle::config& c, float real_speed = 100, float simulated_speed=100);
+	~Projectile();
 	float get_gravity_proportion(float real_speed, float sim_speed);
 	float get_s_mass(float mass, float real_speed, float sim_speed);
-	virtual void integrate(double dt) override;
+	virtual void step(double dt) override;
+	//virtual void integrate(double dt) override;
 protected:
 	float gravity_multiplier;
 };

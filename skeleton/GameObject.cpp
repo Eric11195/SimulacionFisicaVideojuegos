@@ -1,12 +1,16 @@
 #include "GameObject.hpp"
 #include "ForceGenerator.hpp"
 #include <iostream>
+#include <cassert>
 
-GameObject::GameObject(config& c, std::initializer_list<GameObject*> go_s)
-	: global_transform(Transform(c.pos,c.initial_rotation)),
-	vel(c.initial_speed_dir.getNormalized()*c.initial_speed_magnitude),
-	damping_mult(c.damping_mult), mass(c.mass)
+GameObject::GameObject(physx::PxScene* scene, config& c, std::initializer_list<GameObject*> go_s)
+	: global_transform(Transform(c.pos, c.initial_rotation)), my_class_id(uninteresting), my_team_id(enemy),
+	damping_mult(c.damping_mult), mass(c.mass), my_scene(scene)
 {
+	assert(my_scene);
+
+	set_velocity(c.initial_speed_dir.getNormalized() * c.initial_speed_magnitude);
+
 	for (auto go : go_s) {
 		addChild(go);
 	}
@@ -16,6 +20,26 @@ GameObject::~GameObject()
 {
 	child_objects.clear();
 }
+
+void GameObject::render2D()
+{
+	for (auto& c : child_objects) {
+		c->render2D();
+	}
+}
+
+void GameObject::render3D()
+{
+	for (auto& c : child_objects) {
+		c->render3D();
+	}
+}
+void GameObject::rotate(physx::PxQuat q)
+{
+	global_transform.q *= q;
+	//local_transform.q *= q;
+}
+
 
 void GameObject::setTransform(Transform& tr)
 {
@@ -34,7 +58,7 @@ Vector3 GameObject::get_pos()
 	return global_transform.p;
 }
 
-Vector3 GameObject::get_vel() const
+Vector3 GameObject::get_vel()
 {
 	return vel;
 }
@@ -43,8 +67,13 @@ void GameObject::step(double dt)
 {
 	integrate(dt);
 
-	for (auto& child : child_objects) {
-		child->step(dt);
+	auto it = child_objects.begin();
+	while(it!=child_objects.end()) {
+		(*it)->step(dt);
+		if (!(*it)->alive())
+			it = child_objects.erase(it);
+		else
+			++it;
 	}
 }
 void GameObject::translate(physx::PxVec3 t)
@@ -59,10 +88,9 @@ void GameObject::translate_to(physx::PxVec3 t)
 	//local_transform.p = local_transform.q.rotate(t);
 }
 
-void GameObject::rotate(physx::PxQuat q)
+void GameObject::set_pos(physx::PxVec3 p)
 {
-	global_transform.q *= q;
-	//local_transform.q *= q;
+	global_transform.p = p;
 }
 
 void GameObject::set_velocity(physx::PxVec3 v)
@@ -79,6 +107,10 @@ void GameObject::set_dumping(float f)
 	damping_mult = f;
 }
 #endif
+void GameObject::add_speed(physx::PxVec3 v)
+{
+	vel += v;
+}
 void GameObject::integrate(double dt)
 {
 #if defined(EULER_SEMI_IMPLICIT_INTEGRATION) || (!defined(EULER_SEMI_IMPLICIT_INTEGRATION) && !defined(EULER_INTEGRATION))
@@ -93,7 +125,7 @@ void GameObject::integrate(double dt)
 	//F = m * a <=> F/m = a así que si solo le añado todas las fuerzas a accel. Antes de poder añadirselo a la velocidad tengo que dividirlo por la masa (o multiplicarlo por la masa inversa)
 	auto accel = force_in_newtons * mass.inv_mass;
 	//std::cout << vel.x << " " << vel.y << " " << vel.z << '\n';
-	vel += accel * dt;
+	add_speed(accel * dt);
 	translate(dt * vel);
 #elif defined EULER_INTEGRATION
 	translate(dt * vel);

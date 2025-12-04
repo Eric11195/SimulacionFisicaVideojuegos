@@ -257,16 +257,20 @@
     <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
+    <ClCompile Include="buttons.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MissileGenerator.cpp" />
+    <ClCompile Include="mouse_pos.cpp" />
     <ClCompile Include="ParticleDescriptor.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Render\hud_elem.cpp" />
+    <ClCompile Include="RigidbodyObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -277,23 +281,33 @@
     <ClCompile Include="ScreenSizeConstants.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="ShipCannon.cpp" />
+    <ClCompile Include="ShipInterface.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.cpp" />
+    <ClCompile Include="SpringJoinedProjectileLauncher.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\Common\Print.h" />
+    <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="BlackHole.hpp" />
+    <ClInclude Include="buttons.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
+    <ClInclude Include="EventsSystem.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="inverse_mass.hpp" />
     <ClInclude Include="MissileGenerator.hpp" />
+    <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="ParticleDescriptor.hpp" />
     <ClInclude Include="ParticleGenerator.hpp" />
     <ClInclude Include="ParticleGeneratorsDescriptors.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="Render\hud_elem.hpp" />
+    <ClInclude Include="RigidbodyObject.hpp" />
     <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Particle.hpp" />
@@ -305,7 +319,10 @@
     <ClInclude Include="ScreenSizeConstants.hpp" />
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="ShipCannon.hpp" />
+    <ClInclude Include="ShipInterface.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

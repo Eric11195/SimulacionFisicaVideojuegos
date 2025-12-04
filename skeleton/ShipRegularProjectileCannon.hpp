@@ -5,8 +5,8 @@ class ForceGenerator;
 
 class ShipRegularProjectileCannon : public TriggeredParticleGenerator {
 public:
-	ShipRegularProjectileCannon();
-	virtual Particle* set_up_particle(Particle::config& p) override;
+	ShipRegularProjectileCannon(physx::PxScene* s);
+	virtual GameObject* set_up_particle(Particle::config& p, void* v) override;
 protected:
 	ForceGenerator* my_mod_gravity;
 };

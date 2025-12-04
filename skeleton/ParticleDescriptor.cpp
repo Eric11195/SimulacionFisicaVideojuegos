@@ -28,7 +28,7 @@ Particle::config& bomb_init_particle()
 	{//SphO_config
 		SceneObject::config{//SceneObject config
 			GameObject::config{//GameObject config
-				{0,0,20}, //Pos
+				{0,0,0}, //Pos
 				{0,1,0}, //speed_dir
 				//{0,-1,0},//accel_dir
 				0, //Speed module
@@ -59,9 +59,9 @@ Particle::config& bomb_created_particles()
 				Mass(0.1)//mass
 				//PhysicLib::GRAVITY,//Accel module
 			},
-			physx::PxVec4(0,0,0,0) //Color
+			physx::PxVec4(1,0,0,0) //Color
 		},
-	0.1f //rad
+	0.4f //rad
 	},
 	10 //lifetime
 	};
@@ -101,13 +101,14 @@ Particle::config& laser_shot()
 							//{0,-1,0},//accel_dir
 							40, //Speed module
 							//0//PhysicLib::GRAVITY,//Accel module
+							Mass(10)
 						},
 						physx::PxVec4(0.937,1,0,1)
 						//Color
 					},
 					0.25 //rad
 				},
-				5 //lifetime
+				4 //lifetime
 	};
 	return p;
 }
@@ -121,14 +122,15 @@ Particle::config& missile_particle()
 			{0,0,0}, //Pos
 			{0,0,1}, //speed_dir
 			//{0,-1,0},//accel_dir
-			20,//10, //Speed module
+			10,//10, //Speed module
 			//0//PhysicLib::GRAVITY,//Accel module
+			Mass(1000)
 		},
 		physx::PxVec4(1,1,1,1)//Color
 	},
 	0.2 //rad
 },
-5 //lifetime
+6 //lifetime
 	};
 	return p;
 }
@@ -152,7 +154,7 @@ Particle::config& missile_generated_particles()
 	},
 	0.05 //rad
 },
-0.5 //lifetime
+1 //lifetime
 	};
 	return p;
 }
@@ -176,6 +178,57 @@ Particle::config& propulsores_enemy_ship_particles()
 	0.4 //rad
 },
 0.5 //lifetime
+	};
+	return p;
+}
+;
+
+
+Particle::config& fire_hit_enemy_ship_particles()
+{
+	static
+		Particle::config p{
+			{//SphO_config
+				{//SceneObject config
+					{//GameObject config
+						{0,0,0}, //Pos
+						{0,0,1}, //speed_dir
+						5,//5, //Speed module
+						//0,//ACCEL
+						Mass(0.1)//MASS
+						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
+					},
+					physx::PxVec4(0.5f,0,0,1)
+		//Color
+	},
+	0.25 //rad
+},
+0.5 //lifetime
+	};
+	return p;
+}
+;
+
+Particle::config& spring_shot_particle_descriptor()
+{
+	static
+		Particle::config p{
+			{//SphO_config
+				{//SceneObject config
+					{//GameObject config
+						{0,0,0}, //Pos
+						{0,0,1}, //speed_dir
+						10,//5, //Speed module
+						//0,//ACCEL
+						Mass(40)//MASS
+						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
+					},
+					physx::PxVec4(0.5f,0,0,1)
+		//Color
+	},
+	0.15 //rad
+},
+10 //lifetime
 	};
 	return p;
 }

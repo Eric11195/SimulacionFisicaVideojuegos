@@ -1,11 +1,16 @@
 #pragma once
 #include "GameObject.hpp"
+#include "RigidbodyObject.hpp"
+#include "ShipInterface.hpp"
+
+class text_hud_elem;
 
 class Directional_ForceGenerator;
+class ShipCannon;
 
-class Ship : public GameObject {
+class Ship : public Rigid_CubeObject, public ShipInterface {
 public:
-	Ship();
+	Ship(physx::PxScene* s);
 	//virtual void process_input(unsigned char c) override;
 	virtual void step(double dt) override;
 	virtual void handle_keyboard_button_down(unsigned char c) override;
@@ -23,14 +28,18 @@ protected:
 	//ToggleDirectional_ForceGenerator* brakes;
 	angular_velocity current_angular_velocity = { 0,{0,0,1} };
 	physx::PxVec2 virar_buttons = {0,0};
+
+	text_hud_elem* my_speed_hud;
+
 	//from 0 to 1
 	//float speed = 0;
 	float angular_speed_radians_per_second = 1;
-	float virar_radians_per_second = 1.5f;
+	float virar_torque_speed = 150.0f;
 	enum state {
 		constante = 0,
 		acelerando = 1,
 		decelerando = -1
 	};
 	state current_state = constante;
+	ShipCannon* my_cannon;
 };
