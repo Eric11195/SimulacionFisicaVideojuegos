@@ -3,12 +3,6 @@
 #include "ShipCannon.hpp"
 #include "Projectile.hpp"
 
-/*
-class MissileCannon : public ShipCannon {
-	MissileCannon(parent_tr);
-};
-*/
-
 class MissileGenerator : public TriggeredParticleGenerator {
 public:
 	MissileGenerator(physx::PxScene* s);

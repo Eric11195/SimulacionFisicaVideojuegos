@@ -45,31 +45,12 @@ void ForceGenerator::cleanup_me()
 	GameObject::force_generators_map.erase(it);
 }
 
-/*
-ForceGenerator::~ForceGenerator()
-{
-	//Si esto se está llamando es pq ya nadie tiene referencias a él
-	auto it = GameObject::force_generators_map.find(my_name);
-	if (it == GameObject::force_generators_map.end()) {
-		throw "There is no force generator with that name. Probably it has already been deleted";
-	}
-	GameObject::force_generators_map.erase(it);
-	
-}
-*/
 Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxScene* s, physx::PxVec3 v, float mag)
 	: Directional_ForceGenerator(s,v, mag) {}
 
 Gravity_ForceGenerator::Gravity_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float mag)
 	: Directional_ForceGenerator(s, name, force_direction, mag)
 {
-}
-
-void Gravity_ForceGenerator::handle_keyboard_button_down(unsigned char key)
-{
-	if (key == 'g' || key=='G') {
-		toggle();
-	}
 }
 
 //returns the force to give the given object
@@ -138,13 +119,6 @@ physx::PxVec3 TorbellinoSencillo::apply_force(GameObject & g)
 	return wind_force;
 }
 
-void TorbellinoSencillo::handle_keyboard_button_down(unsigned char key)
-{
-	if (key == 't'||key=='T') {
-		toggle();
-	}
-}
-
 bool TorbellinoSencillo::inside_area_of_influence(GameObject & g) const
 {
 	//If distance is greater than 100, it does not affect
@@ -190,10 +164,6 @@ physx::PxVec3 OBJ_OBJ_Spring_ForceGenerator::apply_force(GameObject & g)
 	return calculate_force(from_1_to_2);
 }
 
-void Spring_ForceGenerator::handle_keyboard_button_down(unsigned char key)
-{
-	if (key == 'm' || key == 'M') toggle();
-}
 
 Spring_ForceGenerator::Spring_ForceGenerator(physx::PxScene* s, config c)
 	: ForceGenerator(s,c.elastic_const), repose_long(c.repose_long)

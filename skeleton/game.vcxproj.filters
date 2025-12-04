@@ -71,7 +71,6 @@
     <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="Render\hud_elem.hpp" />
-    <ClInclude Include="EventsSystem.hpp" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="buttons.hpp" />

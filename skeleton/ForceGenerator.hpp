@@ -33,7 +33,6 @@ class Gravity_ForceGenerator : public Directional_ForceGenerator {
 public:
 	Gravity_ForceGenerator(physx::PxScene* s, physx::PxVec3 force_dir, float mag = 9.8f);
 	Gravity_ForceGenerator(physx::PxScene* s, std::string name, physx::PxVec3 force_direction, float mag = 9.8f);
-	virtual void handle_keyboard_button_down(unsigned char key) override;
 	virtual physx::PxVec3 apply_force(GameObject & g) override;
 };
 
@@ -53,7 +52,6 @@ class TorbellinoSencillo : public Wind_ForceGenerator {
 public:
 	TorbellinoSencillo(physx::PxScene* s, std::string name, physx::PxVec3, float magnitude, float height = 50.0f, float air_density=1.33, float avance_resistance_aerodinamic_coef=0.5f);
 	virtual physx::PxVec3 apply_force(GameObject & g) override;
-	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
 	virtual bool inside_area_of_influence(GameObject & g) const;
 	float height;
@@ -82,7 +80,6 @@ public:
 		float elastic_const;
 		float repose_long;
 	};
-	virtual void handle_keyboard_button_down(unsigned char key) override;
 protected:
 	Spring_ForceGenerator(physx::PxScene* s, config);
 	Spring_ForceGenerator(physx::PxScene* s, std::string, config);
@@ -114,22 +111,5 @@ public:
 	Floating_ForceGenerator(physx::PxScene* s, config c, float height, float density);
 	virtual physx::PxVec3 apply_force(GameObject & g) override;
 protected:
-	//Force magnitude == density
 	float height;
 };
-
-/*
-struct Plane {
-	physx::PxVec3 perpendicular_vec;
-	float perpendicular_offset;
-	Plane(physx::PxVec3 v, float o)
-		:perpendicular_vec(v.getNormalized()), perpendicular_offset(o){ }
-	float dist_to_plane(physx::PxVec3 pt) {
-		physx::PxVec3 plane_perpendicular_pt = pt+
-	}
-};
-
-class PLANE_OBJ_Spring_ForceGenerator : public ForceGenerator {
-	PLANE_OBJ_Spring_ForceGenerator(config c, physx::PxVec3 perpendicular_vector);
-};
-*/

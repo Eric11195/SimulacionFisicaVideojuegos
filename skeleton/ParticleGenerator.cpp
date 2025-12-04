@@ -21,51 +21,6 @@ void TriggeredParticleGenerator::trigger(void* v)
 void TriggeredParticleGenerator::step(double dt)
 {
 	GameObject::step(dt);
-	//ForceAffected_ParticleGenerator::step(dt);
-	/*
-	//Missing generate particles
-	auto it = child_objects.begin();
-	while (it != child_objects.end()) {
-		it->get()->step(dt);
-		auto ptr = (*it).get();
-		switch (ptr->my_class_id) {
-		case uninteresting:
-			assert(false);
-			break;
-		case particle:
-		{
-			Particle* casted_particle = static_cast<Particle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			break;
-		}
-		case rb_particle: {
-			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			casted_particle->set_my_transform_to_actor();
-			break;
-		}
-		}
-		++it;
-
-	}
-	GameObject::step(dt);
-	*/
 }
 
 
@@ -89,11 +44,6 @@ GameObject* ForceAffected_ParticleGenerator::set_up_particle(Particle::config& p
 void ForceAffected_ParticleGenerator::step(double dt)
 {
 	ParticleGenerator::step(dt);
-	/*
-	for (auto f : force_ptr) {
-		f->setTransform(global_transform);
-	}
-	*/
 }
 
 ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
@@ -118,51 +68,6 @@ void ParticleGenerator::step(double dt)
 		else ++it;
 	}
 	GameObject::step(dt);
-	/*
-	generate_particles(dt, nullptr);
-	//GameObject::step(dt);
-
-	auto it = child_objects.begin();
-	while (it != child_objects.end()) {
-		it->get()->step(dt);
-		auto ptr = (*it).get();
-		switch (ptr->my_class_id) {
-		case uninteresting:
-			assert(false);
-			break;
-		case particle:
-		{
-			Particle* casted_particle = static_cast<Particle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			break;
-		}
-		case rb_particle: {
-			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			casted_particle->set_my_transform_to_actor();
-			break;
-		}
-		}
-
-		++it;
-	}
-	*/
 }
 
 void ParticleGenerator::generate_particles(double dt, void* v)
@@ -214,71 +119,4 @@ void ToggleParticleGenerator::step(double dt)
 		else ++it;
 	}
 	GameObject::step(dt);
-	/*
-	if(active) generate_particles(dt, nullptr);
-	//GameObject::step(dt);
-
-	auto it = child_objects.begin();
-	while (it != child_objects.end()) {
-		it->get()->step(dt);
-		auto ptr = (*it).get();
-		switch (ptr->my_class_id) {
-		case uninteresting:
-			assert(false);
-			break;
-		case particle:
-		{
-			Particle* casted_particle = static_cast<Particle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			break;
-		}
-		case rb_particle: {
-			RigidParticle* casted_particle = static_cast<RigidParticle*>((*it).get());
-			if (!casted_particle->alive()) {
-				it = child_objects.erase(it);
-				continue;
-			}
-			else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-			{
-				it = child_objects.erase(it);
-				continue;
-			}
-			casted_particle->set_my_transform_to_actor();
-			break;
-		}
-		}
-		++it;
-	}
-	/*
-	auto it = child_objects.begin();
-	while (it != child_objects.end()) {
-		GameObject* aux_ptr = (*it).get();
-		auto casted_particle = (InterfaceParticle*)(aux_ptr);
-		assert(casted_particle);
-		if (!casted_particle->alive()) {
-			it = child_objects.erase(it);
-			continue;
-		}else if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos()))
-		{
-			it = child_objects.erase(it);
-			continue;
-		}
-		else {
-			(*it)->step(dt);
-			++it;
-		}
-	}
-
-	if (active) {
-		generate_particles(dt, nullptr);
-	}
-	*/
 }

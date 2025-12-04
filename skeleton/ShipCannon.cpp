@@ -63,12 +63,6 @@ void ShipCannon::fire_spring()
 }
 
 
-/*
-void ShipCannon::trigger_fire()
-{
-	fire_missile();
-}
-*/
 std::vector<physx::PxVec3> cannon_pos = {
 	{-1.5,1,0},
 	{1.5, 1,0},

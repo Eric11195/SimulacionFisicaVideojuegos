@@ -120,7 +120,7 @@ void EnemyShip::step(double dt)
 			//Its one of the particle system that show us fire where it has been shot
 			assert((i - 7) < points_impacted.size());
 			Transform aux_tr = global_transform;
-			aux_tr.p += aux_tr.rotate(points_impacted[i - 7].pos);
+			aux_tr.p += aux_tr.q.rotate(points_impacted[i - 7].pos);
 			aux_tr.q = global_transform.q * points_impacted[i - 7].looking_to;
 			child->setTransform(aux_tr);
 			break;
@@ -152,7 +152,9 @@ void EnemyShip::set_collision_point(physx::PxVec3 pos, physx::PxVec3 normal)
 	fire_transform f;
 	f.pos = global_pos_to_this_obj_pos.rotate(pos - global_transform.p);
 	auto pos_normalized = f.pos.getNormalized();
-	f.looking_to = PxQuat(physx::PxAcos(pos_normalized.dot({ 0,0,1 })), pos_normalized.cross({ 0,0,1 }).getNormalized());
+	float angle = physx::PxAcos(pos_normalized.dot({ 0,0,1 }));
+	physx::PxVec3 perpendicular = physx::PxVec3(0, 0, 1).cross(pos_normalized).getNormalized();
+	f.looking_to = PxQuat(angle, perpendicular);
 	auto fire_hit = new ToggleParticleGenerator(my_scene, fire_hit_enemy_ship);
 	fire_hit->set_toggle(true);
 	addChild(fire_hit);
@@ -188,32 +190,5 @@ Vector3 EnemyShip::think_off_torque() {
 void EnemyShip::think_step(double dt)
 {
 	//Aim for the player ship
-	rb->addTorque(/*global_transform.q.rotate(*/750 * dt * think_off_torque()/*)*/);
-	/*
-	Transform& player_tr = player_go->get_global_tr();
-	PxVec3 global_vector_to_player = global_transform.p - player_tr.p;
-	float distance_to_player = (global_vector_to_player - vel).magnitude();
-	float rotation_to_apply_in_radians;
-
-	PxVec3 global_ship_dir = global_transform.q.rotate({ 0,0,1 });
-
-	float interpolation_value = 0.005f;
-	//find if it's looking towards player
-	if ((global_vector_to_player + global_ship_dir).magnitudeSquared() < global_vector_to_player.magnitudeSquared()) {
-		interpolation_value = 0.01f;
-	}
-	//std::cout << interpolation_value << '\n';
-
-	Quaternion q;
-	PxVec3 a = global_vector_to_player.cross(global_ship_dir);
-	q = Quaternion(a.x,a.y,a.z,
-		sqrt((global_vector_to_player.magnitudeSquared()) * (global_ship_dir.magnitudeSquared())) + global_vector_to_player.dot(global_ship_dir));
-
-	//Interpolate current_quat to objective quat
-	global_transform.q.x = lerp(global_transform.q.x, q.x, interpolation_value * dt);
-	global_transform.q.y = lerp(global_transform.q.y, q.y, interpolation_value * dt);
-	global_transform.q.z = lerp(global_transform.q.z, q.z, interpolation_value * dt);
-	global_transform.q.w = lerp(global_transform.q.w, q.w, interpolation_value * dt);
-	global_transform.q.normalize();
-	*/
+	rb->addTorque(750 * dt * think_off_torque());
 }
