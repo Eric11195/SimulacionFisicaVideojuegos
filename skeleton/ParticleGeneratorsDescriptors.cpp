@@ -261,7 +261,7 @@ ParticleGenerator::config missile{
 }
 };
 ParticleGenerator::config missile_particle_system{
-	10,
+	30,
 	//Particles per second
 	missile_generated_particles(),
 ParticleGenerator::particle_calculator_functions{

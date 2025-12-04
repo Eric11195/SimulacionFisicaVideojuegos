@@ -23,7 +23,6 @@
 #include "Ship.hpp"
 #include "ForceGenerator.hpp"
 #include "EnemyShip.hpp"
-#include "BlackHole.hpp"
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
 #include "RigidbodyObject.hpp"

@@ -109,6 +109,14 @@ ParticleGenerator::ParticleGenerator(physx::PxScene* s, config& c)
 void ParticleGenerator::step(double dt)
 {
 	generate_particles(dt, nullptr);
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
+		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos())) {
+			//La partícula esta fuera del area de interes y debería ser borrada.
+			it = child_objects.erase(it);
+		}
+		else ++it;
+	}
 	GameObject::step(dt);
 	/*
 	generate_particles(dt, nullptr);
@@ -197,6 +205,14 @@ void ToggleParticleGenerator::set_toggle(bool state)
 void ToggleParticleGenerator::step(double dt)
 {
 	if (active) generate_particles(dt, nullptr);
+	auto it = child_objects.begin();
+	while (it != child_objects.end()) {
+		if (!my_particle_lambdas.inside_area_of_interest((*it)->get_pos(), this->get_pos())) {
+			//La partícula esta fuera del area de interes y debería ser borrada.
+			it = child_objects.erase(it);
+		}
+		else ++it;
+	}
 	GameObject::step(dt);
 	/*
 	if(active) generate_particles(dt, nullptr);

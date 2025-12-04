@@ -254,7 +254,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="buttons.cpp" />
@@ -289,7 +288,6 @@
   <ItemGroup>
     <ClInclude Include="..\common\Common\Print.h" />
     <ClInclude Include="..\common\Common\PVD.h" />
-    <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="buttons.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />

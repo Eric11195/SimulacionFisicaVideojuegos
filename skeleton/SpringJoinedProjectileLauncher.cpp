@@ -36,7 +36,15 @@ void SpringJoinedProjectileLauncher::generate_particles(double dt, void* ptr)
 	v[1]->add_force_to_myself(new_force);
 }
 
-GameObject* SpringJoinedProjectileLauncher::set_up_particle(Particle::config& c, void* v)
+GameObject* SpringJoinedProjectileLauncher::set_up_particle(Particle::config& p, void* v)
 {
+	auto inertial_speed = *static_cast<physx::PxVec3*>(v);
+	auto c = Particle::config{ p.spho_config,p.time_till_death };
+	auto my_init_speed = c.spho_config.so_config.go_config.initial_speed_dir * c.spho_config.so_config.go_config.initial_speed_magnitude;
+	my_init_speed = my_init_speed + inertial_speed;
+	//c.spho_config.so_config.go_config.pos = c.spho_config.so_config.go_config.pos + my_init_speed;
+	c.spho_config.so_config.go_config.initial_speed_magnitude = my_init_speed.normalize();
+	c.spho_config.so_config.go_config.initial_speed_dir = my_init_speed;
+
 	return new Projectile(my_scene, c);
 }
