@@ -21,5 +21,5 @@ void button::click_action()
 bool button::inside_this_button_range()
 {
 	return texCoords[0].x < mouse_pos_x && mouse_pos_x < texCoords[2].x &&
-		texCoords[0].x < mouse_pos_y && mouse_pos_y < texCoords[2].y;
+		texCoords[0].y < mouse_pos_y && mouse_pos_y < texCoords[2].y;
 }

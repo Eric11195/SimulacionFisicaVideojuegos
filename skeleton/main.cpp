@@ -167,10 +167,10 @@ void initPhysics(bool interactive)
 	scenes_vec[endgame] = new GameObject(physx_scene_vec[endgame]);
 	scenes_vec[endgame]->addChild(new button(physx_scene_vec[endgame], []() {
 		exit(0);
-		}, "exit_button.png", { 0.33,0.65 }, { 0.33,0.20 })
+		}, "exit_button.png", { 0.66,0.0 }, { 0.33,0.20 })
 	);
 	scenes_vec[endgame]->addChild(new text_hud_elem(physx_scene_vec[endgame], "Felicidades! Has eliminado a todos los enemigos", {0.1,0.8}));
-
+	scenes_vec[endgame]->addChild(new hud_elem(physx_scene_vec[endgame], "ImagenCompletamenteSeriaDeVictoria.png"));
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];
 	physx_current_scene = physx_scene_vec[starting_scene];

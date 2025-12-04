@@ -124,7 +124,7 @@ Particle::config& missile_particle()
 			//{0,-1,0},//accel_dir
 			10,//10, //Speed module
 			//0//PhysicLib::GRAVITY,//Accel module
-			Mass(1000)
+			Mass(100000)
 		},
 		physx::PxVec4(1,1,1,1)//Color
 	},
