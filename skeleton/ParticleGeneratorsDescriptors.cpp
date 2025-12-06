@@ -247,12 +247,12 @@ ParticleGenerator::config missile{
 				return 0;
 			},
 			[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
+				//Inside radius of parent
+				auto vector_from_particle_to_generator = pos_generator - pos_particle;
+				auto module = vector_from_particle_to_generator.magnitude();
+				return module < 1000;
+			}
 	}
-}
 };
 ParticleGenerator::config missile_particle_system{
 	30,
