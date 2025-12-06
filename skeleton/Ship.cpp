@@ -28,7 +28,7 @@ Ship::Ship(physx::PxScene* s)
 	addChild(my_cannon);
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 40*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 60*my_mass.mass);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
