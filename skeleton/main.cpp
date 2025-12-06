@@ -26,6 +26,7 @@
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
 #include "RigidbodyObject.hpp"
+#include <Windows.h>
 
 
 constexpr uint8_t STARTING_NUMBER_OF_ELEMENTS = 10;
@@ -193,6 +194,10 @@ void initPhysics(bool interactive)
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];
 	physx_current_scene = physx_scene_vec[starting_scene];
+
+
+	//HIDE CONSOLE
+	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 }
 
 

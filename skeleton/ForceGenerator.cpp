@@ -180,7 +180,7 @@ physx::PxVec3 Spring_ForceGenerator::calculate_force(physx::PxVec3 from_1_to_2)
 	if (!active) return { 0,0,0 };
 
 	float current_long = from_1_to_2.normalize();
-	return - force_magnitude * (current_long - repose_long) * from_1_to_2;
+	return - force_magnitude * (current_long - repose_long) * (from_1_to_2/current_long);
 }
 
 PT_OBJ_Spring_ForceGenerator::PT_OBJ_Spring_ForceGenerator(physx::PxScene* s, config c)
