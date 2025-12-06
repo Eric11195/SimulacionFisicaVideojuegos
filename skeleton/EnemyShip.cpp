@@ -143,7 +143,7 @@ void EnemyShip::set_collision_point(physx::PxVec3 pos, physx::PxVec3 normal)
 		dead = true;
 		propulsors->set_state(false);
 
-		explosion = new BombGenerator(my_scene, 80, 5, 0.6);//new TriggeredParticleGenerator(my_scene, bomb);
+		explosion = new BombGenerator(my_scene, 40, 3, 0.25);//new TriggeredParticleGenerator(my_scene, bomb);
 		addChild(explosion);
 		//die();
 	}
