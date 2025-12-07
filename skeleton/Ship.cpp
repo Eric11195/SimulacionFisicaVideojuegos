@@ -9,9 +9,9 @@
 #include "Render/hud_elem.hpp"
 
 constexpr float max_speed = 30;
-
+constexpr float my_mass = 500;
 Ship::Ship(physx::PxScene* s)
-	:Rigid_CubeObject(s, CubeObject::config{SceneObject::config{GameObject::config{},{0,0,0,0}}, {1,1,1} }, NO_REPRESENTATION::no_representation)
+	:Rigid_CubeObject(s, CubeObject::config{ SceneObject::config{GameObject::config{{0,0,0}, {0,1,0}, 0, Mass(my_mass)},{0,0,0,0}}, {1,1,1}}, NO_REPRESENTATION::no_representation)
 {
 	my_team_id = player;
 	set_actor_flags(PxActorFlag::eDISABLE_GRAVITY, true);
@@ -20,15 +20,12 @@ Ship::Ship(physx::PxScene* s)
 	rb->setAngularDamping(0.9);
 	rb->setLinearDamping(0.3);
 
-	Mass my_mass = 500;
-	mass = InvMass(my_mass);
-
 	//set_dumping(0.8);
 	my_cannon = new ShipCannon(s, global_transform);
 	addChild(my_cannon);
 	//add_force_to_myself("black_hole");
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 60*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 100*my_mass*my_mass);
 	propulsors->set_state(false);
 	add_force_to_myself(propulsors);
 	addChild(propulsors);
@@ -44,7 +41,7 @@ void Ship::step(double dt)
 	Rigid_CubeObject::step(dt);
 	//Girar
 	if (PxAbs(1.0f - current_angular_velocity.rotation_axis.magnitude()) < 1e-3f) {
-		add_torque(dt* current_angular_velocity.angle * global_transform.q.rotate(current_angular_velocity.rotation_axis));
+		add_torque(dt* my_mass *current_angular_velocity.angle * global_transform.q.rotate(current_angular_velocity.rotation_axis));
 		//rotate(PxQuat(dt*current_angular_velocity.angle*angular_speed_radians_per_second, current_angular_velocity.rotation_axis));
 	}
 

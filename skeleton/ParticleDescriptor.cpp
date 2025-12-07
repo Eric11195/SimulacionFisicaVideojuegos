@@ -101,7 +101,7 @@ Particle::config& laser_shot()
 							//{0,-1,0},//accel_dir
 							40, //Speed module
 							//0//PhysicLib::GRAVITY,//Accel module
-							Mass(10)
+							Mass(400)
 						},
 						physx::PxVec4(0.937,1,0,1)
 						//Color
@@ -218,9 +218,9 @@ Particle::config& spring_shot_particle_descriptor()
 					{//GameObject config
 						{0,0,0}, //Pos
 						{0,0,1}, //speed_dir
-						10,//5, //Speed module
+						5,//5, //Speed module
 						//0,//ACCEL
-						Mass(40)//MASS
+						Mass(3000)//MASS
 						//PhysicLib::NORMAL_DAMPING//2.5//DUMPING
 					},
 					physx::PxVec4(0.5f,0,0,1)

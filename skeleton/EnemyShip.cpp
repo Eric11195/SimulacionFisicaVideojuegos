@@ -11,9 +11,9 @@
 #include "BombGenerator.hpp"
 
 constexpr float near_threshold_to_flee = 12;
-
+constexpr float my_mass = 100;
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: Rigid_CubeObject(s, CubeObject::config{ {SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), 
+	: Rigid_CubeObject(s, CubeObject::config{ SceneObject::config{GameObject::config{{0,0,0}, {0,1,0}, 0, Mass(my_mass)},{0,0,0,0} } , { 1,1,1 } }, NO_REPRESENTATION::no_representation),
 	player_go(player)//, my_scene(s)
 
 {
@@ -22,9 +22,6 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	rb->setAngularVelocity({ 0,0,0 });
 	rb->setAngularDamping(0.9);
 	rb->setLinearDamping(0.2);
-
-	Mass my_mass = 500;
-	mass = InvMass(my_mass);
 
 	SphereObject::config sph_c = { SceneObject::config(), 1 };
 	auto n = new SphereObject(s, sph_c);
@@ -57,7 +54,7 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 12*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 20*my_mass*my_mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
 	//add_force_to_myself("black_hole");
@@ -184,7 +181,7 @@ Vector3 EnemyShip::think_off_torque() {
 	//Para obtener que tan rápido debería girar resto estos dos y me da una escala
 	float vel_rot = (current_dir_vec - global_vector_to_player).normalize();
 
-	return vel_rot*vector_de_rotación;
+	return my_mass*vel_rot*vector_de_rotación;
 }
 
 void EnemyShip::think_step(double dt)
