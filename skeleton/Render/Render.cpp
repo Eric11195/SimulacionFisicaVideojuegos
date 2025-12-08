@@ -33,13 +33,6 @@
 #include <stdexcept>
 #include "../GameObject.hpp"
 
-/*
-#include "Texture.h"
-#include "Entity.h"
-*/
-//#include "hud_elem.hpp"
-
-
 using namespace physx;
 
 namespace Snippets
@@ -143,11 +136,6 @@ void renderHUD()
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	hud_rendering_obj->render2D();
-
-	/*
-	if(!casco_nave) casco_nave = new hud_elem("casco_nave.png");
-	casco_nave->render();
-	*/
 
 	// Making sure we can render 3d again
 	glMatrixMode(GL_PROJECTION);

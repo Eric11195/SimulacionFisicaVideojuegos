@@ -28,7 +28,7 @@ ParticleGenerator::config bomb{
 				0,
 				0,
 				0,
-				1//Distributions::LinearDistribution::get()
+				1
 			);
 		},
 		[] {//Size
@@ -72,7 +72,7 @@ ParticleGenerator::config bomb_particle_generator{
 				0,
 				0,
 				0,
-				0//Distributions::LinearDistribution::get()
+				0
 			);
 		},
 		[] {//Size
@@ -121,7 +121,7 @@ ParticleGenerator::config testing_blackhole_particles{
 				Distributions::LinearDistribution::get(),
 				Distributions::LinearDistribution::get(),
 				Distributions::LinearDistribution::get(),
-				1//Distributions::LinearDistribution::get()
+				1
 			);
 		},
 		[] {//Size
@@ -136,7 +136,7 @@ ParticleGenerator::config testing_blackhole_particles{
 				return Mass(8);
 			}
 			else return Mass(0.1);
-			//return Mass(LinearDistribution::get() * 2);
+
 		}
 }
 
@@ -171,7 +171,7 @@ ParticleGenerator::config ball_thrower{
 				Distributions::LinearDistribution::get(),
 				Distributions::LinearDistribution::get(),
 				Distributions::LinearDistribution::get(),
-				1//Distributions::LinearDistribution::get()
+				1
 			);
 		},
 		[] {//Size
@@ -190,13 +190,7 @@ ParticleGenerator::config x_wing_shoot_type{
 	1,//Particles per second
 	laser_shot(),
 	ParticleGenerator::particle_calculator_functions{
-	[] {return physx::PxVec3{0,0,0
-		/*
-			5*Distributions::NormalDistribution::get(NormalDistribution::d_10) * Distributions::RandomSignDistribution::get(), //0,0,0
-			5*Distributions::NormalDistribution::get(NormalDistribution::d_10)* Distributions::RandomSignDistribution::get(),
-			5*Distributions::NormalDistribution::get(NormalDistribution::d_10)* Distributions::RandomSignDistribution::get()
-			*/
-		};
+	[] {return physx::PxVec3{0,0,0};
 	},//POS
 	[] {//VEL_DIR
 		return physx::PxVec3{
@@ -204,19 +198,19 @@ ParticleGenerator::config x_wing_shoot_type{
 		};
 	},
 	[] {//SPEED MOD
-		return 5;// Distributions::RandomSignDistribution::get()* Distributions::LinearDistribution::get() * 5;
+		return 5;
 	},
 	[] {//Lifetime MOD
-		return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_05) * 1 * Distributions::RandomSignDistribution::get();
+		return 0;
 	},
 	[] {//Vector4
 		return Vector4(
 			0,0,0,
-			1//Distributions::LinearDistribution::get()
+			1
 		);
 	},
 	[] {//Size
-		return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_025);
+		return 0;
 	},
 	[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
 		//Inside radius of parent
@@ -238,37 +232,37 @@ ParticleGenerator::config missile{
 				};
 			},
 			[] {//SPEED MOD
-				return 0;// Distributions::RandomSignDistribution::get()* Distributions::LinearDistribution::get() * 5;
+				return 0;
 			},
 			[] {//Lifetime MOD
-				return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_05) * 1 * Distributions::RandomSignDistribution::get();
+				return 0;
 			},
 			[] {//Vector4
 				return Vector4(
 					0,0,0,
-					1//Distributions::LinearDistribution::get()
+					1
 				);
 			},
 			[] {//Size
-				return 0;//Distributions::NormalDistribution::get(NormalDistribution::d_025);
+				return 0;
 			},
 			[](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
+				//Inside radius of parent
+				auto vector_from_particle_to_generator = pos_generator - pos_particle;
+				auto module = vector_from_particle_to_generator.magnitude();
+				return module < 1000;
+			}
 	}
-}
 };
 ParticleGenerator::config missile_particle_system{
-	10,
+	30,
 	//Particles per second
 	missile_generated_particles(),
 ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
 	0.25f*Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025),
-	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	0.0f
 	};
 },//POS
 [] {//VEL_DIR
@@ -285,23 +279,12 @@ ParticleGenerator::particle_calculator_functions{
 	return 0.25*Distributions::NormalDistribution::get(NormalDistribution::d_05) * Distributions::RandomSignDistribution::get();
 },
 [] {//Vector4
-	return Vector4( 0,Distributions::LinearDistribution::get(),0,0
-		//Distributions::LinearDistribution::get(),
-		//Distributions::LinearDistribution::get(),
-		//Distributions::LinearDistribution::get(),
-		//1//Distributions::LinearDistribution::get()
-	);
+	return Vector4( 0,Distributions::LinearDistribution::get(),0,0	);
 },
 [] {//Size
 	return 0.03*Distributions::NormalDistribution::get(NormalDistribution::d_025);
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		/*
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
-		*/
 		return true;
 	}
 }
@@ -315,7 +298,7 @@ ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
 	1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
 	1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
-	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	0.0f
 	};
 },//POS
 [] {//VEL_DIR
@@ -343,12 +326,6 @@ ParticleGenerator::particle_calculator_functions{
 	return 0.03 * Distributions::NormalDistribution::get(NormalDistribution::d_025);
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		/*
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
-		*/
 		return true;
 	}
 }
@@ -361,16 +338,16 @@ ParticleGenerator::config fire_hit_enemy_ship{
 	fire_hit_enemy_ship_particles(),
 ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
-	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
-	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
-	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	0,
+	0,
+	0.0f
 	};
 },//POS
 [] {//VEL_DIR
 	return physx::PxVec3{
-		0.1f*Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
-		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
-		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get()//1,
+		0.1f*Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+		0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get()
 	};
 },
 [] {//SPEED MOD
@@ -382,21 +359,15 @@ ParticleGenerator::particle_calculator_functions{
 [] {//Color
 	return Vector4(
 		Distributions::LinearDistribution::get() * 0.4,
-		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.3,
-		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.6,
+		Distributions::LinearDistribution::get() * 0.2,
+		Distributions::LinearDistribution::get() * 0.2,
 		0
 	);
 },
 [] {//Size
-	return 0;//0.03 * Distributions::NormalDistribution::get(NormalDistribution::d_025);
+	return 0;
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		/*
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
-		*/
 		return true;
 	}
 }
@@ -409,20 +380,20 @@ ParticleGenerator::config spring_projectile_generator{
 	spring_shot_particle_descriptor(),
 ParticleGenerator::particle_calculator_functions{
 	[] {return physx::PxVec3{
-	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
-	0,//1 * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
-	0.0f//Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_025)
+	0,
+	0,
+	0.0f
 	};
 },//POS
 [] {//VEL_DIR
 	return physx::PxVec3{
-		0.2f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
-		0.2f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),//0.5f * Distributions::NormalDistribution::get(NormalDistribution::d_025),
-		0//0.1f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get()//1,
+		0.2f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+		0.2f * Distributions::RandomSignDistribution::get() * Distributions::LinearDistribution::get(),
+		0
 	};
 },
 [] {//SPEED MOD
-	return 0;// 5 * Distributions::RandomSignDistribution::get() * Distributions::NormalDistribution::get(NormalDistribution::d_05);
+	return 0;
 },
 [] {//Lifetime MOD
 	return 1 * Distributions::NormalDistribution::get(NormalDistribution::d_025) * Distributions::RandomSignDistribution::get();
@@ -430,21 +401,15 @@ ParticleGenerator::particle_calculator_functions{
 [] {//Color
 	return Vector4(
 		Distributions::LinearDistribution::get() * 0.4,
-		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.3,
-		Distributions::LinearDistribution::get() * 0.2,//Distributions::LinearDistribution::get() * 0.6,
+		Distributions::LinearDistribution::get() * 0.2,
+		Distributions::LinearDistribution::get() * 0.2,
 		0
 	);
 },
 [] {//Size
-	return 0;//0.03 * Distributions::NormalDistribution::get(NormalDistribution::d_025);
+	return 0;
 },
 [](PxVec3 pos_particle, PxVec3 pos_generator) {//Area of interest
-		/*
-		//Inside radius of parent
-		auto vector_from_particle_to_generator = pos_generator - pos_particle;
-		auto module = vector_from_particle_to_generator.magnitude();
-		return module < 1000;
-		*/
 		return true;
 	}
 }

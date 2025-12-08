@@ -11,9 +11,9 @@
 #include "BombGenerator.hpp"
 
 constexpr float near_threshold_to_flee = 12;
-
+constexpr float my_mass = 100;
 EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
-	: Rigid_CubeObject(s, CubeObject::config{ {SceneObject::config{GameObject::config{},{0,0,0,0}}}, {1,1,1} }, NO_REPRESENTATION::no_representation), 
+	: Rigid_CubeObject(s, CubeObject::config{ SceneObject::config{GameObject::config{{0,0,0}, {0,1,0}, 0, Mass(my_mass)},{0,0,0,0} } , { 1,1,1 } }, NO_REPRESENTATION::no_representation),
 	player_go(player)//, my_scene(s)
 
 {
@@ -22,9 +22,6 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	rb->setAngularVelocity({ 0,0,0 });
 	rb->setAngularDamping(0.9);
 	rb->setLinearDamping(0.2);
-
-	Mass my_mass = 500;
-	mass = InvMass(my_mass);
 
 	SphereObject::config sph_c = { SceneObject::config(), 1 };
 	auto n = new SphereObject(s, sph_c);
@@ -57,7 +54,7 @@ EnemyShip::EnemyShip(physx::PxScene* s, GameObject* player)
 	estela_motor->set_toggle(true);
 	addChild(estela_motor);
 
-	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 12*my_mass.mass);
+	propulsors = new Directional_ForceGenerator(s,{0,0,1}, 20*my_mass*my_mass);
 	addChild(propulsors);
 	add_force_to_myself(propulsors);
 	//add_force_to_myself("black_hole");
@@ -120,7 +117,7 @@ void EnemyShip::step(double dt)
 			//Its one of the particle system that show us fire where it has been shot
 			assert((i - 7) < points_impacted.size());
 			Transform aux_tr = global_transform;
-			aux_tr.p += aux_tr.rotate(points_impacted[i - 7].pos);
+			aux_tr.p += aux_tr.q.rotate(points_impacted[i - 7].pos);
 			aux_tr.q = global_transform.q * points_impacted[i - 7].looking_to;
 			child->setTransform(aux_tr);
 			break;
@@ -143,7 +140,7 @@ void EnemyShip::set_collision_point(physx::PxVec3 pos, physx::PxVec3 normal)
 		dead = true;
 		propulsors->set_state(false);
 
-		explosion = new BombGenerator(my_scene, 80, 5, 0.6);//new TriggeredParticleGenerator(my_scene, bomb);
+		explosion = new BombGenerator(my_scene, 40, 3, 0.25);//new TriggeredParticleGenerator(my_scene, bomb);
 		addChild(explosion);
 		//die();
 	}
@@ -152,7 +149,9 @@ void EnemyShip::set_collision_point(physx::PxVec3 pos, physx::PxVec3 normal)
 	fire_transform f;
 	f.pos = global_pos_to_this_obj_pos.rotate(pos - global_transform.p);
 	auto pos_normalized = f.pos.getNormalized();
-	f.looking_to = PxQuat(physx::PxAcos(pos_normalized.dot({ 0,0,1 })), pos_normalized.cross({ 0,0,1 }).getNormalized());
+	float angle = physx::PxAcos(pos_normalized.dot({ 0,0,1 }));
+	physx::PxVec3 perpendicular = physx::PxVec3(0, 0, 1).cross(pos_normalized).getNormalized();
+	f.looking_to = PxQuat(angle, perpendicular);
 	auto fire_hit = new ToggleParticleGenerator(my_scene, fire_hit_enemy_ship);
 	fire_hit->set_toggle(true);
 	addChild(fire_hit);
@@ -182,38 +181,11 @@ Vector3 EnemyShip::think_off_torque() {
 	//Para obtener que tan rápido debería girar resto estos dos y me da una escala
 	float vel_rot = (current_dir_vec - global_vector_to_player).normalize();
 
-	return vel_rot*vector_de_rotación;
+	return my_mass*vel_rot*vector_de_rotación;
 }
 
 void EnemyShip::think_step(double dt)
 {
 	//Aim for the player ship
-	rb->addTorque(/*global_transform.q.rotate(*/750 * dt * think_off_torque()/*)*/);
-	/*
-	Transform& player_tr = player_go->get_global_tr();
-	PxVec3 global_vector_to_player = global_transform.p - player_tr.p;
-	float distance_to_player = (global_vector_to_player - vel).magnitude();
-	float rotation_to_apply_in_radians;
-
-	PxVec3 global_ship_dir = global_transform.q.rotate({ 0,0,1 });
-
-	float interpolation_value = 0.005f;
-	//find if it's looking towards player
-	if ((global_vector_to_player + global_ship_dir).magnitudeSquared() < global_vector_to_player.magnitudeSquared()) {
-		interpolation_value = 0.01f;
-	}
-	//std::cout << interpolation_value << '\n';
-
-	Quaternion q;
-	PxVec3 a = global_vector_to_player.cross(global_ship_dir);
-	q = Quaternion(a.x,a.y,a.z,
-		sqrt((global_vector_to_player.magnitudeSquared()) * (global_ship_dir.magnitudeSquared())) + global_vector_to_player.dot(global_ship_dir));
-
-	//Interpolate current_quat to objective quat
-	global_transform.q.x = lerp(global_transform.q.x, q.x, interpolation_value * dt);
-	global_transform.q.y = lerp(global_transform.q.y, q.y, interpolation_value * dt);
-	global_transform.q.z = lerp(global_transform.q.z, q.z, interpolation_value * dt);
-	global_transform.q.w = lerp(global_transform.q.w, q.w, interpolation_value * dt);
-	global_transform.q.normalize();
-	*/
+	rb->addTorque(750 * dt * think_off_torque());
 }

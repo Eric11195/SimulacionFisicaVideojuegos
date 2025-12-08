@@ -276,10 +276,6 @@ void SceneObject::render_geometry(const PxGeometryHolder& h, bool wireframe)
 
 SphereObject::SphereObject(physx::PxScene* s, config& c)
 	: SceneObject(s,CreateShape(PxSphereGeometry(c.radius)), c.so_config) {}
-/*
-SphereObject::SphereObject(SceneObject::config c, PxShape* shape)
-	:SceneObject(c, shape) {}
-*/
 
 CubeObject::CubeObject(physx::PxScene* s, config& c)
 	:SceneObject(s, CreateShape(PxBoxGeometry(c.half_extents)), c.so_config) {}

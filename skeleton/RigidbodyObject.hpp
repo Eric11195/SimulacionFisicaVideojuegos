@@ -4,11 +4,6 @@
 
 class Rigidbody_Object : public SceneObject {
 public:
-	/*
-	struct config {
-		SceneObject::config so_config;
-	};
-	*/
 	enum NO_REPRESENTATION{
 		no_representation
 	};
@@ -37,12 +32,6 @@ protected:
 
 class Rigid_SphereObject : public Rigidbody_Object {
 public:
-	/*
-	struct SphereObjectconfig {
-		Rigidbody_Object::config rb_config;
-		float radius;
-	};
-	*/
 	Rigid_SphereObject(PxScene* s, SphereObject::config& c);
 	Rigid_SphereObject(PxScene* s, SphereObject::config& c, NO_REPRESENTATION);
 };

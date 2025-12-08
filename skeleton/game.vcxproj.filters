@@ -24,7 +24,6 @@
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="ParticleGeneratorsDescriptors.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
-    <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="ShipRegularProjectileCannon.cpp" />
@@ -67,14 +66,11 @@
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
     <ClInclude Include="inverse_mass.hpp" />
-    <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
     <ClInclude Include="..\common\Common\Print.h" />
     <ClInclude Include="..\common\Common\PVD.h" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="Render\hud_elem.hpp" />
-    <ClInclude Include="EventsSystem.hpp" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="mouse_pos.hpp" />
     <ClInclude Include="buttons.hpp" />
     <ClInclude Include="RigidbodyObject.hpp" />

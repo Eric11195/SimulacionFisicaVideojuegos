@@ -3,14 +3,6 @@
 #include <iostream>
 #include "ForceGenerator.hpp"
 
-/*
-MissileCannon::MissileCannon() {
-	GameObject* pg = new Missile();
-	pg->translate_to({ 0,-10.0f,20 });
-	addChild(pg);
-}
-*/
-
 MissileGenerator::MissileGenerator(physx::PxScene* s)
 	:TriggeredParticleGenerator(s,missile)
 {
@@ -52,13 +44,4 @@ void Missile::step(double dt)
 	for (auto& c : get_child_list()) {
 		c->setTransform(global_transform);
 	}
-	/*
-	integrate(dt);
-	cout << 
-
-	for (auto& child : child_objects) {
-		child->setTransform(global_transform);
-		child->step(dt);
-	}
-	*/
 }

@@ -59,16 +59,10 @@ void ShipCannon::fire_spring()
 	aux_ptr->setTransform(tr);
 	auto casted_trigger = static_cast<SpringJoinedProjectileLauncher*>(aux_ptr);
 
-	casted_trigger->trigger(nullptr);
+	casted_trigger->trigger(&currentInertia);
 }
 
 
-/*
-void ShipCannon::trigger_fire()
-{
-	fire_missile();
-}
-*/
 std::vector<physx::PxVec3> cannon_pos = {
 	{-1.5,1,0},
 	{1.5, 1,0},

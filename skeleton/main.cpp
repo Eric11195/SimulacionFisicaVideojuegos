@@ -23,10 +23,10 @@
 #include "Ship.hpp"
 #include "ForceGenerator.hpp"
 #include "EnemyShip.hpp"
-#include "BlackHole.hpp"
 #include "Render/hud_elem.hpp"
 #include "buttons.hpp"
 #include "RigidbodyObject.hpp"
+#include <Windows.h>
 
 
 constexpr uint8_t STARTING_NUMBER_OF_ELEMENTS = 10;
@@ -105,7 +105,7 @@ void initPhysics(bool interactive)
 
 	//------------------------------
 
-	scenes_vec[gamescene]->addChild(new CoordinateAxis(physx_scene_vec[gamescene]));
+	//scenes_vec[gamescene]->addChild(new CoordinateAxis(physx_scene_vec[gamescene]));
 
 	//scenes_vec[gamescene]->addChild(new BlackHole(physx_scene_vec[gamescene], { 5,5,5 }, 1));
 	//scene_game_object->addChild(new ForceAffected_ParticleGenerator(testing_blackhole_particles, {"black_hole", "gravity"}));
@@ -125,6 +125,25 @@ void initPhysics(bool interactive)
 			physx_current_scene = physx_scene_vec[mainmenu];
 		}
 	);
+	//Ambient planets--------------------------------------------------------------------------------------
+	SphereObject::config planet_configs{
+		SceneObject::config{
+			GameObject::config{
+				{10000,10000,0},//pos
+			},
+			{1,0.65,0.4,1} //color
+		},
+		6000//rad
+	};
+	scenes_vec[gamescene]->addChild(new SphereObject(physx_scene_vec[gamescene], planet_configs));
+	planet_configs.radius = 800; planet_configs.so_config.go_config.pos = { -4000, 0, 8000 }; planet_configs.so_config.color = { 1,0,0,1 };
+	scenes_vec[gamescene]->addChild(new SphereObject(physx_scene_vec[gamescene], planet_configs));
+	planet_configs.radius = 2000; planet_configs.so_config.go_config.pos = { -4000, 0, -6000 }; planet_configs.so_config.color = { 0,0,1,1 };
+	scenes_vec[gamescene]->addChild(new SphereObject(physx_scene_vec[gamescene], planet_configs));
+	planet_configs.radius = 5000; planet_configs.so_config.go_config.pos = { 400, -10000, -6000 }; planet_configs.so_config.color = { 0,1,0,1 };
+	scenes_vec[gamescene]->addChild(new SphereObject(physx_scene_vec[gamescene], planet_configs));
+
+	//PLANETS END-----------------------------------------------------------------------------------------
 	scenes_vec[gamescene]->addChild(player);
 	for (int i = 0; i < 10; ++i) {
 		auto en = new EnemyShip(physx_scene_vec[gamescene], player);
@@ -168,13 +187,17 @@ void initPhysics(bool interactive)
 	scenes_vec[endgame] = new GameObject(physx_scene_vec[endgame]);
 	scenes_vec[endgame]->addChild(new button(physx_scene_vec[endgame], []() {
 		exit(0);
-		}, "exit_button.png", { 0.33,0.65 }, { 0.33,0.20 })
+		}, "exit_button.png", { 0.66,0.0 }, { 0.33,0.20 })
 	);
 	scenes_vec[endgame]->addChild(new text_hud_elem(physx_scene_vec[endgame], "Felicidades! Has eliminado a todos los enemigos", {0.1,0.8}));
-
+	scenes_vec[endgame]->addChild(new hud_elem(physx_scene_vec[endgame], "ImagenCompletamenteSeriaDeVictoria.png"));
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	current_scene = scenes_vec[starting_scene];
 	physx_current_scene = physx_scene_vec[starting_scene];
+
+
+	//HIDE CONSOLE
+	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 }
 
 

@@ -30,7 +30,6 @@ public:
 	float get_gravity_proportion(float real_speed, float sim_speed);
 	float get_s_mass(float mass, float real_speed, float sim_speed);
 	virtual void step(double dt) override;
-	//virtual void integrate(double dt) override;
 protected:
 	float gravity_multiplier;
 };

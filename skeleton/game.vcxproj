@@ -254,7 +254,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="BombGenerator.cpp" />
     <ClCompile Include="BombGenerator.hpp" />
     <ClCompile Include="buttons.cpp" />
@@ -289,14 +288,12 @@
   <ItemGroup>
     <ClInclude Include="..\common\Common\Print.h" />
     <ClInclude Include="..\common\Common\PVD.h" />
-    <ClInclude Include="BlackHole.hpp" />
     <ClInclude Include="buttons.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="CoordinateAxis.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="Distributions.hpp" />
     <ClInclude Include="EnemyShip.hpp" />
-    <ClInclude Include="EventsSystem.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="InputProcessor.hpp" />
     <ClInclude Include="inverse_mass.hpp" />
@@ -321,7 +318,6 @@
     <ClInclude Include="ShipCannon.hpp" />
     <ClInclude Include="ShipInterface.hpp" />
     <ClInclude Include="ShipRegularProjectileCannon.hpp" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>

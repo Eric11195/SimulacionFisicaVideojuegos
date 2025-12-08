@@ -58,7 +58,7 @@ void setupDefaultRenderState();
 
 extern GameObject* hud_rendering_obj;
 
-void startRender(const physx::PxVec3& cameraEye, const physx::PxVec3& cameraDir, const physx::PxVec3& cameraUp, physx::PxReal nearClip = 1.f, physx::PxReal farClip = 10000.f);
+void startRender(const physx::PxVec3& cameraEye, const physx::PxVec3& cameraDir, const physx::PxVec3& cameraUp, physx::PxReal nearClip = 1.f, physx::PxReal farClip = 1000000.f);
 void finishRender();
 void renderHUD();
 }
