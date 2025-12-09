@@ -46,7 +46,7 @@ void Ship::step(double dt)
 	}
 
 	//Virar
-	float virar_radians_vel = 40*virar_torque_speed * (virar_buttons[1] - virar_buttons[0]);
+	float virar_radians_vel = 40*my_mass*virar_torque_speed * (virar_buttons[1] - virar_buttons[0]);
 	add_torque(dt*virar_radians_vel* global_transform.q.rotate(PxVec3(0,0,1)));
 	//rotate(PxQuat(virar_radians_vel, PxVec3(0, 0, 1)));
 
