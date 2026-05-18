@@ -7,6 +7,8 @@ Controlas tu propia nave que dispone de varios proyectiles con los que poder ata
 
 Si eliminas las 10 naves enemigas habrás ganado.
 
+Para una explicación de las características incluidas en el proyecto ver [Izan_de_Vega_Memoria_Proyecto_Final_físicas.pdf](Izan_de_Vega_Memoria_Proyecto_Final_físicas.pdf)
+
 # Controles
 **Ratón:**
 - **Clic Izquierdo: Disparos laser** --> Dispara desde uno de los 4 cañones laser de tu nave, mantén pulsado para disparar continuamente
