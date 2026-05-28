@@ -1,17 +1,23 @@
 # Galactic Armada
 
+> Final project for a Physics Simulation in Videogames course at Universidad Complutense de Madrid.  
+> A 3D space shooter built to demonstrate a **custom physics engine layer on top of NVIDIA PhysX** — force generators, particle systems, rigid body dynamics, and spring constraints.
+
 ![Language](https://img.shields.io/badge/Language-C%2B%2B-00599C?logo=cplusplus)
 ![Physics](https://img.shields.io/badge/Physics-NVIDIA_PhysX-76B900?logo=nvidia)
 ![Renderer](https://img.shields.io/badge/Renderer-OpenGL_%2B_GLUT-5586A4?logo=opengl)
 
-> Final project for a Physics Simulation in Videogames course at Universidad Complutense de Madrid.  
-> A 3D space shooter built to demonstrate a **custom physics engine layer on top of NVIDIA PhysX** — force generators, particle systems, rigid body dynamics, and spring constraints.
+---
+
+## Screenshot
 
 ![Architecture Diagram](Diagrama_arquitectura.jpg)
 
+*System architecture: scene graph, force generator hierarchy, particle system, and rigid body pipeline.*
+
 ---
 
-## About
+## What this project is
 
 Built solo. The game — destroy 10 enemy ships — is intentionally lightweight; the real deliverable is the physics layer underneath. Every mechanic maps directly to a physics primitive: thruster thrust is a force generator, explosions are triggered particle bursts, and the boleadoras weapon is a live two-body spring constraint evaluated each tick.
 
@@ -46,7 +52,7 @@ Each `EnemyShip` applies directional thrust toward the player and uses torque to
 
 ---
 
-## Technical Highlights
+## Key Technical Highlights
 
 | System | What was built |
 |---|---|
@@ -129,7 +135,26 @@ Each level adds exactly one responsibility. Everything below inherits update, re
 
 ---
 
-## How to Build
+## Code Structure
+
+| File | Responsibility |
+|---|---|
+| [`skeleton/GameObject.hpp`](skeleton/GameObject.hpp) | Base scene-graph node: `step()`, `render3D()`, input propagation, transform |
+| [`skeleton/ForceGenerator.hpp`](skeleton/ForceGenerator.hpp) | Polymorphic force strategy base; all force types inherit from here |
+| [`skeleton/ParticleSystem.hpp`](skeleton/ParticleSystem.hpp) | Manages all particle generators; owns continuous/triggered/toggle pools |
+| [`skeleton/ParticleGenerator.hpp`](skeleton/ParticleGenerator.hpp) | Per-generator emission: rate, descriptor, lifetime culling |
+| [`skeleton/ParticleDescriptor.hpp`](skeleton/ParticleDescriptor.hpp) | Lambda-based spawn config: position, direction, velocity, lifetime, color, size, mass |
+| [`skeleton/ParticleGeneratorsDescriptors.hpp`](skeleton/ParticleGeneratorsDescriptors.hpp) | Factory descriptors for all in-game effects (thrust, explosion, etc.) |
+| [`skeleton/RigidbodyObject.hpp`](skeleton/RigidbodyObject.hpp) | `PxRigidDynamic` wrapper: torque application, velocity control, transform sync |
+| [`skeleton/SpringJoinedProjectileLauncher.hpp`](skeleton/SpringJoinedProjectileLauncher.hpp) | Spawns two rigid bodies and attaches live spring constraint between them |
+| [`skeleton/Ship.hpp`](skeleton/Ship.hpp) | Player ship: mouse-driven orientation, thruster, cannon cycling |
+| [`skeleton/EnemyShip.hpp`](skeleton/EnemyShip.hpp) | Enemy AI: directional thrust toward player, corrective torque steering |
+| [`skeleton/Distributions.hpp`](skeleton/Distributions.hpp) | `<random>` wrappers: uniform, normal (3σ presets), random sign |
+| [`skeleton/core.hpp`](skeleton/core.hpp) | Scene setup and game object instantiation |
+
+---
+
+## How to Run
 
 Requires Visual Studio on Windows with the NVIDIA PhysX SDK installed.
 
